@@ -1,0 +1,20 @@
+{
+  "name": "webpack-merge",
+  "description": "",
+  "author": "Juho Vepsalainen <bebraw@gmail.com>",
+  "version": "0.0.0",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/survivejs/webpack-merge.git"
+  },
+  "homepage": "https://github.com/survivejs/webpack-merge",
+  "bugs": {
+    "url": "https://github.com/survivejs/webpack-merge/issues"
+  },
+  "keywords": [],
+  "license": "MIT"
+}
