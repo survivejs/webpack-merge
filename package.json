@@ -1,11 +1,17 @@
 {
   "name": "webpack-merge",
-  "description": "",
+  "description": "Variant of merge that's useful for Webpack configuration",
   "author": "Juho Vepsalainen <bebraw@gmail.com>",
   "version": "0.0.0",
+  "scripts": {
+    "test": "mocha ./test",
+    "watch": "mocha ./test --watch"
+  },
   "dependencies": {
+    "lodash": "^3.9.3"
   },
   "devDependencies": {
+    "mocha": "^2.2.5"
   },
   "repository": {
     "type": "git",
@@ -15,6 +21,9 @@
   "bugs": {
     "url": "https://github.com/survivejs/webpack-merge/issues"
   },
-  "keywords": [],
+  "keywords": [
+    "webpack",
+    "merge"
+  ],
   "license": "MIT"
 }
