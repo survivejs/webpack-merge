@@ -1,4 +1,4 @@
-[![build status](https://secure.travis-ci.org/bebraw/webpack-merge.png)](http://travis-ci.org/bebraw/webpack-merge)
+[![build status](https://secure.travis-ci.org/survivejs/webpack-merge.png)](http://travis-ci.org/survivejs/webpack-merge)
 # webpack-merge - Merge designed for Webpack
 
 Normal merge function isn't that useful with Webpack configuration as it will override object keys and arrays by default. It is more beneficial to concatenate arrays instead. This little helper achieves just that. Consider the example below:
