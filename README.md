@@ -19,10 +19,8 @@ var common = {
   },
 };
 
-var mergeConfig = merge.bind(null, common);
-
 if(TARGET === 'build') {
-  module.exports = mergeConfig({
+  module.exports = merge(common, {
     module: {
       // loaders will get concatenated!
       loaders: [
