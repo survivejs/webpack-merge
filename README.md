@@ -10,7 +10,8 @@ Normal merge function isn't that useful with webpack configuration as it will ov
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack"
-  }
+  },
+  ...
 }
 ```
 
