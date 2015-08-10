@@ -1,10 +1,25 @@
 [![build status](https://secure.travis-ci.org/survivejs/webpack-merge.png)](http://travis-ci.org/survivejs/webpack-merge)
 # webpack-merge - Merge designed for Webpack
 
-Normal merge function isn't that useful with Webpack configuration as it will override object keys and arrays by default. It is more beneficial to concatenate arrays instead. This little helper achieves just that. Consider the example below:
+Normal merge function isn't that useful with webpack configuration as it will override object keys and arrays by default. It is more beneficial to concatenate arrays instead. This little helper achieves just that. Consider the example below:
+
+**package.json**
+
+```json
+{
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack"
+  }
+}
+```
+
+**webpack.config.js**
 
 ```javascript
 var merge = require('webpack-merge');
+
+var TARGET = process.env.npm_lifecycle_event;
 
 var common = {
   entry: [path.join(ROOT_PATH, 'app/main.jsx')],
@@ -19,7 +34,7 @@ var common = {
   },
 };
 
-if(TARGET === 'build') {
+if(TARGET === 'start') {
   module.exports = merge(common, {
     module: {
       // loaders will get concatenated!
@@ -31,6 +46,12 @@ if(TARGET === 'build') {
         },
       ],
     },
+    ...
+  });
+}
+
+if(TARGET === 'build') {
+  module.exports = merge(common, {
     ...
   });
 }
