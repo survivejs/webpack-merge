@@ -1,4 +1,4 @@
-var isArray = require('lodash.isarray');
+var isArray = Array.isArray;
 var isPlainObject = require('lodash.isplainobject');
 var merge = require('lodash.merge');
 
