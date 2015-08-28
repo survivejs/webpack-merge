@@ -8,7 +8,9 @@
     "watch": "mocha ./test --watch"
   },
   "dependencies": {
-    "lodash": "^3.9.3"
+    "lodash.isarray": "^3.0.4",
+    "lodash.isplainobject": "^3.2.0",
+    "lodash.merge": "^3.3.2"
   },
   "devDependencies": {
     "mocha": "^2.2.5"
