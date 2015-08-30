@@ -62,6 +62,10 @@ if(TARGET === 'build') {
 
 Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
 
+## Contributors
+
+* [Fernando Montoya](https://github.com/montogeek) - Use separate lodash functions instead of the core package. Faster to install this way.
+
 ## License
 
 webpack-merge is available under MIT. See LICENSE for more details.
