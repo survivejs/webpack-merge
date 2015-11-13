@@ -3,6 +3,14 @@
 
 Normal merge function isn't that useful with webpack configuration as it will override object keys and arrays by default. It is more beneficial to concatenate arrays instead. This little helper achieves just that. Consider the example below:
 
+## API
+
+```javascript
+var output = merge(object1, object2, object3, ...);
+```
+
+## Example
+
 **package.json**
 
 ```json
