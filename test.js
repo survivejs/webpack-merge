@@ -23,7 +23,9 @@ describe('Merge', function() {
       foo: ['b'],
     };
 
-    assert.deepEqual(merge(a, b), {foo: ['a', 'b']});
+    assert.deepEqual(merge(a, b), {
+      foo: ['a', 'b']
+    });
   });
 
   it('should append arrays without mutating', function() {
@@ -37,7 +39,9 @@ describe('Merge', function() {
     // this should not mutate
     merge(a, b);
 
-    assert.deepEqual(merge(a, b), {foo: ['a', 'b']});
+    assert.deepEqual(merge(a, b), {
+      foo: ['a', 'b']
+    });
   });
 
   it('should override objects of multiple objects', function() {
@@ -65,6 +69,8 @@ describe('Merge', function() {
       foo: ['c'],
     };
 
-    assert.deepEqual(merge(a, b, c), {foo: ['a', 'b', 'c']});
+    assert.deepEqual(merge(a, b, c), {
+      foo: ['a', 'b', 'c']
+    });
   });
 });
