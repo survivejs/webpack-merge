@@ -1,3 +1,12 @@
+0.3.1 / 2015-11-23
+==================
+
+  * Update changelog
+  * 0.3.1
+  * Generate changelog
+    I set up a `prepublish` script to generate it automatically.
+    Closes [#3](https://github.com/survivejs/webpack-merge/issues/3).
+
 0.3.0 / 2015-11-13
 ==================
 
