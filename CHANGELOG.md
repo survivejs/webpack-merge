@@ -1,3 +1,12 @@
+0.3.2 / 2015-11-23
+==================
+
+  * 0.3.2
+  * Move changelog script to `postpublish`
+    Looks like the changelog generator relies on npm state, not tags. As a
+    result it's better to do this as `postpublish` step it seems. Perhaps
+    not ideal yet.
+
 0.3.1 / 2015-11-23
 ==================
 
