@@ -5,13 +5,16 @@
   "version": "0.3.0",
   "scripts": {
     "test": "mocha ./test",
-    "watch": "mocha ./test --watch"
+    "watch": "mocha ./test --watch",
+    "generate_changelog": "changelog all > CHANGELOG.md",
+    "prepublish": "npm run generate_changelog && git commit --allow-empty -am \"Update changelog\""
   },
   "dependencies": {
     "lodash.isplainobject": "^3.2.0",
     "lodash.merge": "^3.3.2"
   },
   "devDependencies": {
+    "changelog": "^1.0.7",
     "mocha": "^2.2.5"
   },
   "repository": {
