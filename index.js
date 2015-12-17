@@ -9,13 +9,27 @@ module.exports = function() {
   return merge.apply(null, [{}].concat(args).concat([joinArrays]));
 };
 
-function joinArrays(a, b) {
+function joinArrays(a, b, key) {
   if(isArray(a) && isArray(b)) {
+    if(key === 'loaders') {
+      return b.reduce(reduceLoaders, a.splice());
+    }
     return b.concat(a);
   }
+
   if(isPlainObject(a) && isPlainObject(b)) {
     return merge(a, b, joinArrays);
   }
 
   return a;
 }
+
+function reduceLoaders(mergedLoaders, loader) {
+  function isSimilarLoader(l) {
+    return String(l.test) === String(loader.test);
+  };
+  if (!mergedLoaders.some(isSimilarLoader)) {
+    mergedLoaders.push(loader);
+  }
+}
+
