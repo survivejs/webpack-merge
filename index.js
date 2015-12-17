@@ -12,7 +12,8 @@ module.exports = function() {
 function joinArrays(a, b, key) {
   if(isArray(a) && isArray(b)) {
     if(key === 'loaders') {
-      return b.reduce(reduceLoaders, a.splice());
+      var ldrs = b.reduce(reduceLoaders, a.slice());
+      return ldrs;
     }
     return b.concat(a);
   }
@@ -31,5 +32,6 @@ function reduceLoaders(mergedLoaders, loader) {
   if (!mergedLoaders.some(isSimilarLoader)) {
     mergedLoaders.push(loader);
   }
+  return mergedLoaders;
 }
 
