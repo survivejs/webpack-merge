@@ -26,12 +26,13 @@ var output = merge(object1, object2, object3, ...);
 **webpack.config.js**
 
 ```javascript
+var path = require('path');
 var merge = require('webpack-merge');
 
 var TARGET = process.env.npm_lifecycle_event;
 
 var common = {
-  entry: [path.join(ROOT_PATH, 'app/main.jsx')],
+  entry: path.join(__dirname, 'app'),
   ...
   module: {
     loaders: [
