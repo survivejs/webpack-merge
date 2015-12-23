@@ -1,3 +1,5 @@
+require('babel-polyfill');
+
 const isArray = Array.isArray;
 const isPlainObject = require('lodash.isplainobject');
 const merge = require('lodash.merge');
