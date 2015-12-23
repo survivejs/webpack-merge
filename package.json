@@ -7,7 +7,9 @@
     "build": "babel src -d lib",
     "watch": "babel src --watch -d lib",
     "test": "mocha ./test",
-    "watch:test": "mocha ./test --watch"
+    "lint": "eslint .",
+    "watch:test": "mocha ./test --watch",
+    "preversion": "npm run lint && npm test && npm run build && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
   "dependencies": {
