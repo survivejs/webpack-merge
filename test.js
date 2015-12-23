@@ -1,16 +1,13 @@
 /* eslint-env mocha */
-
-'use strict';
-var assert = require('assert');
-
-var merge = require('./lib');
+const assert = require('assert');
+const merge = require('./lib');
 
 describe('Merge', function () {
   it('should override objects', function () {
-    var a = {
+    const a = {
       foo: 'a'
     };
-    var b = {
+    const b = {
       foo: 'b'
     };
 
@@ -18,10 +15,10 @@ describe('Merge', function () {
   });
 
   it('should append arrays', function () {
-    var a = {
+    const a = {
       foo: ['a']
     };
-    var b = {
+    const b = {
       foo: ['b']
     };
 
@@ -31,10 +28,10 @@ describe('Merge', function () {
   });
 
   it('should append arrays without mutating', function () {
-    var a = {
+    const a = {
       foo: ['a']
     };
-    var b = {
+    const b = {
       foo: ['b']
     };
 
@@ -47,13 +44,13 @@ describe('Merge', function () {
   });
 
   it('should override objects of multiple objects', function () {
-    var a = {
+    const a = {
       foo: 'a'
     };
-    var b = {
+    const b = {
       foo: 'b'
     };
-    var c = {
+    const c = {
       foo: 'c'
     };
 
@@ -61,13 +58,13 @@ describe('Merge', function () {
   });
 
   it('should append arrays of multiple objects', function () {
-    var a = {
+    const a = {
       foo: ['a']
     };
-    var b = {
+    const b = {
       foo: ['b']
     };
-    var c = {
+    const c = {
       foo: ['c']
     };
 
@@ -77,13 +74,13 @@ describe('Merge', function () {
   });
 
   it('should overwride loader string values', function () {
-    var a = {
+    const a = {
       loaders: [{
         test: /\.js$/,
         loader: 'a'
       }]
     };
-    var b = {
+    const b = {
       loaders: [{
         test: /\.js$/,
         loader: 'b'
@@ -97,13 +94,13 @@ describe('Merge', function () {
   });
 
   it('should append loaders', function () {
-    var a = {
+    const a = {
       loaders: [{
         test: /\.js$/,
         loaders: ['a']
       }]
     };
-    var b = {
+    const b = {
       loaders: [{
         test: /\.js$/,
         loaders: ['b']
@@ -124,14 +121,14 @@ describe('Merge', function () {
     });
   });
 
-  it('should not duplicate loaders', function() {
-    var a = {
+  it('should not duplicate loaders', function () {
+    const a = {
       loaders: [{
         test: /\.js$/,
         loaders: ['a']
       }]
     };
-    var b = {
+    const b = {
       loaders: [{
         test: /\.js$/,
         loaders: ['a', 'b']
@@ -146,20 +143,20 @@ describe('Merge', function () {
     });
   });
 
-  it('should override query options for the same loader', function() {
-    var a = {
+  it('should override query options for the same loader', function () {
+    const a = {
       loaders: [{
         test: /\.js$/,
         loaders: ['a?1']
       }]
     };
-    var b = {
+    const b = {
       loaders: [{
         test: /\.js$/,
         loaders: ['a?2', 'b']
       }]
     };
-    var c = {
+    const c = {
       loaders: [{
         test: /\.js$/,
         loaders: ['a', 'b?3']

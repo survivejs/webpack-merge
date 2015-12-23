@@ -10,6 +10,7 @@
    * Overrides to the airbnb rules
    */
   "rules": {
+    "func-names": 0,
     "comma-dangle": [2, "never"],
     "no-undef": [2],
     "no-undefined": 1,
