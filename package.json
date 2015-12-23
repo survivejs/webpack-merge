@@ -7,9 +7,7 @@
     "build": "babel src -d lib",
     "watch": "babel src --watch -d lib",
     "test": "mocha ./test",
-    "watch:test": "mocha ./test --watch",
-    "generate_changelog": "changelog all > CHANGELOG.md",
-    "postpublish": "npm run generate_changelog && git commit --allow-empty -am \"Update changelog\""
+    "watch:test": "mocha ./test --watch"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -20,7 +18,6 @@
   "devDependencies": {
     "babel-cli": "^6.3.17",
     "babel-preset-es2015": "^6.3.13",
-    "changelog": "^1.0.7",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^2.1.1",
     "mocha": "^2.2.5"
