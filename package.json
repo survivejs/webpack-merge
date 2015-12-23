@@ -14,6 +14,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "babel-polyfill": "^6.3.14",
+    "lodash.find": "^3.2.1",
     "lodash.isplainobject": "^3.2.0",
     "lodash.merge": "^3.3.2"
   },

@@ -1,11 +1,12 @@
 const isArray = Array.isArray;
 const isPlainObject = require('lodash.isplainobject');
 const merge = require('lodash.merge');
+const find = require('lodash.find');
 
 const loaderNameRe = new RegExp(/[a-z\-]/ig);
 
 function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
-  const foundLoader = mergedLoaderConfigs.find(l => String(l.test) === String(loaderConfig.test));
+  const foundLoader = find(mergedLoaderConfigs, l => String(l.test) === String(loaderConfig.test));
 
   if (foundLoader && foundLoader.loaders) {
     const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
