@@ -148,6 +148,8 @@ merge({
 
 * [Fernando Montoya](https://github.com/montogeek) - Use separate lodash functions instead of the core package. Faster to install this way.
 
+* [Jonathan Felchlin](https://github.com/GreenGremlin) - Smart merging for loaders.
+
 ## License
 
 webpack-merge is available under MIT. See LICENSE for more details.
