@@ -70,11 +70,11 @@ if(TARGET === 'build') {
 
 Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
 
-## Merging loaders
+## Smart merging of loaders
 
 Webpack-merge tries to be smart about merging loaders. Loaders with matching tests will be merged into a single loader value.
 
-Loader string values `loader: 'babel'` override each other.
+**Loader string values `loader: 'babel'` override each other.**
 
 ```
 merge({
@@ -88,7 +88,7 @@ merge({
 }
 ```
 
-Loader array values `loaders: ['babel']` will be merged, without duplication.
+**Loader array values `loaders: ['babel']` will be merged, without duplication.**
 
 ```
 merge({
@@ -102,7 +102,7 @@ merge({
 }
 ```
 
-Loader query strings `loaders: ['babel?plugins[]=object-assign']` will be overridden
+**Loader query strings `loaders: ['babel?plugins[]=object-assign']` will be overridden**
 
 ```
 merge({
@@ -116,7 +116,7 @@ merge({
 }
 ```
 
-Loader arrays in source values will have loader strings merged into them.
+**Loader arrays in source values will have loader strings merged into them.**
 
 ```
 merge({
@@ -130,7 +130,7 @@ merge({
 }
 ```
 
-Loader strings in source values will always override.
+**Loader strings in source values will always override.**
 
 ```
 merge({
