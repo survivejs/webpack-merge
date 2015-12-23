@@ -70,9 +70,85 @@ if(TARGET === 'build') {
 
 Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
 
+## Smart merging of loaders
+
+Webpack-merge tries to be smart about merging loaders. Loaders with matching tests will be merged into a single loader value.
+
+**Loader string values `loader: 'babel'` override each other.**
+
+```
+merge({
+  loaders: [{ test: /\.js$/, loder: 'babel' }]
+}, {
+  loaders: [{ test: /\.js$/, loder: 'coffee' }]
+});
+// will become
+{
+  loaders: [{ test: /\.js$/, loder: 'coffee' }]
+}
+```
+
+**Loader array values `loaders: ['babel']` will be merged, without duplication.**
+
+```
+merge({
+  loaders: [{ test: /\.js$/, loders: ['babel'] }]
+}, {
+  loaders: [{ test: /\.js$/, loders: ['coffee'] }]
+});
+// will become
+{
+  loaders: [{ test: /\.js$/, loders: ['babel', 'coffee'] }]
+}
+```
+
+**Loader query strings `loaders: ['babel?plugins[]=object-assign']` will be overridden**
+
+```
+merge({
+  loaders: [{ test: /\.js$/, loders: ['babel?plugins[]=object-assign'] }]
+}, {
+  loaders: [{ test: /\.js$/, loders: ['babel', 'coffee'] }]
+});
+// will become
+{
+  loaders: [{ test: /\.js$/, loders: ['babel', 'coffee'] }]
+}
+```
+
+**Loader arrays in source values will have loader strings merged into them.**
+
+```
+merge({
+  loaders: [{ test: /\.js$/, loder: 'babel' }]
+}, {
+  loaders: [{ test: /\.js$/, loders: ['coffee'] }]
+});
+// will become
+{
+  loaders: [{ test: /\.js$/, loders: ['babel', 'coffee'] }]
+}
+```
+
+**Loader strings in source values will always override.**
+
+```
+merge({
+  loaders: [{ test: /\.js$/, loders: ['babel'] }]
+}, {
+  loaders: [{ test: /\.js$/, loder: 'coffee' }]
+});
+// will become
+{
+  loaders: [{ test: /\.js$/, loder: 'coffee' }]
+}
+```
+
 ## Contributors
 
 * [Fernando Montoya](https://github.com/montogeek) - Use separate lodash functions instead of the core package. Faster to install this way.
+
+* [Jonathan Felchlin](https://github.com/GreenGremlin) - Smart merging for loaders.
 
 ## License
 
