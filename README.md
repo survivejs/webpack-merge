@@ -7,6 +7,9 @@ Normal merge function isn't that useful with webpack configuration as it will ov
 
 ```javascript
 var output = merge(object1, object2, object3, ...);
+
+// smarter merging for loaders, see below
+var output = merge.smart(object1, object2, object3, ...);
 ```
 
 ## Example
@@ -73,12 +76,12 @@ if(TARGET === 'build') {
 
 ## Smart Merging of Loaders
 
-Webpack-merge tries to be smart about merging loaders. Loaders with matching tests will be merged into a single loader value.
+Webpack-merge tries to be smart about merging loaders when `merge.smart` is used. Loaders with matching tests will be merged into a single loader value.
 
 **Loader string values `loader: 'babel'` override each other.**
 
 ```javascript
-merge({
+merge.smart({
   loaders: [{
     test: /\.js$/,
     loader: 'babel'
@@ -101,7 +104,7 @@ merge({
 **Loader array values `loaders: ['babel']` will be merged, without duplication.**
 
 ```javascript
-merge({
+merge.smart({
   loaders: [{
     test: /\.js$/,
     loaders: ['babel']
@@ -124,7 +127,7 @@ merge({
 **Loader query strings `loaders: ['babel?plugins[]=object-assign']` will be overridden**
 
 ```javascript
-merge({
+merge.smart({
   loaders: [{
     test: /\.js$/,
     loaders: ['babel?plugins[]=object-assign']
@@ -147,7 +150,7 @@ merge({
 **Loader arrays in source values will have loader strings merged into them.**
 
 ```javascript
-merge({
+merge.smart({
   loaders: [{
     test: /\.js$/,
     loader: 'babel'
@@ -170,7 +173,7 @@ merge({
 **Loader strings in source values will always override.**
 
 ```javascript
-merge({
+merge.smart({
   loaders: [{
     test: /\.js$/,
     loaders: ['babel']

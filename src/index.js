@@ -28,12 +28,14 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   return mergedLoaderConfigs;
 }
 
-function joinArrays(a, b, key) {
+function joinArrays(customizer, a, b, key) {
   if (isArray(a) && isArray(b)) {
-    if (key === 'loaders') {
-      const ldrs = b.reduce(reduceLoaders, a.slice());
-      return ldrs;
+    const customResult = customizer(a, b, key);
+
+    if (customResult) {
+      return customResult;
     }
+
     return b.concat(a);
   }
 
@@ -44,9 +46,24 @@ function joinArrays(a, b, key) {
   return a;
 }
 
-module.exports = function webpackMerge() {
+module.exports = function () {
   const args = Array.prototype.slice.call(arguments);
   args.reverse();
 
-  return merge.apply(null, [{}].concat(args).concat([joinArrays]));
+  return merge.apply(null, [{}].concat(args).concat([
+    joinArrays.bind(null, () => {})
+  ]));
+};
+
+module.exports.smart = function webpackMerge() {
+  const args = Array.prototype.slice.call(arguments);
+  args.reverse();
+
+  return merge.apply(null, [{}].concat(args).concat([
+    joinArrays.bind(null, function (a, b, key) {
+      if (key === 'loaders') {
+        return b.reduce(reduceLoaders, a.slice());
+      }
+    })
+  ]));
 };
