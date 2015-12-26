@@ -1,3 +1,8 @@
+0.5.0 / 2015-12-26
+==================
+
+  * Push smart merging behind `merge.smart`. Now `merge` behaves exactly as in *0.3.0* series.
+
 0.4.0 / 2015-12-23
 ==================
 
