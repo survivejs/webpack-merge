@@ -1,3 +1,8 @@
+0.5.1 / 2015-12-26
+==================
+
+  * Fix `merge` object/array case (missing `bind`). The behavior should be correct now.
+
 0.5.0 / 2015-12-26
 ==================
 
