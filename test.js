@@ -5,6 +5,50 @@ const webpackMerge = require('./lib');
 describe('Merge', function () {
   mergeTests(webpackMerge);
 
+  it('should merge recursive structures correctly', function () {
+    const a = {
+      module: {
+        loaders: [{
+          test: /\.js$/,
+          loader: 'a'
+        }, {
+          test: /\.jade$/,
+          loader: 'a'
+        }]
+      }
+    };
+    const b = {
+      module: {
+        loaders: [{
+          test: /\.css$/,
+          loader: 'b'
+        }, {
+          test: /\.sass$/,
+          loader: 'b'
+        }]
+      }
+    };
+    const c = {
+      module: {
+        loaders: [{
+          test: /\.js$/,
+          loader: 'a'
+        }, {
+          test: /\.jade$/,
+          loader: 'a'
+        }, {
+          test: /\.css$/,
+          loader: 'b'
+        }, {
+          test: /\.sass$/,
+          loader: 'b'
+        }]
+      }
+    };
+
+    assert.deepEqual(webpackMerge(a, b), c);
+  });
+
   it('should not override loader string values', function () {
     const a = {
       loaders: [{

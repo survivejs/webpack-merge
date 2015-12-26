@@ -40,7 +40,7 @@ function joinArrays(customizer, a, b, key) {
   }
 
   if (isPlainObject(a) && isPlainObject(b)) {
-    return merge(a, b, joinArrays);
+    return merge(a, b, joinArrays.bind(null, () => {}));
   }
 
   return a;
