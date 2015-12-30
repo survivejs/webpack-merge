@@ -16,7 +16,8 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
       const loaderName = loader.match(loaderNameRe)[0];
 
       if (mergedLoaders.every(l => loaderName !== l.match(loaderNameRe)[0])) {
-        return [loader, ...mergedLoaders];
+        // prepend because of rtl (latter objects should be able to build the chain)
+        return [...mergedLoaders, loader];
       }
       return mergedLoaders;
     }, foundLoader.loaders);

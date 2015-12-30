@@ -194,7 +194,7 @@ function smartMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(a, b), b);
   });
 
-  it('should append loaders with ' + loadersKey, function () {
+  it('should prepend loaders with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -211,7 +211,41 @@ function smartMergeTests(merge, loadersKey) {
     const c = {};
     c[loadersKey] = [{
       test: /\.js$/,
-      loaders: ['a', 'b']
+      // loaders are evaluated from right to left so it makes sense to
+      // prepend here!!! this is an exception given normally we want to
+      // append instead. without this the loader order doesn't make
+      // any sense in this case
+      loaders: ['b', 'a']
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+
+    assert.deepEqual(merge(a, b), c);
+  });
+
+  it('should prepend loader and loaders with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'a'
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['b']
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      // loaders are evaluated from right to left so it makes sense to
+      // prepend here!!! this is an exception given normally we want to
+      // append instead. without this the loader order doesn't make
+      // any sense in this case
+      loaders: ['b', 'a']
     }, {
       test: /\.css$/,
       loader: 'b'
