@@ -1,3 +1,9 @@
+0.6.0 / 2015-12-30
+==================
+
+  * Support `preLoaders` and `postLoaders`. Previously only `loaders` were supported.
+  * Breaking: Change smart merging behavior for `loaders` field so that it prepends loaders instead of appending them. The benefit of this is that now it's possible to specialize loader setup in a predictable manner. For example you can have a linter set up at the root and expect it to become evaluated first always.
+
 0.5.1 / 2015-12-26
 ==================
 
@@ -6,13 +12,13 @@
 0.5.0 / 2015-12-26
 ==================
 
-  * Push smart merging behind `merge.smart`. Now `merge` behaves exactly as in *0.3.0* series.
+  * Breaking: Push smart merging behind `merge.smart`. Now `merge` behaves exactly as in *0.3.0* series.
 
 0.4.0 / 2015-12-23
 ==================
 
   * Dropped changelog generator. It's better to write these by hand.
-  * Added smart merging (@GreenGremlin)
+  * Breaking: Added smart merging (@GreenGremlin)
 
 0.3.2 / 2015-11-23
 ==================
