@@ -61,7 +61,7 @@ module.exports.smart = function webpackMerge() {
 
   return merge.apply(null, [{}].concat(args).concat([
     joinArrays.bind(null, function (a, b, key) {
-      if (key === 'loaders') {
+      if (['loaders', 'preLoaders', 'postLoaders'].indexOf(key) >= 0) {
         return b.reduce(reduceLoaders, a.slice());
       }
     })

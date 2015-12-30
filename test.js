@@ -3,281 +3,268 @@ const assert = require('assert');
 const webpackMerge = require('./lib');
 
 describe('Merge', function () {
-  mergeTests(webpackMerge);
+  const merge = webpackMerge;
 
-  it('should merge recursive structures correctly', function () {
-    const a = {
-      module: {
-        loaders: [{
-          test: /\.js$/,
-          loader: 'a'
-        }, {
-          test: /\.jade$/,
-          loader: 'a'
-        }]
-      }
-    };
-    const b = {
-      module: {
-        loaders: [{
-          test: /\.css$/,
-          loader: 'b'
-        }, {
-          test: /\.sass$/,
-          loader: 'b'
-        }]
-      }
-    };
-    const c = {
-      module: {
-        loaders: [{
-          test: /\.js$/,
-          loader: 'a'
-        }, {
-          test: /\.jade$/,
-          loader: 'a'
-        }, {
-          test: /\.css$/,
-          loader: 'b'
-        }, {
-          test: /\.sass$/,
-          loader: 'b'
-        }]
-      }
-    };
-
-    assert.deepEqual(webpackMerge(a, b), c);
-  });
-
-  it('should not override loader string values', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loader: 'a'
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loader: 'b'
-      }, {
-        test: /\.css$/,
-        loader: 'b'
-      }]
-    };
-    const c = {
-      loaders: [{
-        test: /\.js$/,
-        loader: 'a'
-      }, {
-        test: /\.js$/,
-        loader: 'b'
-      }, {
-        test: /\.css$/,
-        loader: 'b'
-      }]
-    };
-
-    assert.deepEqual(webpackMerge(a, b), c);
-  });
-
-  it('should not append loaders', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a']
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['b']
-      }, {
-        test: /\.css$/,
-        loader: 'b'
-      }]
-    };
-    const c = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a']
-      }, {
-        test: /\.js$/,
-        loaders: ['b']
-      }, {
-        test: /\.css$/,
-        loader: 'b'
-      }]
-    };
-
-    assert.deepEqual(webpackMerge(a, b), c);
-  });
-
-  it('should duplicate loaders', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a']
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a', 'b']
-      }]
-    };
-    const c = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a']
-      }, {
-        test: /\.js$/,
-        loaders: ['a', 'b']
-      }]
-    };
-
-    assert.deepEqual(webpackMerge(a, b), c);
-  });
-
-  it('should not override query options for the same loader', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a?1']
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a?2', 'b']
-      }]
-    };
-    const c = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a', 'b?3']
-      }]
-    };
-    const d = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a?1']
-      }, {
-        test: /\.js$/,
-        loaders: ['a?2', 'b']
-      }, {
-        test: /\.js$/,
-        loaders: ['a', 'b?3']
-      }]
-    };
-
-    assert.deepEqual(webpackMerge(a, b, c), d);
-  });
+  normalMergeTests(merge, 'preLoaders');
+  normalMergeTests(merge, 'loaders');
+  normalMergeTests(merge, 'postLoaders');
+  mergeTests(merge);
 });
 
 describe('Smart merge', function () {
-  const smartMerge = webpackMerge.smart;
+  const merge = webpackMerge.smart;
 
-  mergeTests(smartMerge);
-
-  it('should override loader string values', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loader: 'a'
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loader: 'b'
-      }, {
-        test: /\.css$/,
-        loader: 'b'
-      }]
-    };
-
-    assert.deepEqual(smartMerge(a, b), b);
-  });
-
-  it('should append loaders', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a']
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['b']
-      }, {
-        test: /\.css$/,
-        loader: 'b'
-      }]
-    };
-
-    assert.deepEqual(smartMerge(a, b), {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a', 'b']
-      }, {
-        test: /\.css$/,
-        loader: 'b'
-      }]
-    });
-  });
-
-  it('should not duplicate loaders', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a']
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a', 'b']
-      }]
-    };
-
-    assert.deepEqual(smartMerge(a, b), {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a', 'b']
-      }]
-    });
-  });
-
-  it('should override query options for the same loader', function () {
-    const a = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a?1']
-      }]
-    };
-    const b = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a?2', 'b']
-      }]
-    };
-    const c = {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a', 'b?3']
-      }]
-    };
-
-    assert.deepEqual(smartMerge(a, b, c), {
-      loaders: [{
-        test: /\.js$/,
-        loaders: ['a', 'b?3']
-      }]
-    });
-  });
+  smartMergeTests(merge, 'preLoaders');
+  smartMergeTests(merge, 'loaders');
+  smartMergeTests(merge, 'postLoaders');
+  mergeTests(merge);
 });
+
+function normalMergeTests(merge, loadersKey) {
+  it('should merge recursive structures correctly with ' + loadersKey, function () {
+    const a = {
+      module: {}
+    };
+    a.module[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'a'
+    }, {
+      test: /\.jade$/,
+      loader: 'a'
+    }];
+    const b = {
+      module: {}
+    };
+    b.module[loadersKey] = [{
+      test: /\.css$/,
+      loader: 'b'
+    }, {
+      test: /\.sass$/,
+      loader: 'b'
+    }];
+    const c = {
+      module: {}
+    };
+    c.module[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'a'
+    }, {
+      test: /\.jade$/,
+      loader: 'a'
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }, {
+      test: /\.sass$/,
+      loader: 'b'
+    }];
+
+    assert.deepEqual(merge(a, b), c);
+  });
+
+  it('should not override loader string values with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'a'
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'b'
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'a'
+    }, {
+      test: /\.js$/,
+      loader: 'b'
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+
+    assert.deepEqual(merge(a, b), c);
+  });
+
+  it('should not append loaders with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a']
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['b']
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a']
+    }, {
+      test: /\.js$/,
+      loaders: ['b']
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+
+    assert.deepEqual(merge(a, b), c);
+  });
+
+  it('should duplicate loaders with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a']
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b']
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a']
+    }, {
+      test: /\.js$/,
+      loaders: ['a', 'b']
+    }];
+
+    assert.deepEqual(merge(a, b), c);
+  });
+
+  it('should not override query options for the same loader with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a?1']
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a?2', 'b']
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b?3']
+    }];
+    const d = {};
+    d[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a?1']
+    }, {
+      test: /\.js$/,
+      loaders: ['a?2', 'b']
+    }, {
+      test: /\.js$/,
+      loaders: ['a', 'b?3']
+    }];
+
+    assert.deepEqual(merge(a, b, c), d);
+  });
+}
+
+function smartMergeTests(merge, loadersKey) {
+  it('should override loader string values with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'a'
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loader: 'b'
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+
+    assert.deepEqual(merge(a, b), b);
+  });
+
+  it('should append loaders with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a']
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['b']
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b']
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }];
+
+    assert.deepEqual(merge(a, b), c);
+  });
+
+  it('should not duplicate loaders with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a']
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b']
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b']
+    }];
+
+    assert.deepEqual(merge(a, b), c);
+  });
+
+  it('should override query options for the same loader with ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a?1']
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a?2', 'b']
+    }];
+    const c = {};
+    c[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b?3']
+    }];
+    const d = {};
+    d[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b?3']
+    }];
+
+    assert.deepEqual(merge(a, b, c), d);
+  });
+}
 
 function mergeTests(merge) {
   it('should append arrays of multiple objects', function () {
