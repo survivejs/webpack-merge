@@ -37,7 +37,7 @@ function joinArrays(customizer, a, b, key) {
       return customResult;
     }
 
-    return b.concat(a);
+    return a.concat(b);
   }
 
   if (isPlainObject(a) && isPlainObject(b)) {

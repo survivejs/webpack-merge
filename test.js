@@ -46,17 +46,17 @@ function normalMergeTests(merge, loadersKey) {
       module: {}
     };
     result.module[loadersKey] = [{
-      test: /\.js$/,
-      loader: 'a'
-    }, {
-      test: /\.jade$/,
-      loader: 'a'
-    }, {
       test: /\.css$/,
       loader: 'b'
     }, {
       test: /\.sass$/,
       loader: 'b'
+    }, {
+      test: /\.js$/,
+      loader: 'a'
+    }, {
+      test: /\.jade$/,
+      loader: 'a'
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -79,13 +79,13 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      loader: 'a'
-    }, {
-      test: /\.js$/,
       loader: 'b'
     }, {
       test: /\.css$/,
       loader: 'b'
+    }, {
+      test: /\.js$/,
+      loader: 'a'
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -108,13 +108,13 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      loaders: ['a']
-    }, {
-      test: /\.js$/,
       loaders: ['b']
     }, {
       test: /\.css$/,
       loader: 'b'
+    }, {
+      test: /\.js$/,
+      loaders: ['a']
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -134,10 +134,10 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      loaders: ['a']
+      loaders: ['a', 'b']
     }, {
       test: /\.js$/,
-      loaders: ['a', 'b']
+      loaders: ['a']
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -162,13 +162,13 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      loaders: ['a?1']
+      loaders: ['a', 'b?3']
     }, {
       test: /\.js$/,
       loaders: ['a?2', 'b']
     }, {
       test: /\.js$/,
-      loaders: ['a', 'b?3']
+      loaders: ['a?1']
     }];
 
     assert.deepEqual(merge(a, b, c), result);
@@ -312,7 +312,7 @@ function mergeTests(merge) {
       foo: ['c']
     };
     const result = {
-      foo: ['a', 'b', 'c']
+      foo: ['c', 'b', 'a']
     };
 
     assert.deepEqual(merge(a, b, c), result);
@@ -337,7 +337,7 @@ function mergeTests(merge) {
       foo: ['b']
     };
     const result = {
-      foo: ['a', 'b']
+      foo: ['b', 'a']
     };
 
     assert.deepEqual(merge(a, b), result);
@@ -351,7 +351,7 @@ function mergeTests(merge) {
       foo: ['b']
     };
     const result = {
-      foo: ['a', 'b']
+      foo: ['b', 'a']
     };
 
     // this should not mutate
