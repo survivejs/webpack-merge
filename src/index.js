@@ -12,7 +12,7 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   if (foundLoader && foundLoader.loaders) {
     const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
 
-    if (foundLoader.include) {
+    if (foundLoader.include || foundLoader.exclude) {
       return [...mergedLoaderConfigs, loaderConfig];
     }
 

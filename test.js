@@ -378,6 +378,54 @@ function smartMergeTests(merge, loadersKey) {
 
     assert.deepEqual(merge(common, isparta), result);
   });
+
+  it('should not merge if a loader has exclude for ' + loadersKey, function () {
+    // these shouldn't be merged because `exclude` is defined.
+    // instead, it should prepend to guarantee sane evaluation order
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        exclude: [
+          'foo',
+          'bar'
+        ]
+      }
+    ];
+    const isparta = {
+      module: {}
+    };
+    isparta.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter'],
+        exclude: 'baz'
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter'],
+        exclude: 'baz'
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        exclude: [
+          'foo',
+          'bar'
+        ]
+      }
+    ];
+
+    assert.deepEqual(merge(common, isparta), result);
+  });
 }
 
 function mergeTests(merge) {
