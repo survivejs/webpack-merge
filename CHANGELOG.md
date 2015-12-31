@@ -1,7 +1,7 @@
 0.7.0 / 2015-12-31
 ==================
 
-  * Bug fix: Arrays get merged within nested structures correctly now. Array items are prepended (reverse order compared to earlier). This is related to the change made in `0.6.0`. Incidentally this change affects normal merge as well.
+  * Bug fix: Arrays get merged within nested structures correctly now. Array items are prepended (reverse order compared to earlier). This is related to the change made in *0.6.0*. Incidentally this change affects normal merge as well.
   * Smart merge: If a loader contains either `include` or `exclude`, it will generate separate entries instead of merging. Without this the configuration might change in an unpredictable manner.
 
 0.6.0 / 2015-12-30
