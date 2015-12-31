@@ -298,6 +298,86 @@ function smartMergeTests(merge, loadersKey) {
 
     assert.deepEqual(merge(a, b, c), result);
   });
+
+  it('should merge module.loaders for ' + loadersKey, function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['eslint']
+      }
+    ];
+    const isparta = {
+      module: {}
+    };
+    isparta.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter']
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter', 'eslint']
+      }
+    ];
+
+    assert.deepEqual(merge(common, isparta), result);
+  });
+
+  it('should not merge if a loader has include for ' + loadersKey, function () {
+    // these shouldn't be merged because `include` is defined.
+    // instead, it should prepend to guarantee sane evaluation order
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        include: [
+          'foo',
+          'bar'
+        ]
+      }
+    ];
+    const isparta = {
+      module: {}
+    };
+    isparta.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter'],
+        include: 'baz'
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter'],
+        include: 'baz'
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        include: [
+          'foo',
+          'bar'
+        ]
+      }
+    ];
+
+    assert.deepEqual(merge(common, isparta), result);
+  });
 }
 
 function mergeTests(merge) {

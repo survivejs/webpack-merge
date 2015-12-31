@@ -12,6 +12,10 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   if (foundLoader && foundLoader.loaders) {
     const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
 
+    if (foundLoader.include) {
+      return [...mergedLoaderConfigs, loaderConfig];
+    }
+
     foundLoader.loaders = newLoaders.reduce((mergedLoaders, loader) => {
       const loaderName = loader.match(loaderNameRe)[0];
 
@@ -21,9 +25,8 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
       }
       return mergedLoaders;
     }, foundLoader.loaders);
-
   } else if (!foundLoader) {
-    return [loaderConfig, ...mergedLoaderConfigs];
+    return [...mergedLoaderConfigs, loaderConfig];
   }
 
   return mergedLoaderConfigs;
@@ -41,7 +44,7 @@ function joinArrays(customizer, a, b, key) {
   }
 
   if (isPlainObject(a) && isPlainObject(b)) {
-    return merge(a, b, joinArrays.bind(null, () => {}));
+    return merge(a, b, joinArrays.bind(null, customizer));
   }
 
   return a;
