@@ -42,10 +42,10 @@ function normalMergeTests(merge, loadersKey) {
       test: /\.sass$/,
       loader: 'b'
     }];
-    const c = {
+    const result = {
       module: {}
     };
-    c.module[loadersKey] = [{
+    result.module[loadersKey] = [{
       test: /\.js$/,
       loader: 'a'
     }, {
@@ -59,7 +59,7 @@ function normalMergeTests(merge, loadersKey) {
       loader: 'b'
     }];
 
-    assert.deepEqual(merge(a, b), c);
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should not override loader string values with ' + loadersKey, function () {
@@ -76,8 +76,8 @@ function normalMergeTests(merge, loadersKey) {
       test: /\.css$/,
       loader: 'b'
     }];
-    const c = {};
-    c[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       loader: 'a'
     }, {
@@ -88,7 +88,7 @@ function normalMergeTests(merge, loadersKey) {
       loader: 'b'
     }];
 
-    assert.deepEqual(merge(a, b), c);
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should not append loaders with ' + loadersKey, function () {
@@ -105,8 +105,8 @@ function normalMergeTests(merge, loadersKey) {
       test: /\.css$/,
       loader: 'b'
     }];
-    const c = {};
-    c[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       loaders: ['a']
     }, {
@@ -117,7 +117,7 @@ function normalMergeTests(merge, loadersKey) {
       loader: 'b'
     }];
 
-    assert.deepEqual(merge(a, b), c);
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should duplicate loaders with ' + loadersKey, function () {
@@ -131,8 +131,8 @@ function normalMergeTests(merge, loadersKey) {
       test: /\.js$/,
       loaders: ['a', 'b']
     }];
-    const c = {};
-    c[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       loaders: ['a']
     }, {
@@ -140,7 +140,7 @@ function normalMergeTests(merge, loadersKey) {
       loaders: ['a', 'b']
     }];
 
-    assert.deepEqual(merge(a, b), c);
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should not override query options for the same loader with ' + loadersKey, function () {
@@ -159,8 +159,8 @@ function normalMergeTests(merge, loadersKey) {
       test: /\.js$/,
       loaders: ['a', 'b?3']
     }];
-    const d = {};
-    d[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       loaders: ['a?1']
     }, {
@@ -171,7 +171,7 @@ function normalMergeTests(merge, loadersKey) {
       loaders: ['a', 'b?3']
     }];
 
-    assert.deepEqual(merge(a, b, c), d);
+    assert.deepEqual(merge(a, b, c), result);
   });
 }
 
@@ -182,8 +182,8 @@ function smartMergeTests(merge, loadersKey) {
       test: /\.js$/,
       loader: 'a'
     }];
-    const b = {};
-    b[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       loader: 'b'
     }, {
@@ -191,7 +191,7 @@ function smartMergeTests(merge, loadersKey) {
       loader: 'b'
     }];
 
-    assert.deepEqual(merge(a, b), b);
+    assert.deepEqual(merge(a, result), result);
   });
 
   it('should prepend loaders with ' + loadersKey, function () {
@@ -208,8 +208,8 @@ function smartMergeTests(merge, loadersKey) {
       test: /\.css$/,
       loader: 'b'
     }];
-    const c = {};
-    c[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       // loaders are evaluated from right to left so it makes sense to
       // prepend here!!! this is an exception given normally we want to
@@ -221,7 +221,7 @@ function smartMergeTests(merge, loadersKey) {
       loader: 'b'
     }];
 
-    assert.deepEqual(merge(a, b), c);
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should prepend loader and loaders with ' + loadersKey, function () {
@@ -238,8 +238,8 @@ function smartMergeTests(merge, loadersKey) {
       test: /\.css$/,
       loader: 'b'
     }];
-    const c = {};
-    c[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       // loaders are evaluated from right to left so it makes sense to
       // prepend here!!! this is an exception given normally we want to
@@ -251,7 +251,7 @@ function smartMergeTests(merge, loadersKey) {
       loader: 'b'
     }];
 
-    assert.deepEqual(merge(a, b), c);
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should not duplicate loaders with ' + loadersKey, function () {
@@ -265,13 +265,13 @@ function smartMergeTests(merge, loadersKey) {
       test: /\.js$/,
       loaders: ['a', 'b']
     }];
-    const c = {};
-    c[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       loaders: ['a', 'b']
     }];
 
-    assert.deepEqual(merge(a, b), c);
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should override query options for the same loader with ' + loadersKey, function () {
@@ -290,13 +290,13 @@ function smartMergeTests(merge, loadersKey) {
       test: /\.js$/,
       loaders: ['a', 'b?3']
     }];
-    const d = {};
-    d[loadersKey] = [{
+    const result = {};
+    result[loadersKey] = [{
       test: /\.js$/,
       loaders: ['a', 'b?3']
     }];
 
-    assert.deepEqual(merge(a, b, c), d);
+    assert.deepEqual(merge(a, b, c), result);
   });
 }
 
@@ -311,21 +311,22 @@ function mergeTests(merge) {
     const c = {
       foo: ['c']
     };
-
-    assert.deepEqual(merge(a, b, c), {
+    const result = {
       foo: ['a', 'b', 'c']
-    });
+    };
+
+    assert.deepEqual(merge(a, b, c), result);
   });
 
   it('should override objects', function () {
     const a = {
       foo: 'a'
     };
-    const b = {
+    const result = {
       foo: 'b'
     };
 
-    assert.deepEqual(merge(a, b), b);
+    assert.deepEqual(merge(a, result), result);
   });
 
   it('should append arrays', function () {
@@ -335,10 +336,11 @@ function mergeTests(merge) {
     const b = {
       foo: ['b']
     };
-
-    assert.deepEqual(merge(a, b), {
+    const result = {
       foo: ['a', 'b']
-    });
+    };
+
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should append arrays without mutating', function () {
@@ -348,13 +350,14 @@ function mergeTests(merge) {
     const b = {
       foo: ['b']
     };
+    const result = {
+      foo: ['a', 'b']
+    };
 
     // this should not mutate
     merge(a, b);
 
-    assert.deepEqual(merge(a, b), {
-      foo: ['a', 'b']
-    });
+    assert.deepEqual(merge(a, b), result);
   });
 
   it('should override objects of multiple objects', function () {
@@ -364,10 +367,10 @@ function mergeTests(merge) {
     const b = {
       foo: 'b'
     };
-    const c = {
+    const result = {
       foo: 'c'
     };
 
-    assert.deepEqual(merge(a, b, c), c);
+    assert.deepEqual(merge(a, b, result), result);
   });
 }
