@@ -13,7 +13,7 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
     const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
 
     if (foundLoader.include || foundLoader.exclude) {
-      return [...mergedLoaderConfigs, loaderConfig];
+      return mergedLoaderConfigs.concat(loaderConfig);
     }
 
     foundLoader.loaders = newLoaders.reduce((mergedLoaders, loader) => {
@@ -21,12 +21,12 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
 
       if (mergedLoaders.every(l => loaderName !== l.match(loaderNameRe)[0])) {
         // prepend because of rtl (latter objects should be able to build the chain)
-        return [...mergedLoaders, loader];
+        return mergedLoaders.concat(loader);
       }
       return mergedLoaders;
     }, foundLoader.loaders);
   } else if (!foundLoader) {
-    return [...mergedLoaderConfigs, loaderConfig];
+    return mergedLoaderConfigs.concat(loaderConfig);
   }
 
   return mergedLoaderConfigs;
