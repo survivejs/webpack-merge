@@ -9,7 +9,7 @@
     "test": "mocha ./test",
     "lint": "eslint .",
     "watch:test": "mocha ./test --watch",
-    "preversion": "npm run lint && npm test && npm run build && git commit --allow-empty -am \"Update lib\""
+    "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
   "dependencies": {
