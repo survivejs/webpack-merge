@@ -3,3 +3,7 @@ node_js:
   - "0.10"
   - "0.12.9"
   - "4.2.3"
+script:
+  - npm run build
+  - npm run test
+
