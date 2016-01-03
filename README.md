@@ -200,6 +200,7 @@ merge.smart({
 
 * [Fernando Montoya](https://github.com/montogeek) - Use separate lodash functions instead of the core package. Faster to install this way.
 * [Jonathan Felchlin](https://github.com/GreenGremlin) - Smart merging for loaders.
+* [David Gómez](https://github.com/davegomez) - Performance and cosmetic improvements.
 
 ## License
 
