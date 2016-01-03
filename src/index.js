@@ -5,28 +5,30 @@ const find = require('lodash.find');
 
 const loaderNameRe = new RegExp(/[a-z\-]/ig);
 
+function mergeLoaders(currentLoaders, newLoaders) {
+  return newLoaders.reduce((mergedLoaders, loader) => {
+    if (mergedLoaders.every(l => loader.match(loaderNameRe)[0] !== l.match(loaderNameRe)[0])) {
+      // prepend because of rtl (latter objects should be able to build the chain)
+      return mergedLoaders.concat(loader);
+    }
+    return mergedLoaders;
+  }, currentLoaders);
+}
+
 function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   const foundLoader = find(mergedLoaderConfigs, l => String(l.test) === String(loaderConfig.test));
 
   // foundLoader.loader is intentionally ignored, because a string loader value should always override
-  if (foundLoader && foundLoader.loaders) {
+  if (foundLoader.loaders) {
     const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
 
     if (foundLoader.include || foundLoader.exclude) {
-      return [...mergedLoaderConfigs, loaderConfig];
+      return mergedLoaderConfigs.concat(loaderConfig);
     }
 
-    foundLoader.loaders = newLoaders.reduce((mergedLoaders, loader) => {
-      const loaderName = loader.match(loaderNameRe)[0];
-
-      if (mergedLoaders.every(l => loaderName !== l.match(loaderNameRe)[0])) {
-        // prepend because of rtl (latter objects should be able to build the chain)
-        return [...mergedLoaders, loader];
-      }
-      return mergedLoaders;
-    }, foundLoader.loaders);
+    foundLoader.loaders = mergeLoaders(foundLoader.loaders, newLoaders);
   } else if (!foundLoader) {
-    return [...mergedLoaderConfigs, loaderConfig];
+    return mergedLoaderConfigs.concat(loaderConfig);
   }
 
   return mergedLoaderConfigs;
