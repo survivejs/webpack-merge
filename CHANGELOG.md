@@ -1,3 +1,8 @@
+0.7.1 / 2016-01-03
+==================
+
+  * Improve performance by defaulting to `concat` and by dropping a redundant check. Thanks @davegomez!
+
 0.7.0 / 2015-12-31
 ==================
 
