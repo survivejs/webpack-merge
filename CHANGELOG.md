@@ -1,3 +1,8 @@
+0.7.2 / 2016-01-08
+==================
+
+  * Regenerate tarball. The problem was that there were some old dependencies included. Closes #7.
+
 0.7.1 / 2016-01-03
 ==================
 
