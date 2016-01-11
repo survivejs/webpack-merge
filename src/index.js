@@ -19,7 +19,7 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   const foundLoader = find(mergedLoaderConfigs, l => String(l.test) === String(loaderConfig.test));
 
   // foundLoader.loader is intentionally ignored, because a string loader value should always override
-  if (foundLoader.loaders) {
+  if (foundLoader && foundLoader.loaders) {
     const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
 
     if (foundLoader.include || foundLoader.exclude) {
