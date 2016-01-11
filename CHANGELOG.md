@@ -1,3 +1,8 @@
+0.7.3 / 2016-01-11
+==================
+
+  * Bug fix: Do not error when there are no matching loaders. Thanks @GreenGremlin!
+
 0.7.2 / 2016-01-08
 ==================
 
