@@ -501,4 +501,31 @@ function mergeTests(merge) {
 
     assert.deepEqual(merge(a, b, result), result);
   });
+
+  it('should not error when there are no matching loaders', function () {
+    const a = {
+      loaders: [{
+        test: /\.js$/,
+        loader: 'a'
+      }]
+    };
+    const b = {
+      loaders: [{
+        test: /\.css$/,
+        loader: 'b'
+      }]
+    };
+    const result = {
+      loaders: [{
+        test: /\.css$/,
+        loader: 'b'
+      }, {
+        test: /\.js$/,
+        loader: 'a'
+      }]
+    };
+
+    assert.deepEqual(merge(a, b), result);
+  });
+
 }
