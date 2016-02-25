@@ -168,7 +168,7 @@ merge.smart({
   loaders: [{
     test: /\.js$/,
     // prepended because Webpack evaluated these from right to left!
-    loaders: ['babel', 'coffee']
+    loaders: ['coffee', 'babel']
   }]
 }
 ```
