@@ -24,11 +24,6 @@
     "eslint-config-airbnb": "^2.1.1",
     "mocha": "^2.2.5"
   },
-  "files": [
-    "*.md",
-    "./lib/index.js",
-    "./LICENSE"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/survivejs/webpack-merge.git"
