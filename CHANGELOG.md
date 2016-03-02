@@ -1,3 +1,8 @@
+0.8.0 / 2016-03-02
+==================
+
+  * Breaking: Change merging behavior so that only loaders get prepended. The rest follow appending logic. This makes `entry` array merging behavior logical. Prepend makes sense only for loaders after all. #10
+
 0.7.3 / 2016-01-11
 ==================
 
