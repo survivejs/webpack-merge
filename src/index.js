@@ -8,8 +8,7 @@ const loaderNameRe = new RegExp(/[a-z\-]/ig);
 function mergeLoaders(currentLoaders, newLoaders) {
   return newLoaders.reduce((mergedLoaders, loader) => {
     if (mergedLoaders.every(l => loader.match(loaderNameRe)[0] !== l.match(loaderNameRe)[0])) {
-      // prepend because of rtl (latter objects should be able to build the chain)
-      return mergedLoaders.concat(loader);
+      return mergedLoaders.concat([loader]);
     }
     return mergedLoaders;
   }, currentLoaders);
@@ -23,12 +22,12 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
     const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
 
     if (foundLoader.include || foundLoader.exclude) {
-      return mergedLoaderConfigs.concat(loaderConfig);
+      return mergedLoaderConfigs.concat([loaderConfig]);
     }
 
     foundLoader.loaders = mergeLoaders(foundLoader.loaders, newLoaders);
   } else if (!foundLoader) {
-    return mergedLoaderConfigs.concat(loaderConfig);
+    return mergedLoaderConfigs.concat([loaderConfig]);
   }
 
   return mergedLoaderConfigs;
@@ -42,6 +41,10 @@ function joinArrays(customizer, a, b, key) {
       return customResult;
     }
 
+    if (isLoader(key)) {
+      return b.concat(a);
+    }
+
     return a.concat(b);
   }
 
@@ -49,12 +52,11 @@ function joinArrays(customizer, a, b, key) {
     return merge(a, b, joinArrays.bind(null, customizer));
   }
 
-  return a;
+  return b;
 }
 
 module.exports = function () {
   const args = Array.prototype.slice.call(arguments);
-  args.reverse();
 
   return merge.apply(null, [{}].concat(args).concat([
     joinArrays.bind(null, () => {})
@@ -63,13 +65,16 @@ module.exports = function () {
 
 module.exports.smart = function webpackMerge() {
   const args = Array.prototype.slice.call(arguments);
-  args.reverse();
 
   return merge.apply(null, [{}].concat(args).concat([
     joinArrays.bind(null, function (a, b, key) {
-      if (['loaders', 'preLoaders', 'postLoaders'].indexOf(key) >= 0) {
-        return b.reduce(reduceLoaders, a.slice());
+      if (isLoader(key)) {
+        return a.reduce(reduceLoaders, b.slice());
       }
     })
   ]));
 };
+
+function isLoader(key) {
+  return ['loaders', 'preLoaders', 'postLoaders'].indexOf(key) >= 0;
+}

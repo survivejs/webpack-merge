@@ -429,7 +429,7 @@ function smartMergeTests(merge, loadersKey) {
 }
 
 function mergeTests(merge) {
-  it('should prepend arrays of multiple objects', function () {
+  it('should append arrays of multiple objects by default', function () {
     const a = {
       foo: ['a']
     };
@@ -440,7 +440,7 @@ function mergeTests(merge) {
       foo: ['c']
     };
     const result = {
-      foo: ['c', 'b', 'a']
+      foo: ['a', 'b', 'c']
     };
 
     assert.deepEqual(merge(a, b, c), result);
@@ -457,7 +457,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, result), result);
   });
 
-  it('should prepend arrays', function () {
+  it('should append arrays by default', function () {
     const a = {
       foo: ['a']
     };
@@ -465,13 +465,13 @@ function mergeTests(merge) {
       foo: ['b']
     };
     const result = {
-      foo: ['b', 'a']
+      foo: ['a', 'b']
     };
 
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should prepend arrays without mutating', function () {
+  it('should append arrays without mutating', function () {
     const a = {
       foo: ['a']
     };
@@ -479,7 +479,7 @@ function mergeTests(merge) {
       foo: ['b']
     };
     const result = {
-      foo: ['b', 'a']
+      foo: ['a', 'b']
     };
 
     // this should not mutate
