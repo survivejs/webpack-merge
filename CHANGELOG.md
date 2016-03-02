@@ -1,4 +1,4 @@
-0.8.1 / 2016-03-02
+0.8.2 / 2016-03-02
 ==================
 
   * Bug fix: Include library to the package correctly. Previous matcher didn't include it...
