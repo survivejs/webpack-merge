@@ -21,7 +21,7 @@ describe('Smart merge', function () {
 });
 
 function normalMergeTests(merge, loadersKey) {
-  it('should merge recursive structures correctly with ' + loadersKey, function () {
+  it('should prepend recursive structures with ' + loadersKey, function () {
     const a = {
       module: {}
     };
@@ -91,7 +91,7 @@ function normalMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not append loaders with ' + loadersKey, function () {
+  it('should not prepend loaders with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -429,7 +429,7 @@ function smartMergeTests(merge, loadersKey) {
 }
 
 function mergeTests(merge) {
-  it('should append arrays of multiple objects', function () {
+  it('should prepend arrays of multiple objects', function () {
     const a = {
       foo: ['a']
     };
@@ -457,7 +457,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, result), result);
   });
 
-  it('should append arrays', function () {
+  it('should prepend arrays', function () {
     const a = {
       foo: ['a']
     };
@@ -471,7 +471,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should append arrays without mutating', function () {
+  it('should prepend arrays without mutating', function () {
     const a = {
       foo: ['a']
     };
