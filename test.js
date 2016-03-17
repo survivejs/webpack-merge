@@ -528,4 +528,21 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
+  it('should not mutate inputs', function () {
+    const a = {
+      output: {
+        filename: 'bundle.js'
+      }
+    };
+    const b = {
+      output: {
+        path: 'path/b'
+      }
+    };
+
+    const aClone = JSON.parse(JSON.stringify(a));
+    merge({}, a, b);
+
+    assert.deepEqual(a, aClone);
+  });
 }
