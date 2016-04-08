@@ -2,7 +2,7 @@
   "name": "webpack-merge",
   "description": "Variant of merge that's useful for Webpack configuration",
   "author": "Juho Vepsalainen <bebraw@gmail.com>",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "scripts": {
     "build": "babel src -d lib",
     "watch": "babel src --watch -d lib",
