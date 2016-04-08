@@ -1,3 +1,8 @@
+0.9.0 / 2016-04-08
+==================
+
+  * Feature: Allow existing objects/arrays to be emptied with an empty object/array later in merge. This overriding behavior is useful for example emptying your `entry` configuration.
+
 0.8.4 / 2016-03-17
 ==================
 
