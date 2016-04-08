@@ -37,6 +37,10 @@ function joinArrays(customizer, a, b, key) {
   if (isArray(a) && isArray(b)) {
     const customResult = customizer(a, b, key);
 
+    if (!b.length) {
+      return [];
+    }
+
     if (customResult) {
       return customResult;
     }
@@ -49,6 +53,10 @@ function joinArrays(customizer, a, b, key) {
   }
 
   if (isPlainObject(a) && isPlainObject(b)) {
+    if (!Object.keys(b).length) {
+      return {};
+    }
+
     return merge({}, a, b, joinArrays.bind(null, customizer));
   }
 

@@ -173,6 +173,20 @@ function normalMergeTests(merge, loadersKey) {
 
     assert.deepEqual(merge(a, b, c), result);
   });
+
+  it('should allow overriding with an empty array in ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a?1']
+    }];
+    const b = {};
+    b[loadersKey] = [];
+    const result = {};
+    result[loadersKey] = [];
+
+    assert.deepEqual(merge(a, b), result);
+  });
 }
 
 function smartMergeTests(merge, loadersKey) {
@@ -544,5 +558,29 @@ function mergeTests(merge) {
     merge({}, a, b);
 
     assert.deepEqual(a, aClone);
+  });
+
+  it('should allow overriding with an empty array', function () {
+    const a = {
+      entry: ['foo']
+    };
+    const b = {
+      entry: []
+    };
+
+    assert.deepEqual(merge(a, b), b);
+  });
+
+  it('should allow overriding with an empty object', function () {
+    const a = {
+      entry: {
+        a: 'foo'
+      }
+    };
+    const b = {
+      entry: {}
+    };
+
+    assert.deepEqual(merge(a, b), b);
   });
 }
