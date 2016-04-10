@@ -17,15 +17,16 @@ function mergeLoaders(currentLoaders, newLoaders) {
 function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   const foundLoader = find(mergedLoaderConfigs, l => String(l.test) === String(loaderConfig.test));
 
-  // foundLoader.loader is intentionally ignored, because a string loader value should always override
-  if (foundLoader && foundLoader.loaders) {
-    const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
-
+  if (foundLoader) {
     if (foundLoader.include || foundLoader.exclude) {
       return mergedLoaderConfigs.concat([loaderConfig]);
     }
 
-    foundLoader.loaders = mergeLoaders(foundLoader.loaders, newLoaders);
+    // foundLoader.loader is intentionally ignored, because a string loader value should always override
+    if (foundLoader.loaders) {
+      const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
+      foundLoader.loaders = mergeLoaders(foundLoader.loaders, newLoaders);
+    }
   } else if (!foundLoader) {
     return mergedLoaderConfigs.concat([loaderConfig]);
   }
