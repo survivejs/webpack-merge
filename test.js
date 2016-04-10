@@ -392,7 +392,7 @@ function smartMergeTests(merge, loadersKey) {
 
     assert.deepEqual(merge(common, isparta), result);
   });
-  
+
   it('should not merge if a loader has include and string loader values for ' + loadersKey, function () {
     // these shouldn't be merged because `include` is defined.
     // instead, it should prepend to guarantee sane evaluation order
@@ -488,7 +488,7 @@ function smartMergeTests(merge, loadersKey) {
 
     assert.deepEqual(merge(common, isparta), result);
   });
-  
+
   it('should not merge if a loader has exclude and string loader values for ' + loadersKey, function () {
     // these shouldn't be merged because `exclude` is defined.
     // instead, it should prepend to guarantee sane evaluation order
