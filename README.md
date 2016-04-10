@@ -12,6 +12,8 @@ var output = merge(object1, object2, object3, ...);
 var output = merge.smart(object1, object2, object3, ...);
 ```
 
+> Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
+
 ## Example
 
 **package.json**
@@ -72,7 +74,21 @@ if(TARGET === 'build') {
 ...
 ```
 
-> Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
+Note that you can override existing arrays/objects like this:
+
+```javascript
+var common = {
+  entry: [APP_PATH, STYLE_PATH]
+  ...
+};
+
+if(TARGET === 'test') {
+  module.exports = merge(common, {
+    entry: [], // empty now
+    ...
+  });
+}
+```
 
 ## Smart Merging of Loaders
 
@@ -201,6 +217,7 @@ merge.smart({
 * [Fernando Montoya](https://github.com/montogeek) - Use separate lodash functions instead of the core package. Faster to install this way.
 * [Jonathan Felchlin](https://github.com/GreenGremlin) - Smart merging for loaders.
 * [David Gómez](https://github.com/davegomez) - Performance and cosmetic improvements.
+* [siready](https://github.com/siready) - Extend `merge.smart` to support `include/exclude`.
 
 ## License
 
