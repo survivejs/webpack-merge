@@ -1,3 +1,8 @@
+0.10.0 / 2016-04-10
+==================
+
+  * Feature: Support `include/exclude` at `smart.merge`. Thanks to @siready. #14.
+
 0.9.0 / 2016-04-08
 ==================
 
