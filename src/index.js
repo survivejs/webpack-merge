@@ -15,7 +15,10 @@ function mergeLoaders(currentLoaders, newLoaders) {
 }
 
 function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
-  const foundLoader = find(mergedLoaderConfigs, l => String(l.test) === String(loaderConfig.test));
+  const foundLoader = find(
+    mergedLoaderConfigs,
+    l => String(l.test) === String(loaderConfig.test)
+  );
 
   if (foundLoader) {
     if (foundLoader.include || foundLoader.exclude) {
@@ -25,13 +28,22 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
     // foundLoader.loader is intentionally ignored, because a string loader value should always override
     if (foundLoader.loaders) {
       const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
+
       foundLoader.loaders = mergeLoaders(foundLoader.loaders, newLoaders);
+
+      if (loaderConfig.include) {
+        foundLoader.include = loaderConfig.include;
+      }
+
+      if (loaderConfig.exclude) {
+        foundLoader.exclude = loaderConfig.exclude;
+      }
     }
-  } else if (!foundLoader) {
-    return mergedLoaderConfigs.concat([loaderConfig]);
+
+    return mergedLoaderConfigs;
   }
 
-  return mergedLoaderConfigs;
+  return mergedLoaderConfigs.concat([loaderConfig]);
 }
 
 function joinArrays(customizer, a, b, key) {

@@ -1,5 +1,10 @@
+0.11.0 / 2016-04-18
+===================
+
+  * Feature: Support `include/exclude` at `smart.merge` when its set only in a parent. #15.
+
 0.10.0 / 2016-04-10
-==================
+===================
 
   * Feature: Support `include/exclude` at `smart.merge`. Thanks to @siready. #14.
 

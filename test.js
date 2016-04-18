@@ -536,6 +536,50 @@ function smartMergeTests(merge, loadersKey) {
 
     assert.deepEqual(merge(common, isparta), result);
   });
+
+  it('should use parent include/exclude for ' + loadersKey, function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        include: [
+          'apps',
+          'lib',
+          'thirdparty'
+        ],
+        exclude: /node_modules/,
+        loaders: ['babel']
+      }
+    ];
+    const strip = {
+      module: {}
+    };
+    strip.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['strip?strip[]=debug']
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['strip?strip[]=debug', 'babel'],
+        include: [
+          'apps',
+          'lib',
+          'thirdparty'
+        ],
+        exclude: /node_modules/
+      }
+    ];
+
+    assert.deepEqual(merge(common, strip), result);
+  });
 }
 
 function mergeTests(merge) {
