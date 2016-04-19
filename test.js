@@ -580,6 +580,60 @@ function smartMergeTests(merge, loadersKey) {
 
     assert.deepEqual(merge(common, strip), result);
   });
+
+  it('should use parent include/exclude even if only loader string is specified for ' + loadersKey, function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        include: [
+          'apps',
+          'lib',
+          'thirdparty'
+        ],
+        exclude: /node_modules/,
+        loaders: 'eslint'
+      }
+    ];
+    const eslint = {
+      module: {}
+    };
+    eslint.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loader: 'eslint',
+        query: {
+          rules: {
+            'no-debugger': 0
+          }
+        }
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loader: 'eslint',
+        query: {
+          rules: {
+            'no-debugger': 0
+          }
+        },
+        include: [
+          'apps',
+          'lib',
+          'thirdparty'
+        ],
+        exclude: /node_modules/
+      }
+    ];
+
+    assert.deepEqual(merge(common, eslint), result);
+  });
 }
 
 function mergeTests(merge) {
