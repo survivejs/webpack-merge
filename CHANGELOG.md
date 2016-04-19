@@ -1,3 +1,8 @@
+0.12.0 / 2016-04-19
+===================
+
+  * Feature: Support `include/exclude` at `smart.merge` for `loader` definition too. Thanks to @Whoaa512. #16.
+
 0.11.0 / 2016-04-18
 ===================
 
