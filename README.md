@@ -218,6 +218,7 @@ merge.smart({
 * [Jonathan Felchlin](https://github.com/GreenGremlin) - Smart merging for loaders.
 * [David Gómez](https://github.com/davegomez) - Performance and cosmetic improvements.
 * [siready](https://github.com/siready) - Extend `merge.smart` to support `include/exclude`.
+* [C.J. Winslow](https://github.com/Whoaa512) - Make `merge.smart` `include/exclude` to work correctly with `loader`.
 
 ## License
 
