@@ -288,6 +288,27 @@ function smartMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
+  it('should not duplicate loaders with props include ' + loadersKey, function () {
+    const a = {};
+    a[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a'],
+      include: './path'
+    }];
+    const b = {};
+    b[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b']
+    }];
+    const result = {};
+    result[loadersKey] = [{
+      test: /\.js$/,
+      loaders: ['a', 'b'],
+      include: './path'
+    }];
+    assert.deepEqual(merge(a, b), result);
+  });
+
   it('should override query options for the same loader with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
@@ -343,6 +364,10 @@ function smartMergeTests(merge, loadersKey) {
     ];
 
     assert.deepEqual(merge(common, isparta), result);
+  });
+
+  it('should merge if only mergedLoaderConfigs has include for ' + loadersKey, function(){
+
   });
 
   it('should not merge if a loader has include for ' + loadersKey, function () {
