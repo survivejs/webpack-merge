@@ -288,7 +288,7 @@ function smartMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not duplicate loaders with props include ' + loadersKey, function () {
+  it('should override loaders with props include ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
