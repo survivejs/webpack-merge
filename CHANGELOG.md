@@ -1,17 +1,22 @@
+0.13.0 / 2016-05-24
+===================
+
+  * Bug fix: Allow `merge.smart` to merge configuration if `include` is defined. Thanks to @blackrabbit99. #20.
+
 0.12.0 / 2016-04-19
 ===================
 
-  * Feature: Support `include/exclude` at `smart.merge` for `loader` definition too. Thanks to @Whoaa512. #16.
+  * Feature: Support `include/exclude` at `merge.smart` for `loader` definition too. Thanks to @Whoaa512. #16.
 
 0.11.0 / 2016-04-18
 ===================
 
-  * Feature: Support `include/exclude` at `smart.merge` when its set only in a parent. #15.
+  * Feature: Support `include/exclude` at `merge.smart` when its set only in a parent. #15.
 
 0.10.0 / 2016-04-10
 ===================
 
-  * Feature: Support `include/exclude` at `smart.merge`. Thanks to @siready. #14.
+  * Feature: Support `include/exclude` at `merge.smart`. Thanks to @siready. #14.
 
 0.9.0 / 2016-04-08
 ==================

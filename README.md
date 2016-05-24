@@ -219,6 +219,7 @@ merge.smart({
 * [David Gómez](https://github.com/davegomez) - Performance and cosmetic improvements.
 * [siready](https://github.com/siready) - Extend `merge.smart` to support `include/exclude`.
 * [C.J. Winslow](https://github.com/Whoaa512) - Make `merge.smart` `include/exclude` to work correctly with `loader`.
+* [Artem Zakharchenko](https://github.com/blackrabbit99) - Fix `merge.smart` duplication so that if `include` exists, it will merge.
 
 ## License
 
