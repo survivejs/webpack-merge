@@ -366,7 +366,7 @@ function smartMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(common, isparta), result);
   });
 
-  it('should merge if only mergedLoaderConfigs has include for ' + loadersKey, function(){
+  it('should merge if only mergedLoaderConfigs has include for ' + loadersKey, function () {
 
   });
 
