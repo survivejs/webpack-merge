@@ -366,10 +366,6 @@ function smartMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(common, isparta), result);
   });
 
-  it('should merge if only mergedLoaderConfigs has include for ' + loadersKey, function () {
-
-  });
-
   it('should not merge if a loader has include for ' + loadersKey, function () {
     // these shouldn't be merged because `include` is defined.
     // instead, it should prepend to guarantee sane evaluation order
