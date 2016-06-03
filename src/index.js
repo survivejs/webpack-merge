@@ -22,7 +22,7 @@ function mergeLoaders(currentLoaders, newLoaders) {
  */
 function isSameValue(a, b) {
   const [propA, propB] = [a, b].map(function (value) {
-    return isArray(value) ? Array.from(value).sort() : value;
+    return isArray(value) ? value.slice().sort() : value;
   });
 
   return isEqual(propA, propB);
