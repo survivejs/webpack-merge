@@ -1,3 +1,8 @@
+0.14.0 / 2016-06-05
+===================
+
+  * Feature: Allow `merge.smart` to merge `loaders` if `exclude` is the same. Thanks to @mshwery. #21.
+
 0.13.0 / 2016-05-24
 ===================
 
