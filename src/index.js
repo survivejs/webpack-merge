@@ -2,6 +2,7 @@ const isArray = Array.isArray;
 const isPlainObject = require('lodash.isplainobject');
 const merge = require('lodash.merge');
 const find = require('lodash.find');
+const isEqual = require('lodash.isequal');
 
 const loaderNameRe = new RegExp(/[a-z\-]/ig);
 
@@ -14,6 +15,19 @@ function mergeLoaders(currentLoaders, newLoaders) {
   }, currentLoaders);
 }
 
+/**
+ * Check equality of two values using lodash's isEqual
+ * Arrays need to be sorted for equality checking
+ * but clone them first so as not to disrupt the sort order in tests
+ */
+function isSameValue(a, b) {
+  const [propA, propB] = [a, b].map(function (value) {
+    return isArray(value) ? value.slice().sort() : value;
+  });
+
+  return isEqual(propA, propB);
+}
+
 function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   const foundLoader = find(
     mergedLoaderConfigs,
@@ -21,7 +35,12 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
   );
 
   if (foundLoader) {
-    if (foundLoader.include || foundLoader.exclude) {
+    /**
+     * When both loaders have different `include` or `exclude`
+     * properties, concat them
+     */
+    if ((foundLoader.include && !isSameValue(foundLoader.include, loaderConfig.include)) ||
+        (foundLoader.exclude && !isSameValue(foundLoader.exclude, loaderConfig.exclude))) {
       return mergedLoaderConfigs.concat([loaderConfig]);
     }
 

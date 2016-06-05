@@ -14,6 +14,7 @@ describe('Merge', function () {
 describe('Smart merge', function () {
   const merge = webpackMerge.smart;
 
+  smartMergeIssueTest(merge);
   smartMergeTests(merge, 'preLoaders');
   smartMergeTests(merge, 'loaders');
   smartMergeTests(merge, 'postLoaders');
@@ -654,6 +655,46 @@ function smartMergeTests(merge, loadersKey) {
     ];
 
     assert.deepEqual(merge(common, eslint), result);
+  });
+}
+
+function smartMergeIssueTest(merge) {
+  it('should merge with matching exclude and loaders', function () {
+    const a = {
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loaders: ['babel']
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loaders: ['coffee', 'foo']
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loaders: ['coffee', 'foo', 'babel']
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge(a, b), result);
   });
 }
 
