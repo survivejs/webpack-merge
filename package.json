@@ -23,6 +23,7 @@
     "babel-preset-es2015": "^6.3.13",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^2.1.1",
+    "git-prepush-hook": "^1.0.1",
     "mocha": "^2.2.5"
   },
   "repository": {
@@ -37,5 +38,10 @@
     "webpack",
     "merge"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "pre-push": [
+    "test:lint",
+    "build",
+    "test"
+  ]
 }
