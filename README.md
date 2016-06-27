@@ -221,6 +221,7 @@ merge.smart({
 * [C.J. Winslow](https://github.com/Whoaa512) - Make `merge.smart` `include/exclude` to work correctly with `loader`.
 * [Artem Zakharchenko](https://github.com/blackrabbit99) - Fix `merge.smart` duplication so that if `include` exists, it will merge.
 * [Matt Shwery](https://github.com/mshwery) - If `exclude` is the same while using `merge.smart`, merge `loaders`.
+* [Lucretiel](https://github.com/Lucretiel) - Added a more generic test to describe merge behavior better.
 
 ## License
 
