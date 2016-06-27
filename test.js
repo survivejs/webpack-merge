@@ -772,6 +772,23 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b, result), result);
   });
 
+  it('should deeply merge objects', function () {
+    const a = {
+      foo: { bar: 'a' }
+    };
+    const b = {
+      foo: { baz: 'b' }
+    };
+    const result = {
+      foo: {
+        bar: 'a',
+        baz: 'b'
+      }
+    };
+
+    assert.deepEqual(merge(a, b), result);
+  });
+
   it('should not error when there are no matching loaders', function () {
     const a = {
       loaders: [{
