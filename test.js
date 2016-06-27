@@ -771,13 +771,13 @@ function mergeTests(merge) {
 
     assert.deepEqual(merge(a, b, result), result);
   });
-  
+
   it('should deeply merge objects', function () {
     const a = {
-      foo: {bar: 'a'}
+      foo: { bar: 'a' }
     };
     const b = {
-      foo: {baz: 'b'}
+      foo: { baz: 'b' }
     };
     const result = {
       foo: {
@@ -785,7 +785,7 @@ function mergeTests(merge) {
         baz: 'b'
       }
     };
-    
+
     assert.deepEqual(merge(a, b), result);
   });
 
