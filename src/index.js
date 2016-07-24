@@ -4,7 +4,7 @@ const merge = require('lodash.merge');
 const find = require('lodash.find');
 const isEqual = require('lodash.isequal');
 
-const loaderNameRe = new RegExp(/[a-z\-]/ig);
+const loaderNameRe = /^([^\?]+)/ig;
 
 function mergeLoaders(currentLoaders, newLoaders) {
   return newLoaders.reduce((mergedLoaders, loader) => {
