@@ -1,7 +1,8 @@
-0.xx.x / 2016-xx-xx
+0.14.1 / 2016-07-25
 ===================
 
   * Docs: Improve package description. #23.
+  * Bug fix - Let `merge.smart` merge loaders based on their full name instead of first letter. Thanks to @choffmeister. #26.
 
 0.14.0 / 2016-06-05
 ===================
