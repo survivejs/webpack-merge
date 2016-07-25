@@ -239,7 +239,7 @@ function smartMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should compare loaders by their whole name ' + loadersKey, function () {
+  it('should compare loaders by their whole name with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
