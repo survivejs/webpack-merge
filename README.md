@@ -223,6 +223,7 @@ merge.smart({
 * [Matt Shwery](https://github.com/mshwery) - If `exclude` is the same while using `merge.smart`, merge `loaders`.
 * [Lucretiel](https://github.com/Lucretiel) - Added a more generic test to describe merge behavior better.
 * [Christian Hoffmeister](https://github.com/choffmeister) - Fix `merge.smart` behavior so that it checks against full loader names instead of just the first letter.
+* [Ken Powers](https://github.com/knpwrs) - Changed Travis icon to use SVG (scales better).
 
 ## License
 
