@@ -22,7 +22,7 @@ describe('Smart merge', function () {
 });
 
 function normalMergeTests(merge, loadersKey) {
-  it('should prepend recursive structures with ' + loadersKey, function () {
+  it('should append recursive structures with ' + loadersKey, function () {
     const a = {
       module: {}
     };
@@ -47,17 +47,17 @@ function normalMergeTests(merge, loadersKey) {
       module: {}
     };
     result.module[loadersKey] = [{
-      test: /\.css$/,
-      loader: 'b'
-    }, {
-      test: /\.sass$/,
-      loader: 'b'
-    }, {
       test: /\.js$/,
       loader: 'a'
     }, {
       test: /\.jade$/,
       loader: 'a'
+    }, {
+      test: /\.css$/,
+      loader: 'b'
+    }, {
+      test: /\.sass$/,
+      loader: 'b'
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -80,19 +80,19 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
+      loader: 'a'
+    }, {
+      test: /\.js$/,
       loader: 'b'
     }, {
       test: /\.css$/,
       loader: 'b'
-    }, {
-      test: /\.js$/,
-      loader: 'a'
     }];
 
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not prepend loaders with ' + loadersKey, function () {
+  it('should not append loaders with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -109,13 +109,13 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
+      loaders: ['a']
+    }, {
+      test: /\.js$/,
       loaders: ['b']
     }, {
       test: /\.css$/,
       loader: 'b'
-    }, {
-      test: /\.js$/,
-      loaders: ['a']
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -135,10 +135,10 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      loaders: ['a', 'b']
+      loaders: ['a']
     }, {
       test: /\.js$/,
-      loaders: ['a']
+      loaders: ['a', 'b']
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -163,13 +163,13 @@ function normalMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      loaders: ['a', 'b?3']
+      loaders: ['a?1']
     }, {
       test: /\.js$/,
       loaders: ['a?2', 'b']
     }, {
       test: /\.js$/,
-      loaders: ['a?1']
+      loaders: ['a', 'b?3']
     }];
 
     assert.deepEqual(merge(a, b, c), result);
@@ -209,7 +209,7 @@ function smartMergeTests(merge, loadersKey) {
     assert.deepEqual(merge(a, result), result);
   });
 
-  it('should prepend loaders with ' + loadersKey, function () {
+  it('should append loaders with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -230,7 +230,7 @@ function smartMergeTests(merge, loadersKey) {
       // prepend here!!! this is an exception given normally we want to
       // append instead. without this the loader order doesn't make
       // any sense in this case
-      loaders: ['b', 'a']
+      loaders: ['a', 'b']
     }, {
       test: /\.css$/,
       loader: 'b'
@@ -253,11 +253,7 @@ function smartMergeTests(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      // loaders are evaluated from right to left so it makes sense to
-      // prepend here!!! this is an exception given normally we want to
-      // append instead. without this the loader order doesn't make
-      // any sense in this case
-      loaders: ['ab', 'aa']
+      loaders: ['aa', 'ab']
     }];
 
     assert.deepEqual(merge(a, b), result);
@@ -278,16 +274,14 @@ function smartMergeTests(merge, loadersKey) {
     result[loadersKey] = [{
       test: /\.js$/,
       // loaders are evaluated from right to left so it makes sense to
-      // prepend here!!! this is an exception given normally we want to
-      // append instead. without this the loader order doesn't make
-      // any sense in this case
-      loaders: ['/foo/bar-b.js?c=d', '/foo/bar-a.js?a=b']
+      // append here
+      loaders: ['/foo/bar-a.js?a=b', '/foo/bar-b.js?c=d']
     }];
 
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should prepend loader and loaders with ' + loadersKey, function () {
+  it('should append loader and loaders with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -305,10 +299,8 @@ function smartMergeTests(merge, loadersKey) {
     result[loadersKey] = [{
       test: /\.js$/,
       // loaders are evaluated from right to left so it makes sense to
-      // prepend here!!! this is an exception given normally we want to
-      // append instead. without this the loader order doesn't make
-      // any sense in this case
-      loaders: ['b', 'a']
+      // append here so that last one added wins
+      loaders: ['a', 'b']
     }, {
       test: /\.css$/,
       loader: 'b'
@@ -408,7 +400,7 @@ function smartMergeTests(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.jsx?$/,
-        loaders: ['isparta-instrumenter', 'eslint']
+        loaders: ['eslint', 'isparta-instrumenter']
       }
     ];
 
@@ -447,16 +439,16 @@ function smartMergeTests(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.jsx?$/,
-        loaders: ['isparta-instrumenter'],
-        include: 'baz'
-      },
-      {
-        test: /\.jsx?$/,
         loaders: ['eslint'],
         include: [
           'foo',
           'bar'
         ]
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter'],
+        include: 'baz'
       }
     ];
 
@@ -495,16 +487,16 @@ function smartMergeTests(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.jsx?$/,
-        loader: 'isparta-instrumenter',
-        include: 'baz'
-      },
-      {
-        test: /\.jsx?$/,
         loaders: ['eslint'],
         include: [
           'foo',
           'bar'
         ]
+      },
+      {
+        test: /\.jsx?$/,
+        loader: 'isparta-instrumenter',
+        include: 'baz'
       }
     ];
 
@@ -543,16 +535,16 @@ function smartMergeTests(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.jsx?$/,
-        loaders: ['isparta-instrumenter'],
-        exclude: 'baz'
-      },
-      {
-        test: /\.jsx?$/,
         loaders: ['eslint'],
         exclude: [
           'foo',
           'bar'
         ]
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['isparta-instrumenter'],
+        exclude: 'baz'
       }
     ];
 
@@ -591,16 +583,16 @@ function smartMergeTests(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.jsx?$/,
-        loader: 'isparta-instrumenter',
-        exclude: 'baz'
-      },
-      {
-        test: /\.jsx?$/,
         loaders: ['eslint'],
         exclude: [
           'foo',
           'bar'
         ]
+      },
+      {
+        test: /\.jsx?$/,
+        loader: 'isparta-instrumenter',
+        exclude: 'baz'
       }
     ];
 
@@ -638,7 +630,7 @@ function smartMergeTests(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.js$/,
-        loaders: ['strip?strip[]=debug', 'babel'],
+        loaders: ['babel', 'strip?strip[]=debug'],
         include: [
           'apps',
           'lib',
@@ -736,7 +728,7 @@ function smartMergeIssueTest(merge) {
           {
             test: /\.js$/,
             exclude: /node_modules/,
-            loaders: ['coffee', 'foo', 'babel']
+            loaders: ['babel', 'coffee', 'foo']
           }
         ]
       }
@@ -852,11 +844,11 @@ function mergeTests(merge) {
     };
     const result = {
       loaders: [{
-        test: /\.css$/,
-        loader: 'b'
-      }, {
         test: /\.js$/,
         loader: 'a'
+      }, {
+        test: /\.css$/,
+        loader: 'b'
       }]
     };
 

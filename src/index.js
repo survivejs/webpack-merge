@@ -8,10 +8,20 @@ const loaderNameRe = /^([^\?]+)/ig;
 
 function mergeLoaders(currentLoaders, newLoaders) {
   return newLoaders.reduce((mergedLoaders, loader) => {
-    if (mergedLoaders.every(l => loader.match(loaderNameRe)[0] !== l.match(loaderNameRe)[0])) {
+    if (mergedLoaders.every(
+      l => loader.match(loaderNameRe)[0] !== l.match(loaderNameRe)[0])
+    ) {
       return mergedLoaders.concat([loader]);
     }
-    return mergedLoaders;
+
+    // Replace query values with newer ones
+    return mergedLoaders.map(l => {
+      if (loader.match(loaderNameRe)[0] === l.match(loaderNameRe)[0]) {
+        return loader;
+      }
+
+      return l;
+    });
   }, currentLoaders);
 }
 
@@ -41,14 +51,14 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
      */
     if ((foundLoader.include && !isSameValue(foundLoader.include, loaderConfig.include)) ||
         (foundLoader.exclude && !isSameValue(foundLoader.exclude, loaderConfig.exclude))) {
-      return mergedLoaderConfigs.concat([loaderConfig]);
+      return [loaderConfig].concat(mergedLoaderConfigs);
     }
 
     // foundLoader.loader is intentionally ignored, because a string loader value should always override
     if (foundLoader.loaders) {
       const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
 
-      foundLoader.loaders = mergeLoaders(foundLoader.loaders, newLoaders);
+      foundLoader.loaders = mergeLoaders(newLoaders, foundLoader.loaders);
     }
 
     if (loaderConfig.include) {
@@ -62,7 +72,7 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
     return mergedLoaderConfigs;
   }
 
-  return mergedLoaderConfigs.concat([loaderConfig]);
+  return [loaderConfig].concat(mergedLoaderConfigs);
 }
 
 function joinArrays(customizer, a, b, key) {
@@ -75,10 +85,6 @@ function joinArrays(customizer, a, b, key) {
 
     if (customResult) {
       return customResult;
-    }
-
-    if (isLoader(key)) {
-      return b.concat(a);
     }
 
     return a.concat(b);
@@ -116,5 +122,5 @@ module.exports.smart = function webpackMerge() {
 };
 
 function isLoader(key) {
-  return ['loaders', 'preLoaders', 'postLoaders'].indexOf(key) >= 0;
+  return ['preLoaders', 'loaders', 'postLoaders'].indexOf(key) >= 0;
 }
