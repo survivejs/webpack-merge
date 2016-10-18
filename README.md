@@ -135,9 +135,9 @@ merge.smart({
 {
   loaders: [{
     test: /\.js$/,
-    // prepended because Webpack evaluated these from right to left!
+    // appended because Webpack evaluated these from right to left
     // this way you can specialize behavior and build the loader chain
-    loaders: ['coffee', 'babel']
+    loaders: ['babel', 'coffee']
   }]
 }
 ```
