@@ -1,3 +1,8 @@
+0.15.0 / 2016-10-18
+===================
+
+  * Breaking - Rework `merge.smart` so that it **appends** loaders instead of **prepending** them. This is the logical thing to do as it allows you to specify behavior better as you `merge`. #32
+
 0.14.1 / 2016-07-25
 ===================
 
