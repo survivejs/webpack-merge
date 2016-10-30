@@ -74,7 +74,9 @@ if(TARGET === 'build') {
 ...
 ```
 
-Note that you can override existing arrays/objects like this:
+### Empty Arrays and Objects Override
+
+You can override existing arrays/objects like this:
 
 ```javascript
 var common = {
