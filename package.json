@@ -5,10 +5,9 @@
   "version": "0.15.0",
   "scripts": {
     "build": "babel src -d lib",
-    "watch": "babel src --watch -d lib",
+    "watch": "npm-watch",
     "test": "mocha ./test",
     "test:lint": "eslint . ---cache",
-    "watch:test": "mocha ./test --watch",
     "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
@@ -24,7 +23,8 @@
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^2.1.1",
     "git-prepush-hook": "^1.0.1",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "npm-watch": "^0.1.6"
   },
   "repository": {
     "type": "git",
@@ -43,5 +43,23 @@
     "test:lint",
     "build",
     "test"
-  ]
+  ],
+  "watch": {
+    "build": {
+      "patterns": [
+        "src/**/*.js"
+      ]
+    },
+    "test": {
+      "patterns": [
+        "test.js"
+      ]
+    },
+    "test:lint": {
+      "patterns": [
+        "src/**/*.js",
+        "test.js"
+      ]
+    }
+  }
 }

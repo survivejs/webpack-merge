@@ -214,6 +214,13 @@ merge.smart({
 }
 ```
 
+## Development
+
+1. `npm i`
+2. `npm run watch`
+
+Before contributing, please open an issue where to discuss.
+
 ## Contributors
 
 * [Fernando Montoya](https://github.com/montogeek) - Use separate lodash functions instead of the core package. Faster to install this way.
