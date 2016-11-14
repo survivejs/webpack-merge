@@ -61,6 +61,13 @@ function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
       foundLoader.loaders = mergeLoaders(newLoaders, foundLoader.loaders);
     }
 
+    // webpack 2 support
+    if (foundLoader.rules) {
+      const newRules = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.rules || [];
+
+      foundLoader.rules = mergeLoaders(newRules, foundLoader.rules);
+    }
+
     if (loaderConfig.include) {
       foundLoader.include = loaderConfig.include;
     }
@@ -122,5 +129,5 @@ module.exports.smart = function webpackMerge() {
 };
 
 function isLoader(key) {
-  return ['preLoaders', 'loaders', 'postLoaders'].indexOf(key) >= 0;
+  return ['preLoaders', 'loaders', 'postLoaders', 'rules'].indexOf(key) >= 0;
 }

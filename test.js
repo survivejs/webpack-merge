@@ -8,6 +8,7 @@ describe('Merge', function () {
   normalMergeTests(merge, 'preLoaders');
   normalMergeTests(merge, 'loaders');
   normalMergeTests(merge, 'postLoaders');
+  normalMergeTests(merge, 'rules');
   mergeTests(merge);
 });
 
@@ -18,6 +19,7 @@ describe('Smart merge', function () {
   smartMergeTests(merge, 'preLoaders');
   smartMergeTests(merge, 'loaders');
   smartMergeTests(merge, 'postLoaders');
+  smartMergeTests(merge, 'rules');
   mergeTests(merge);
 });
 

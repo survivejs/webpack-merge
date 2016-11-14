@@ -96,6 +96,8 @@ if(TARGET === 'test') {
 
 Webpack-merge tries to be smart about merging loaders when `merge.smart` is used. Loaders with matching tests will be merged into a single loader value.
 
+Note that the logic picks up webpack 2 `rules` kind of syntax as well. The examples below have been written in webpack 1 syntax.
+
 **Loader string values `loader: 'babel'` override each other.**
 
 ```javascript
