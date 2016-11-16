@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src -d lib",
     "watch": "npm-watch",
-    "test": "mocha ./test",
+    "test": "mocha tests/test-*",
     "test:lint": "eslint . ---cache",
     "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
@@ -59,7 +59,7 @@
     "test:lint": {
       "patterns": [
         "src/**/*.js",
-        "test.js"
+        "tests/**/*.js"
       ]
     }
   }
