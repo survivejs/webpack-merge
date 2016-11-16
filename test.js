@@ -28,11 +28,11 @@ describe('Merge strategy', function () {
 
   // merge.strategy({ plugins: 'append' })
 
-  normalMergeTests(merge, 'preLoaders');
-  normalMergeTests(merge, 'loaders');
-  normalMergeTests(merge, 'postLoaders');
-  normalMergeTests(merge, 'rules');
-  mergeTests(merge);
+  normalMergeTests(merge(), 'preLoaders');
+  normalMergeTests(merge(), 'loaders');
+  normalMergeTests(merge(), 'postLoaders');
+  normalMergeTests(merge(), 'rules');
+  mergeTests(merge());
 });
 
 function normalMergeTests(merge, loadersKey) {
