@@ -109,17 +109,13 @@ function joinArrays(customizer, a, b, key) {
 }
 
 function merge() {
-  const args = Array.prototype.slice.call(arguments);
-
-  return lodashMerge.apply(null, [{}].concat(args).concat([
+  return lodashMerge.apply(null, [{}].concat(...arguments).concat([
     joinArrays.bind(null, () => {})
   ]));
 }
 
 function mergeSmart() {
-  const args = Array.prototype.slice.call(arguments);
-
-  return lodashMerge.apply(null, [{}].concat(args).concat([
+  return lodashMerge.apply(null, [{}].concat(...arguments).concat([
     joinArrays.bind(null, function (a, b, key) {
       if (isLoader(key)) {
         return a.reduce(reduceLoaders, b.slice());
