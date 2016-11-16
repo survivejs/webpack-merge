@@ -23,6 +23,18 @@ describe('Smart merge', function () {
   mergeTests(merge);
 });
 
+describe('Merge strategy', function () {
+  const merge = webpackMerge.strategy;
+
+  // merge.strategy({ plugins: 'append' })
+
+  normalMergeTests(merge, 'preLoaders');
+  normalMergeTests(merge, 'loaders');
+  normalMergeTests(merge, 'postLoaders');
+  normalMergeTests(merge, 'rules');
+  mergeTests(merge);
+});
+
 function normalMergeTests(merge, loadersKey) {
   it('should append recursive structures with ' + loadersKey, function () {
     const a = {

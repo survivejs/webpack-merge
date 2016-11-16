@@ -1,6 +1,6 @@
 const isArray = Array.isArray;
 const isPlainObject = require('lodash.isplainobject');
-const merge = require('lodash.merge');
+const lodashMerge = require('lodash.merge');
 const find = require('lodash.find');
 const isEqual = require('lodash.isequal');
 
@@ -102,32 +102,40 @@ function joinArrays(customizer, a, b, key) {
       return {};
     }
 
-    return merge({}, a, b, joinArrays.bind(null, customizer));
+    return lodashMerge({}, a, b, joinArrays.bind(null, customizer));
   }
 
   return b;
 }
 
-module.exports = function () {
+function merge() {
   const args = Array.prototype.slice.call(arguments);
 
-  return merge.apply(null, [{}].concat(args).concat([
+  return lodashMerge.apply(null, [{}].concat(args).concat([
     joinArrays.bind(null, () => {})
   ]));
-};
+}
 
-module.exports.smart = function webpackMerge() {
+function mergeSmart() {
   const args = Array.prototype.slice.call(arguments);
 
-  return merge.apply(null, [{}].concat(args).concat([
+  return lodashMerge.apply(null, [{}].concat(args).concat([
     joinArrays.bind(null, function (a, b, key) {
       if (isLoader(key)) {
         return a.reduce(reduceLoaders, b.slice());
       }
     })
   ]));
-};
+}
+
+function mergeStrategy() {
+  return merge(...arguments);
+}
 
 function isLoader(key) {
   return ['preLoaders', 'loaders', 'postLoaders', 'rules'].indexOf(key) >= 0;
 }
+
+module.exports = merge;
+module.exports.smart = mergeSmart;
+module.exports.strategy = mergeStrategy;
