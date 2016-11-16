@@ -1,3 +1,8 @@
+0.17.0 / 2016-11-16
+===================
+
+  * Feature: Add support for `merge.strategy`. Now you can customize merging behavior per root level configuration field. Example: `merge.strategy({ entry: 'prepend' })(object1, object2, object3, ...);`. #17
+
 0.16.0 / 2016-11-14
 ===================
 
