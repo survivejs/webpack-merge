@@ -53,7 +53,7 @@
     "test": {
       "patterns": [
         "src/**/*.js",
-        "test.js"
+        "tests/**/*.js"
       ]
     },
     "test:lint": {
