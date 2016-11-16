@@ -25,7 +25,19 @@ function mergeStrategy(rules = {}) {
   // All default to append but you can override here
   return function () {
     return lodashMerge.apply(null, [{}].concat(...arguments).concat([
-      joinArrays() // TODO: connect rules with customizers
+      joinArrays({
+        customizeArray: (a, b, key) => {
+          if (rules[key]) {
+            return rules[key] === 'prepend' && b.concat(a);
+          }
+        },
+        customizeObject: (a, b, key) => {
+          if (rules[key]) {
+            // No support for recursive checks yet - are those even needed?
+            return rules[key] === 'prepend' && lodashMerge({}, b, a, joinArrays());
+          }
+        }
+      })
     ]));
   };
 }
