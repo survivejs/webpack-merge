@@ -21,7 +21,7 @@ function mergeSmart() {
 }
 
 function mergeStrategy(rules = {}) {
-  // rules: { <field>: 'append': 'prepend' }
+  // rules: { <field>: <'append'|'prepend'> }
   // All default to append but you can override here
   return function () {
     return lodashMerge.apply(null, [{}].concat(...arguments).concat([
