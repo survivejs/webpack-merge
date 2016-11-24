@@ -1,15 +1,15 @@
 /* eslint-env mocha */
 const assert = require('assert');
 const webpackMerge = require('..');
-const normalMergeTests = require('./test-merge');
 const mergeTests = require('./merge-tests');
+const mergeSmartTests = require('./merge-smart-tests');
 const mergeStrategyTests = require('./merge-strategy-tests');
 
-describe('Merge strategy', function () {
-  const merge = webpackMerge.strategy;
+describe('Smart merge strategy', function () {
+  const merge = webpackMerge.smartStrategy;
 
-  normalMergeTests(merge());
   mergeTests(merge());
+  mergeSmartTests(merge());
   mergeStrategyTests(merge);
   mergeStrategySpecificTests(merge);
 });
@@ -43,12 +43,7 @@ function mergeStrategySpecificTests(merge) {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          },
-          {
-            test: /.jsx?$/,
-            loaders: ['babel'],
+            loaders: ['react-hot', 'babel'],
             exclude: /node_modules/
           }
         ]

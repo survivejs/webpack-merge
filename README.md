@@ -8,11 +8,17 @@
 ```javascript
 var output = merge(object1, object2, object3, ...);
 
-// smarter merging for loaders, see below
+// Smarter merging for loaders, see below
 var output = merge.smart(object1, object2, object3, ...);
 
-// merging with a specific merge strategy
+// Merging with a specific merge strategy
 var output = merge.strategy({
+  entry: 'prepend',
+  'module.loaders': 'prepend'
+})(object1, object2, object3, ...);
+
+// The same idea works with smart merging too
+var output = merge.smartStrategy({
   entry: 'prepend',
   'module.loaders': 'prepend'
 })(object1, object2, object3, ...);

@@ -10,6 +10,15 @@ var output = merge.strategy({
 })(object1, object2, object3, ...);
 ```
 
+  * Feature: Add `merge.smartStrategy`. This combines the ideas of `merge.smart` and `merge.strategy` into one. Example:
+
+```javascript
+var output = merge.smartStrategy({
+  entry: 'prepend',
+  'module.loaders': 'prepend'
+})(object1, object2, object3, ...);
+```
+
 0.17.0 / 2016-11-16
 ===================
 
