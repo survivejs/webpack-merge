@@ -2,18 +2,22 @@
 const assert = require('assert');
 const webpackMerge = require('..');
 const mergeTests = require('./merge-tests');
+const loadersKeys = require('./loaders-keys');
 
 describe('Merge', function () {
   const merge = webpackMerge;
 
-  normalMergeTests(merge, 'preLoaders');
-  normalMergeTests(merge, 'loaders');
-  normalMergeTests(merge, 'postLoaders');
-  normalMergeTests(merge, 'rules');
+  normalMergeTests(merge);
   mergeTests(merge);
 });
 
-function normalMergeTests(merge, loadersKey) {
+function normalMergeTests(merge) {
+  loadersKeys.forEach(function (loadersKey) {
+    normalMergeTest(merge, loadersKey);
+  });
+}
+
+function normalMergeTest(merge, loadersKey) {
   it('should append recursive structures with ' + loadersKey, function () {
     const a = {
       module: {}

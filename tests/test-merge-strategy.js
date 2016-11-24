@@ -7,10 +7,12 @@ const mergeTests = require('./merge-tests');
 describe('Merge strategy', function () {
   const merge = webpackMerge.strategy;
 
-  normalMergeTests(merge(), 'preLoaders');
-  normalMergeTests(merge(), 'loaders');
-  normalMergeTests(merge(), 'postLoaders');
-  normalMergeTests(merge(), 'rules');
+  normalMergeTests(merge(), [
+    'preLoaders',
+    'loaders',
+    'postLoaders',
+    'rules'
+  ]);
   mergeTests(merge());
   mergeStrategyTests(merge);
 });
