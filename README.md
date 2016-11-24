@@ -12,8 +12,10 @@ var output = merge(object1, object2, object3, ...);
 var output = merge.smart(object1, object2, object3, ...);
 
 // merging with a specific merge strategy
-// (works for root level arrays and objects)
-var output = merge.strategy({ entry: 'prepend' })(object1, object2, object3, ...);
+var output = merge.strategy({
+  entry: 'prepend',
+  'module.loaders': 'prepend'
+})(object1, object2, object3, ...);
 ```
 
 > Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.

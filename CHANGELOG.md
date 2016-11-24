@@ -1,3 +1,15 @@
+0.18.0 / 2016-11-24
+===================
+
+  * Feature: Add support for recursive definitions at `merge.strategy`. Example:
+
+```javascript
+var output = merge.strategy({
+  entry: 'prepend',
+  'module.loaders': 'prepend'
+})(object1, object2, object3, ...);
+```
+
 0.17.0 / 2016-11-16
 ===================
 

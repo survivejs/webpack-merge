@@ -4,15 +4,18 @@ const isArray = Array.isArray;
 
 module.exports = function joinArrays({
   customizeArray,
-  customizeObject
+  customizeObject,
+  key
 } = {}) {
-  return function (a, b, key) {
+  return function (a, b, k) {
+    const newKey = key ? `${key}.${k}` : k;
+
     if (isArray(a) && isArray(b)) {
       if (!b.length) {
         return [];
       }
 
-      const customResult = customizeArray && customizeArray(a, b, key);
+      const customResult = customizeArray && customizeArray(a, b, newKey);
 
       if (customResult) {
         return customResult;
@@ -26,7 +29,7 @@ module.exports = function joinArrays({
         return {};
       }
 
-      const customResult = customizeObject && customizeObject(a, b, key);
+      const customResult = customizeObject && customizeObject(a, b, newKey);
 
       if (customResult) {
         return customResult;
@@ -34,7 +37,8 @@ module.exports = function joinArrays({
 
       return merge({}, a, b, joinArrays({
         customizeArray,
-        customizeObject
+        customizeObject,
+        key: newKey
       }));
     }
 

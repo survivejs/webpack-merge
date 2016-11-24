@@ -12,7 +12,7 @@ function mergeSmart() {
   return lodashMerge.apply(null, [{}].concat(...arguments).concat([
     joinArrays({
       customizeArray: (a, b, key) => {
-        if (isLoader(key)) {
+        if (isLoader(key.split('.').slice(-1)[0])) {
           return a.reduce(reduceLoaders, b.slice());
         }
       }
