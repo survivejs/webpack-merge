@@ -3,21 +3,13 @@ const isEqual = require('lodash.isequal');
 const isArray = Array.isArray;
 
 module.exports = function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
-  const foundLoader = find(
-    mergedLoaderConfigs,
-    l => String(l.test) === String(loaderConfig.test)
-  );
+  const foundLoader = find(mergedLoaderConfigs, (l) => {
+    return String(l.test) === String(loaderConfig.test)
+        && (!l.include || isSameValue(l.include, loaderConfig.include))
+        && (!l.exclude || isSameValue(l.exclude, loaderConfig.exclude));
+  });
 
   if (foundLoader) {
-    /**
-     * When both loaders have different `include` or `exclude`
-     * properties, concat them
-     */
-    if ((foundLoader.include && !isSameValue(foundLoader.include, loaderConfig.include)) ||
-        (foundLoader.exclude && !isSameValue(foundLoader.exclude, loaderConfig.exclude))) {
-      return [loaderConfig].concat(mergedLoaderConfigs);
-    }
-
     // foundLoader.loader is intentionally ignored, because a string loader value should always override
     if (foundLoader.loaders) {
       const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
