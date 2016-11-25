@@ -35,7 +35,7 @@ module.exports = function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
     return mergedLoaderConfigs;
   }
 
-  return [loaderConfig].concat(mergedLoaderConfigs);
+  return [loaderConfig, ...mergedLoaderConfigs];
 };
 
 /**
@@ -44,9 +44,7 @@ module.exports = function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
  * but clone them first so as not to disrupt the sort order in tests
  */
 function isSameValue(a, b) {
-  const [propA, propB] = [a, b].map(function (value) {
-    return isArray(value) ? value.slice().sort() : value;
-  });
+  const [propA, propB] = [a, b].map(value => isArray(value) ? [...value].sort() : value);
 
   return isEqual(propA, propB);
 }
@@ -55,19 +53,11 @@ function mergeLoaders(currentLoaders, newLoaders) {
   const loaderNameRe = /^([^\?]+)/ig;
 
   return newLoaders.reduce((mergedLoaders, loader) => {
-    if (mergedLoaders.every(
-      l => loader.match(loaderNameRe)[0] !== l.match(loaderNameRe)[0])
-    ) {
+    if (mergedLoaders.every(l => loader.match(loaderNameRe)[0] !== l.match(loaderNameRe)[0])) {
       return mergedLoaders.concat([loader]);
     }
 
     // Replace query values with newer ones
-    return mergedLoaders.map(l => {
-      if (loader.match(loaderNameRe)[0] === l.match(loaderNameRe)[0]) {
-        return loader;
-      }
-
-      return l;
-    });
+    return mergedLoaders.map(l => loader.match(loaderNameRe)[0] === l.match(loaderNameRe)[0] ? loader : l);
   }, currentLoaders);
 }

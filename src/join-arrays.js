@@ -1,6 +1,6 @@
 const isFunction = require('lodash.isfunction');
 const isPlainObject = require('lodash.isplainobject');
-const merge = require('lodash.merge');
+const mergeWith = require('lodash.mergewith');
 const isArray = Array.isArray;
 
 module.exports = function joinArrays(
@@ -41,7 +41,7 @@ module.exports = function joinArrays(
         return customResult;
       }
 
-      return merge({}, a, b, joinArrays({
+      return mergeWith({}, a, b, joinArrays({
         customizeArray,
         customizeObject,
         key: newKey
