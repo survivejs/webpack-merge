@@ -85,6 +85,56 @@ function mergeStrategyTests(merge) {
       Object.keys(result.entry)
     );
   });
+
+  it('should allow replace strategy for arrays', function () {
+    const a = {
+      entry: [
+        'foo'
+      ]
+    };
+    const b = {
+      entry: [
+        'bar'
+      ]
+    };
+    const result = {
+      entry: [
+        'bar'
+      ]
+    };
+
+    assert.deepEqual(
+      Object.keys(merge({
+        entry: 'replace'
+      })(a, b).entry),
+      Object.keys(result.entry)
+    );
+  });
+
+  it('should allow replace strategy for objects', function () {
+    const a = {
+      entry: {
+        foo: 'bar'
+      }
+    };
+    const b = {
+      entry: {
+        bar: 'baz'
+      }
+    };
+    const result = {
+      entry: {
+        bar: 'baz'
+      }
+    };
+
+    assert.deepEqual(
+      Object.keys(merge({
+        entry: 'replace'
+      })(a, b).entry),
+      Object.keys(result.entry)
+    );
+  });
 }
 
 module.exports = mergeStrategyTests;

@@ -1,3 +1,8 @@
+0.19.0 / 2016-11-26
+===================
+
+  * Feature: Add support for 'replace' option at `merge.strategy`. It literally replaces the old field value with the newer one. #40
+
 0.18.0 / 2016-11-24
 ===================
 

@@ -13,13 +13,13 @@ var output = merge.smart(object1, object2, object3, ...);
 
 // Merging with a specific merge strategy
 var output = merge.strategy({
-  entry: 'prepend',
+  entry: 'prepend', // or 'replace'
   'module.loaders': 'prepend'
 })(object1, object2, object3, ...);
 
 // The same idea works with smart merging too
 var output = merge.smartStrategy({
-  entry: 'prepend',
+  entry: 'prepend', // or 'replace'
   'module.loaders': 'prepend'
 })(object1, object2, object3, ...);
 ```
