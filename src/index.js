@@ -1,6 +1,8 @@
+const differenceWith = require('lodash.differencewith');
 const mergeWith = require('lodash.mergewith');
+const unionWith = require('lodash.unionwith');
 const joinArrays = require('./join-arrays');
-const reduceLoaders = require('./reduce-loaders');
+const uniteRules = require('./unite-rules');
 
 function merge(...sources) {
   return mergeWith({}, ...sources, joinArrays());
@@ -9,8 +11,8 @@ function merge(...sources) {
 function mergeSmart(...sources) {
   return mergeWith({}, ...sources, joinArrays({
     customizeArray: (a, b, key) => {
-      if (isLoader(key.split('.').slice(-1)[0])) {
-        return a.reduce(reduceLoaders, b.slice());
+      if (isRule(key.split('.').slice(-1)[0])) {
+        return unionWith(a, b, uniteRules);
       }
     }
   }));
@@ -26,22 +28,20 @@ function mergeStrategy(rules = {}) {
 }
 
 function mergeSmartStrategy(rules = {}) {
-  // rules: { <field>: <'append'|'prepend'> }
+  // rules: { <field>: <'append'|'prepend'|'replace'> }
   // All default to append but you can override here
   const customArray = customizeArray(rules);
 
   return (...sources) => mergeWith({}, ...sources, joinArrays({
     customizeArray: (a, b, key) => {
-      if (isLoader(key.split('.').slice(-1)[0])) {
-        const rule = rules[key];
-
-        switch (rule) {
+      if (isRule(key.split('.').slice(-1)[0])) {
+        switch (rules[key]) {
           case 'prepend':
-            return b.reduce(reduceLoaders, a.slice());
+            return [...differenceWith(b, a, (newRule, seenRule) => uniteRules(newRule, seenRule, true)), ...a];
           case 'replace':
             return b;
-          default:
-            return a.reduce(reduceLoaders, b.slice());
+          default: // append
+            return unionWith(a, b, uniteRules);
         }
       }
 
@@ -53,14 +53,12 @@ function mergeSmartStrategy(rules = {}) {
 
 function customizeArray(rules) {
   return (a, b, key) => {
-    const rule = rules[key];
-
-    switch (rule) {
+    switch (rules[key]) {
       case 'prepend':
-        return b.concat(a);
+        return [...b, ...a];
       case 'replace':
         return b;
-      default:
+      default: // append
         return false;
     }
   };
@@ -68,20 +66,18 @@ function customizeArray(rules) {
 
 function customizeObject(rules) {
   return (a, b, key) => {
-    const rule = rules[key];
-
-    switch (rule) {
+    switch (rules[key]) {
       case 'prepend':
         return mergeWith({}, b, a, joinArrays());
       case 'replace':
         return b;
-      default:
+      default: // append
         return false;
     }
   };
 }
 
-function isLoader(key) {
+function isRule(key) {
   return ['preLoaders', 'loaders', 'postLoaders', 'rules'].indexOf(key) >= 0;
 }
 

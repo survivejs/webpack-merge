@@ -3,45 +3,27 @@ const isPlainObject = require('lodash.isplainobject');
 const mergeWith = require('lodash.mergewith');
 const isArray = Array.isArray;
 
-module.exports = function joinArrays(
-    {
-        customizeArray,
-        customizeObject,
-        key
-    } = {}
-) {
+module.exports = function joinArrays({
+  customizeArray,
+  customizeObject,
+  key
+} = {}) {
   return function _joinArrays(a, b, k) {
     const newKey = key ? `${key}.${k}` : k;
 
     if (isFunction(a) && isFunction(b)) {
       return (...args) => _joinArrays(a(...args), b(...args), k);
     }
-
-    if (isArray(a) && isArray(b)) {
-      if (!b.length) {
-        return [];
-      }
+    if (isArray(a) && isArray(b) && b.length) {
       const customResult = customizeArray && customizeArray(a, b, newKey);
 
-      if (customResult) {
-        return customResult;
-      }
-
-      return a.concat(b);
+      return customResult ? customResult : [...a, ...b];
     }
 
-    if (isPlainObject(a) && isPlainObject(b)) {
-      if (!Object.keys(b).length) {
-        return {};
-      }
-
+    if (isPlainObject(a) && isPlainObject(b) && Object.keys(b).length) {
       const customResult = customizeObject && customizeObject(a, b, newKey);
 
-      if (customResult) {
-        return customResult;
-      }
-
-      return mergeWith({}, a, b, joinArrays({
+      return customResult ? customResult : mergeWith({}, a, b, joinArrays({
         customizeArray,
         customizeObject,
         key: newKey
