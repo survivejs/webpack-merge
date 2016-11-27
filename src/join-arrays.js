@@ -3,64 +3,51 @@ const isPlainObject = require('lodash.isplainobject');
 const merge = require('lodash.merge');
 const isArray = Array.isArray;
 
-module.exports = function joinArrays({
-  customizeArray,
-  customizeObject,
-  key
-} = {}) {
-  return function (a, b, k) {
+module.exports = function joinArrays(
+    {
+        customizeArray,
+        customizeObject,
+        key
+    } = {}
+) {
+  return function _joinArrays(a, b, k) {
     const newKey = key ? `${key}.${k}` : k;
-    let resolvedA = a;
-    let resolvedB = b;
-    let ret;
 
     if (isFunction(a) && isFunction(b)) {
-      resolvedA = a();
-      resolvedB = b();
+      return (...args) => _joinArrays(a(...args), b(...args), k);
     }
 
-    if (isArray(resolvedA) && isArray(resolvedB)) {
-      if (!resolvedB.length) {
-        ret = [];
-      } else {
-        ret = joinArrayPair(customizeArray, newKey, resolvedA, resolvedB);
+    if (isArray(a) && isArray(b)) {
+      if (!b.length) {
+        return [];
       }
-    } else if (isPlainObject(resolvedA) && isPlainObject(resolvedB)) {
-      if (!Object.keys(resolvedB).length) {
-        ret = {};
-      } else {
-        const customResult = customizeObject && customizeObject(
-          resolvedA, resolvedB, newKey
-        );
+      const customResult = customizeArray && customizeArray(a, b, newKey);
 
-        if (customResult) {
-          ret = customResult;
-        } else {
-          ret = merge({}, resolvedA, resolvedB, joinArrays({
-            customizeArray,
-            customizeObject,
-            key: newKey
-          }));
-        }
+      if (customResult) {
+        return customResult;
       }
-    } else {
-      ret = resolvedB;
+
+      return a.concat(b);
     }
 
-    if (isFunction(a) && isFunction(b)) {
-      return () => ret;
+    if (isPlainObject(a) && isPlainObject(b)) {
+      if (!Object.keys(b).length) {
+        return {};
+      }
+
+      const customResult = customizeObject && customizeObject(a, b, newKey);
+
+      if (customResult) {
+        return customResult;
+      }
+
+      return merge({}, a, b, joinArrays({
+        customizeArray,
+        customizeObject,
+        key: newKey
+      }));
     }
 
-    return ret;
+    return b;
   };
 };
-
-function joinArrayPair(customizeArray, newKey, a, b) {
-  const customResult = customizeArray && customizeArray(a, b, newKey);
-
-  if (customResult) {
-    return customResult;
-  }
-
-  return a.concat(b);
-}
