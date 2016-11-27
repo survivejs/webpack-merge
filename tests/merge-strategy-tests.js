@@ -135,6 +135,101 @@ function mergeStrategyTests(merge) {
       Object.keys(result.entry)
     );
   });
+
+  it('should merge functions returning arrays with prepend', function () {
+    const a = {
+      postcss() {
+        return ['a'];
+      }
+    };
+    const b = {
+      postcss() {
+        return ['b'];
+      }
+    };
+    const expected = ['b', 'a'];
+
+    assert.deepEqual(
+      merge({
+        postcss: 'prepend'
+      })(a, b).postcss(),
+      expected
+    );
+  });
+
+  it('should merge functions returning objects with prepend', function () {
+    const a = {
+      postcss() {
+        return {
+          a: 'foo'
+        };
+      }
+    };
+    const b = {
+      postcss() {
+        return {
+          b: 'bar'
+        };
+      }
+    };
+    const result = {
+      postcss() {
+        return {
+          b: 'bar',
+          a: 'foo'
+        };
+      }
+    };
+
+    assert.deepEqual(
+      Object.keys(merge({
+        postcss: 'prepend'
+      })(a, b).postcss()),
+      Object.keys(result.postcss())
+    );
+  });
+
+  it('should merge functions returning arrays with replace', function () {
+    const a = {
+      postcss() {
+        return ['a'];
+      }
+    };
+    const b = {
+      postcss() {
+        return ['b'];
+      }
+    };
+    const expected = ['b'];
+
+    assert.deepEqual(
+      merge({
+        postcss: 'replace'
+      })(a, b).postcss(),
+      expected
+    );
+  });
+
+  it('should merge functions returning objects with replace', function () {
+    const a = {
+      postcss() {
+        return ['a'];
+      }
+    };
+    const b = {
+      postcss() {
+        return ['b'];
+      }
+    };
+    const expected = ['b'];
+
+    assert.deepEqual(
+      merge({
+        postcss: 'replace'
+      })(a, b).postcss(),
+      expected
+    );
+  });
 }
 
 module.exports = mergeStrategyTests;

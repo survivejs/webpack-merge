@@ -1,3 +1,8 @@
+0.20.0 / 2016-11-27
+===================
+
+  * Feature: Add support for merging functions. This feature has been designed `postcss` in mind. It executes the functions, picks their results, and packs them again.
+
 0.19.0 / 2016-11-26
 ===================
 

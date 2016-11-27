@@ -1,7 +1,11 @@
 [![build status](https://secure.travis-ci.org/survivejs/webpack-merge.svg)](http://travis-ci.org/survivejs/webpack-merge)
 # webpack-merge - Merge designed for Webpack
 
-**webpack-merge** provides a `merge` function that concatenates arrays and merges objects. This behavior is particularly useful in configuring webpack. There's also a webpack specific merge variant known as `merge.smart` that's able to take webpack specifics into account (i.e., it can flatten loader definitions).
+**webpack-merge** provides a `merge` function that concatenates arrays and merges objects. If functions are encountered, it will execute them, run the results through the algorithm, and then wrap the returned values within a function again.
+
+This behavior is particularly useful in configuring webpack although it has uses beyond it. Whenever you need to merge configuration objects, **webpack-merge** can come in handy.
+
+There's also a webpack specific merge variant known as `merge.smart` that's able to take webpack specifics into account (i.e., it can flatten loader definitions).
 
 ## API
 

@@ -159,6 +159,45 @@ function mergeTests(merge) {
 
     assert.deepEqual(merge(a, b), b);
   });
+
+  it('should merge functions that return arrays', function () {
+    const a = {
+      postcss() {
+        return ['a'];
+      }
+    };
+    const b = {
+      postcss() {
+        return ['b'];
+      }
+    };
+    const expected = ['a', 'b'];
+
+    assert.deepEqual(merge(a, b).postcss(), expected);
+  });
+
+  it('should merge functions that return objects', function () {
+    const a = {
+      postcss() {
+        return {
+          a: 'foo'
+        };
+      }
+    };
+    const b = {
+      postcss() {
+        return {
+          b: 'bar'
+        };
+      }
+    };
+    const expected = {
+      a: 'foo',
+      b: 'bar'
+    };
+
+    assert.deepEqual(merge(a, b).postcss(), expected);
+  });
 }
 
 module.exports = mergeTests;
