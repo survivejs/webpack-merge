@@ -11,6 +11,9 @@
     "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "lodash.differencewith": "^4.5.0",
     "lodash.isequal": "^4.4.0",
