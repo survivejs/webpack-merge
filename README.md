@@ -1,7 +1,7 @@
 [![build status](https://secure.travis-ci.org/survivejs/webpack-merge.svg)](http://travis-ci.org/survivejs/webpack-merge)
 # webpack-merge - Merge designed for Webpack
 
-**webpack-merge** provides a `merge` function that concatenates arrays and merges objects. If functions are encountered, it will execute them, run the results through the algorithm, and then wrap the returned values within a function again.
+**webpack-merge** provides a `merge` function that concatenates arrays and merges objects creating a new object. If functions are encountered, it will execute them, run the results through the algorithm, and then wrap the returned values within a function again.
 
 This behavior is particularly useful in configuring webpack although it has uses beyond it. Whenever you need to merge configuration objects, **webpack-merge** can come in handy.
 
