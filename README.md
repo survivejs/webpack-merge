@@ -251,6 +251,7 @@ Before contributing, please open an issue where to discuss.
 * [Lucretiel](https://github.com/Lucretiel) - Added a more generic test to describe merge behavior better.
 * [Christian Hoffmeister](https://github.com/choffmeister) - Fix `merge.smart` behavior so that it checks against full loader names instead of just the first letter.
 * [Ken Powers](https://github.com/knpwrs) - Changed Travis icon to use SVG (scales better).
+* [Kyle Herock](https://github.com/rockmacaca) - Improved webpack 2 support, avoided concatenating loaders if the first matching entry's include/exclude doesn't match. #41
 
 ## License
 
