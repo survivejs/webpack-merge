@@ -48,6 +48,54 @@ function commonTests(merge) {
 
     assert.deepEqual(merge(a, b), result);
   });
+
+  it('in lists with matching `test` properties, should merge with matching exclude and loaders', function () {
+    const a = {
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            include: './src',
+            loaders: ['babel']
+          },
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loaders: ['babel']
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loaders: ['coffee', 'foo']
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            include: './src',
+            loaders: ['babel']
+          },
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loaders: ['babel', 'coffee', 'foo']
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge(a, b), result);
+  });
 }
 
 function mergeSmartTest(merge, loadersKey) {

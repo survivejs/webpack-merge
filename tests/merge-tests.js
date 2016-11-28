@@ -198,6 +198,22 @@ function mergeTests(merge) {
 
     assert.deepEqual(merge(a, b).postcss(), expected);
   });
+
+  it('should merge functions that take arguments', function () {
+    const a = {
+      postcss(arg) {
+        return [arg];
+      }
+    };
+    const b = {
+      postcss(arg) {
+        return [arg + 1, arg + 2];
+      }
+    };
+    const expected = ['a', 'a1', 'a2'];
+
+    assert.deepEqual(merge(a, b).postcss('a'), expected);
+  });
 }
 
 module.exports = mergeTests;

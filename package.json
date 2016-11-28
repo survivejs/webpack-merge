@@ -12,11 +12,12 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "lodash.find": "^3.2.1",
-    "lodash.isequal": "^4.2.0",
+    "lodash.differencewith": "^4.5.0",
+    "lodash.isequal": "^4.4.0",
     "lodash.isfunction": "^3.0.8",
-    "lodash.isplainobject": "^3.2.0",
-    "lodash.merge": "^3.3.2"
+    "lodash.isplainobject": "^4.0.6",
+    "lodash.mergewith": "^4.6.0",
+    "lodash.unionwith": "^4.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
