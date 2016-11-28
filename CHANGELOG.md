@@ -1,3 +1,9 @@
+1.0.0 / 2016-11-28
+===================
+
+  * Feature: Support merging Webpack 2 Rule.use #38
+  * Bug fix - Don't concat loaders if the first matching entry's include/exclude doesn't match. #39
+
 0.20.0 / 2016-11-27
 ===================
 
