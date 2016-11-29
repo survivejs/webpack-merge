@@ -214,6 +214,21 @@ function mergeTests(merge) {
 
     assert.deepEqual(merge(a, b).postcss('a'), expected);
   });
+
+  it('should not mutate inputs with mismatched keys', function () {
+    const a = {
+      entry: {}
+    };
+
+    const b = {};
+
+    const aClone = JSON.parse(JSON.stringify(a));
+    const config = merge({}, a, b);
+
+    config.entry.main = 'src/index.js';
+
+    assert.deepEqual(a, aClone);
+  });
 }
 
 module.exports = mergeTests;

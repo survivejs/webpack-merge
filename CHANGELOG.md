@@ -1,3 +1,8 @@
+1.0.2 / 2016-11-29
+==================
+
+  * Bug fix - `merge` should not mutate inputs with mismatched keys.
+
 1.0.0 / 2016-11-28
 ==================
 

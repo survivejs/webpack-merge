@@ -1,3 +1,4 @@
+const cloneDeep = require('lodash.clonedeep');
 const isFunction = require('lodash.isfunction');
 const isPlainObject = require('lodash.isplainobject');
 const mergeWith = require('lodash.mergewith');
@@ -28,6 +29,10 @@ module.exports = function joinArrays({
         customizeObject,
         key: newKey
       }));
+    }
+
+    if (isPlainObject(b)) {
+      return cloneDeep(b);
     }
 
     return b;
