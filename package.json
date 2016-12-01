@@ -7,7 +7,7 @@
     "build": "babel src -d lib",
     "watch": "npm-watch",
     "test": "mocha tests/test-*",
-    "test:lint": "eslint . ---cache",
+    "test:lint": "eslint . --cache",
     "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",

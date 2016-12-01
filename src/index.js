@@ -2,7 +2,7 @@ const differenceWith = require('lodash.differencewith');
 const mergeWith = require('lodash.mergewith');
 const unionWith = require('lodash.unionwith');
 const joinArrays = require('./join-arrays');
-const uniteRules = require('./unite-rules');
+const joinArraysSmart = require('./join-arrays-smart');
 
 function merge(...sources) {
   // This supports
@@ -11,16 +11,16 @@ function merge(...sources) {
   // where fn = (a, b, key)
   if (sources.length === 1) {
     if (Array.isArray(sources[0])) {
-      return mergeWith({}, ...sources[0], joinArrays());
+      return mergeWith({}, ...sources[0], joinArrays(sources[0]));
     }
 
     if (sources[0].customizeArray || sources[0].customizeObject) {
       return (...structures) => {
         if (Array.isArray(structures[0])) {
-          return mergeWith({}, ...structures[0], joinArrays(...sources));
+          return mergeWith({}, ...structures[0], joinArrays(sources[0]));
         }
 
-        return mergeWith({}, ...structures, joinArrays(...sources));
+        return mergeWith({}, ...structures, joinArrays(sources[0]));
       };
     }
 
@@ -30,16 +30,6 @@ function merge(...sources) {
   return mergeWith({}, ...sources, joinArrays());
 }
 
-const mergeSmart = merge({
-  customizeArray: (a, b, key) => {
-    if (isRule(key.split('.').slice(-1)[0])) {
-      return unionWith(a, b, uniteRules);
-    }
-
-    return null;
-  }
-});
-
 // rules: { <field>: <'append'|'prepend'|'replace'> }
 // All default to append but you can override here
 const mergeStrategy = (rules = {}) => merge({
@@ -48,19 +38,25 @@ const mergeStrategy = (rules = {}) => merge({
 });
 const mergeSmartStrategy = (rules = {}) => merge({
   customizeArray: (a, b, key) => {
-    if (isRule(key.split('.').slice(-1)[0])) {
+    const topKey = key.split('.').slice(-1)[0];
+    if (isRule(topKey)) {
+      const _uniteRules = (aRule, bRule) => joinArraysSmart.uniteRules(aRule, bRule, rules[key]);
       switch (rules[key]) {
         case 'prepend':
-          return [
-            ...differenceWith(
-              b, a, (newRule, seenRule) => uniteRules(newRule, seenRule, true)
-            ),
-            ...a
-          ];
+          return [...differenceWith(b, a, _uniteRules), ...a];
         case 'replace':
           return b;
         default: // append
-          return unionWith(a, b, uniteRules);
+          return unionWith(a, b, _uniteRules);
+      }
+    } else if (topKey === 'plugins') {
+      switch (rules[key]) {
+        case 'prepend':
+          return [...differenceWith(b, a, joinArraysSmart.unitePlugins), ...a];
+        case 'replace':
+          return b;
+        default: // append
+          return unionWith(a, b, joinArraysSmart.unitePlugins);
       }
     }
 
@@ -100,6 +96,6 @@ function isRule(key) {
 }
 
 module.exports = merge;
-module.exports.smart = mergeSmart;
 module.exports.strategy = mergeStrategy;
+module.exports.smart = mergeSmartStrategy();
 module.exports.smartStrategy = mergeSmartStrategy;
