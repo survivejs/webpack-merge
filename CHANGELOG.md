@@ -1,3 +1,17 @@
+1.1.0 / 2016-12-09
+==================
+
+  * Feature - Allow `merge` behavior to be customized with overrides. Example:
+
+```javascript
+var output = merge({
+  customizeArray(a, b, key) { return [...a, ...b]; },
+  customizeObject(a, b, key) { return mergeWith(a, b); }
+})(object1, object2, object3, ...);
+```
+
+This allows you to guarantee array uniqueness and so on.
+
 1.0.2 / 2016-11-29
 ==================
 

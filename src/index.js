@@ -5,6 +5,10 @@ const joinArrays = require('./join-arrays');
 const uniteRules = require('./unite-rules');
 
 function merge(...sources) {
+  if (sources.length === 1) {
+    return (...structures) => mergeWith({}, ...structures, joinArrays(...sources));
+  }
+
   return mergeWith({}, ...sources, joinArrays());
 }
 

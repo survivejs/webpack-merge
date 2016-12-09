@@ -10,7 +10,17 @@ There's also a webpack specific merge variant known as `merge.smart` that's able
 ## API
 
 ```javascript
+// Default API
 var output = merge(object1, object2, object3, ...);
+
+// If you want to process an array, use `apply`
+var output = merge.apply(null, [object1, object2, object3]);
+
+// Customizing array/object behavior
+var output = merge({
+  customizeArray(a, b, key) { return [...a, ...b]; },
+  customizeObject(a, b, key) { return mergeWith(a, b); }
+})(object1, object2, object3, ...);
 
 // Smarter merging for loaders, see below
 var output = merge.smart(object1, object2, object3, ...);

@@ -9,6 +9,7 @@ describe('Merge', function () {
 
   normalMergeTests(merge);
   mergeTests(merge);
+  customizeMergeTests(merge);
 });
 
 function normalMergeTests(merge) {
@@ -183,6 +184,38 @@ function normalMergeTest(merge, loadersKey) {
     result[loadersKey] = [];
 
     assert.deepEqual(merge(a, b), result);
+  });
+}
+
+function customizeMergeTests(merge) {
+  it('should allow overriding array behavior', function () {
+    const first = {
+      entry: ['a']
+    };
+    const second = {
+      entry: ['b']
+    };
+
+    assert.deepEqual(merge({
+      customizeArray(a) { return a; }
+    })(first, second), first);
+  });
+
+  it('should allow overriding object behavior', function () {
+    const first = {
+      entry: {
+        a: 'foo'
+      }
+    };
+    const second = {
+      entry: {
+        a: 'bar'
+      }
+    };
+
+    assert.deepEqual(merge({
+      customizeObject(a) { return a; }
+    })(first, second), first);
   });
 }
 
