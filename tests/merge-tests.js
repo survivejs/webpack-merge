@@ -19,6 +19,23 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b, c), result);
   });
 
+  it('should work with an array of objects', function () {
+    const a = {
+      foo: ['a']
+    };
+    const b = {
+      foo: ['b']
+    };
+    const c = {
+      foo: ['c']
+    };
+    const result = {
+      foo: ['a', 'b', 'c']
+    };
+
+    assert.deepEqual(merge([a, b, c]), result);
+  });
+
   it('should override objects', function () {
     const a = {
       foo: 'a'

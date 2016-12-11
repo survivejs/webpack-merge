@@ -5,55 +5,63 @@ const joinArrays = require('./join-arrays');
 const uniteRules = require('./unite-rules');
 
 function merge(...sources) {
+  // This supports
+  // merge([<object>] | ...<object>)
+  // merge({ customizeArray: <fn>, customizeObject: <fn>})([<object>] | ...<object>)
+  // where fn = (a, b, key)
   if (sources.length === 1) {
-    return (...structures) => mergeWith({}, ...structures, joinArrays(...sources));
+    if (Array.isArray(sources[0])) {
+      return mergeWith({}, ...sources[0], joinArrays());
+    }
+
+    return (...structures) => {
+      if (Array.isArray(structures[0])) {
+        return mergeWith({}, ...structures[0], joinArrays(...sources));
+      }
+
+      return mergeWith({}, ...structures, joinArrays(...sources));
+    };
   }
 
   return mergeWith({}, ...sources, joinArrays());
 }
 
-function mergeSmart(...sources) {
-  return mergeWith({}, ...sources, joinArrays({
-    customizeArray: (a, b, key) => {
-      if (isRule(key.split('.').slice(-1)[0])) {
-        return unionWith(a, b, uniteRules);
+const mergeSmart = merge({
+  customizeArray: (a, b, key) => {
+    if (isRule(key.split('.').slice(-1)[0])) {
+      return unionWith(a, b, uniteRules);
+    }
+  }
+});
+
+// rules: { <field>: <'append'|'prepend'|'replace'> }
+// All default to append but you can override here
+const mergeStrategy = (rules = {}) => merge({
+  customizeArray: customizeArray(rules),
+  customizeObject: customizeObject(rules)
+});
+const mergeSmartStrategy = (rules = {}) => merge({
+  customizeArray: (a, b, key) => {
+    if (isRule(key.split('.').slice(-1)[0])) {
+      switch (rules[key]) {
+        case 'prepend':
+          return [
+            ...differenceWith(
+              b, a, (newRule, seenRule) => uniteRules(newRule, seenRule, true)
+            ),
+            ...a
+          ];
+        case 'replace':
+          return b;
+        default: // append
+          return unionWith(a, b, uniteRules);
       }
     }
-  }));
-}
 
-function mergeStrategy(rules = {}) {
-  // rules: { <field>: <'append'|'prepend'|'replace'> }
-  // All default to append but you can override here
-  return (...sources) => mergeWith({}, ...sources, joinArrays({
-    customizeArray: customizeArray(rules),
-    customizeObject: customizeObject(rules)
-  }));
-}
-
-function mergeSmartStrategy(rules = {}) {
-  // rules: { <field>: <'append'|'prepend'|'replace'> }
-  // All default to append but you can override here
-  const customArray = customizeArray(rules);
-
-  return (...sources) => mergeWith({}, ...sources, joinArrays({
-    customizeArray: (a, b, key) => {
-      if (isRule(key.split('.').slice(-1)[0])) {
-        switch (rules[key]) {
-          case 'prepend':
-            return [...differenceWith(b, a, (newRule, seenRule) => uniteRules(newRule, seenRule, true)), ...a];
-          case 'replace':
-            return b;
-          default: // append
-            return unionWith(a, b, uniteRules);
-        }
-      }
-
-      return customArray(a, b, key);
-    },
-    customizeObject: customizeObject(rules)
-  }));
-}
+    return customizeArray(rules)(a, b, key);
+  },
+  customizeObject: customizeObject(rules)
+});
 
 function customizeArray(rules) {
   return (a, b, key) => {

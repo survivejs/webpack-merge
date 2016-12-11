@@ -1,3 +1,8 @@
+1.1.1 / 2016-12-11
+==================
+
+  * Bug fix - Support previously undocumented, yet used, `merge([<object>])` format. This works with all available functions. #46
+
 1.1.0 / 2016-12-09
 ==================
 

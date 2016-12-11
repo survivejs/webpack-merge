@@ -13,8 +13,9 @@ There's also a webpack specific merge variant known as `merge.smart` that's able
 // Default API
 var output = merge(object1, object2, object3, ...);
 
-// If you want to process an array, use `apply`
-var output = merge.apply(null, [object1, object2, object3]);
+// You can pass an array of objects directly.
+// This works with all available functions.
+var output = merge([object1, object2, object3]);
 
 // Customizing array/object behavior
 var output = merge({
