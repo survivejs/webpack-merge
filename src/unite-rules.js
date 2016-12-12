@@ -2,6 +2,7 @@ const isEqual = require('lodash.isequal');
 const mergeWith = require('lodash.mergewith');
 const unionWith = require('lodash.unionwith');
 const differenceWith = require('lodash.differencewith');
+
 const isArray = Array.isArray;
 
 module.exports = function uniteRules(newRule, rule, prepend) {
@@ -15,7 +16,10 @@ module.exports = function uniteRules(newRule, rule, prepend) {
   // webpack 2 nested rules support
   if (rule.rules) {
     rule.rules = prepend
-        ? [...differenceWith(newRule.rules, rule.rules, (b, a) => uniteRules(b, a, true)), ...rule.rules]
+        ? [
+          ...differenceWith(newRule.rules, rule.rules, (b, a) => uniteRules(b, a, true)),
+          ...rule.rules
+        ]
         : unionWith(rule.rules, newRule.rules, uniteRules);
   }
 
@@ -28,9 +32,13 @@ module.exports = function uniteRules(newRule, rule, prepend) {
     rule.loader = newRule.loader;
     if (optionsKey) rule[optionsKey] = newRule[optionsKey];
   } else if ((rule.use || rule.loaders || rule.loader) && (newRule.use || newRule.loaders)) {
-    const expandEntry = loader => typeof loader === 'string' ? { loader } : loader;
+    const expandEntry = loader => (
+      typeof loader === 'string' ? { loader } : loader
+    );
     // this is only here to avoid breaking existing tests
-    const unwrapEntry = entry => !entry.options && !entry.query ? entry.loader : entry;
+    const unwrapEntry = entry => (
+      !entry.options && !entry.query ? entry.loader : entry
+    );
 
     let entries;
     if (rule.loader) {
@@ -67,13 +75,15 @@ module.exports = function uniteRules(newRule, rule, prepend) {
  * but clone them first so as not to disrupt the sort order in tests
  */
 function isSameValue(a, b) {
-  const [propA, propB] = [a, b].map(value => isArray(value) ? [...value].sort() : value);
+  const [propA, propB] = [a, b].map(value => (
+    isArray(value) ? [...value].sort() : value
+  ));
 
   return isEqual(propA, propB);
 }
 
 function uniteEntries(newEntry, entry) {
-  const loaderNameRe = /^([^\?]+)/ig;
+  const loaderNameRe = /^([^?]+)/ig;
 
   const [loaderName] = entry.loader.match(loaderNameRe);
   const [newLoaderName] = newEntry.loader.match(loaderNameRe);

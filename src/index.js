@@ -31,6 +31,8 @@ const mergeSmart = merge({
     if (isRule(key.split('.').slice(-1)[0])) {
       return unionWith(a, b, uniteRules);
     }
+
+    return null;
   }
 });
 
