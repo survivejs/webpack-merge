@@ -7,9 +7,9 @@ const isArray = Array.isArray;
 
 module.exports = function uniteRules(newRule, rule, prepend) {
   if (String(rule.test) !== String(newRule.test)
-      || newRule.enforce && rule.enforce !== newRule.enforce
-      || newRule.include && !isSameValue(rule.include, newRule.include)
-      || newRule.exclude && !isSameValue(rule.exclude, newRule.exclude)) {
+      || (newRule.enforce && rule.enforce !== newRule.enforce)
+      || (newRule.include && !isSameValue(rule.include, newRule.include))
+      || (newRule.exclude && !isSameValue(rule.exclude, newRule.exclude))) {
     return false;
   }
 

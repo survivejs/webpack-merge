@@ -23,7 +23,6 @@
     // TODO: enable these again
     "prefer-arrow-callback": 0,
     "prefer-template": 0,
-    "no-mixed-operators": 0,
     "no-param-reassign": 0
   }
 }
