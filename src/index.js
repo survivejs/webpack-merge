@@ -14,13 +14,17 @@ function merge(...sources) {
       return mergeWith({}, ...sources[0], joinArrays());
     }
 
-    return (...structures) => {
-      if (Array.isArray(structures[0])) {
-        return mergeWith({}, ...structures[0], joinArrays(...sources));
-      }
+    if (sources[0].customizeArray || sources[0].customizeObject) {
+      return (...structures) => {
+        if (Array.isArray(structures[0])) {
+          return mergeWith({}, ...structures[0], joinArrays(...sources));
+        }
 
-      return mergeWith({}, ...structures, joinArrays(...sources));
-    };
+        return mergeWith({}, ...structures, joinArrays(...sources));
+      };
+    }
+
+    return sources[0];
   }
 
   return mergeWith({}, ...sources, joinArrays());

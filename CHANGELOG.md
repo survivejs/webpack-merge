@@ -1,3 +1,8 @@
+1.1.2 / 2016-12-18
+==================
+
+  * Bug fix - `merge({ entry: {} })` should return the same result as input instead of a function.
+
 1.1.1 / 2016-12-11
 ==================
 

@@ -2,6 +2,21 @@
 const assert = require('assert');
 
 function mergeTests(merge) {
+  it('should return the same config', function () {
+    const config = {
+      entry: {
+        app: 'app'
+      },
+      output: {
+        path: 'build',
+        filename: '[name].js'
+      },
+      plugins: []
+    };
+
+    assert.deepEqual(merge(config), config);
+  });
+
   it('should append arrays of multiple objects by default', function () {
     const a = {
       foo: ['a']
