@@ -16,13 +16,13 @@ module.exports = function joinArrays({
     if (isFunction(a) && isFunction(b)) {
       return (...args) => _joinArrays(a(...args), b(...args), k);
     }
-    if (isArray(a) && isArray(b) && b.length) {
+    if (isArray(a) && isArray(b)) {
       const customResult = customizeArray && customizeArray(a, b, newKey);
 
       return customResult || [...a, ...b];
     }
 
-    if (isPlainObject(a) && isPlainObject(b) && Object.keys(b).length) {
+    if (isPlainObject(a) && isPlainObject(b)) {
       const customResult = customizeObject && customizeObject(a, b, newKey);
 
       return customResult || mergeWith({}, a, b, joinArrays({

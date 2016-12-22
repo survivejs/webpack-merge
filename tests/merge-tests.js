@@ -168,7 +168,7 @@ function mergeTests(merge) {
     assert.deepEqual(a, aClone);
   });
 
-  it('should allow overriding with an empty array', function () {
+  it('should not allow overriding with an empty array', function () {
     const a = {
       entry: ['foo']
     };
@@ -176,10 +176,10 @@ function mergeTests(merge) {
       entry: []
     };
 
-    assert.deepEqual(merge(a, b), b);
+    assert.deepEqual(merge(a, b), a);
   });
 
-  it('should allow overriding with an empty object', function () {
+  it('should not allow overriding with an empty object', function () {
     const a = {
       entry: {
         a: 'foo'
@@ -189,7 +189,7 @@ function mergeTests(merge) {
       entry: {}
     };
 
-    assert.deepEqual(merge(a, b), b);
+    assert.deepEqual(merge(a, b), a);
   });
 
   it('should merge functions that return arrays', function () {

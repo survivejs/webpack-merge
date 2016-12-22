@@ -30,7 +30,10 @@ module.exports = function uniteRules(newRule, rule, prepend) {
     delete rule.use;
     delete rule.loaders;
     rule.loader = newRule.loader;
-    if (optionsKey) rule[optionsKey] = newRule[optionsKey];
+
+    if (optionsKey) {
+      rule[optionsKey] = newRule[optionsKey];
+    }
   } else if ((rule.use || rule.loaders || rule.loader) && (newRule.use || newRule.loaders)) {
     const expandEntry = loader => (
       typeof loader === 'string' ? { loader } : loader
@@ -44,9 +47,16 @@ module.exports = function uniteRules(newRule, rule, prepend) {
     if (rule.loader) {
       const optionsKey = rule.options ? 'options' : rule.query && 'query';
       entries = [{ loader: rule.loader }];
-      if (optionsKey) entries[0][optionsKey] = rule[optionsKey];
+
+      if (optionsKey) {
+        entries[0][optionsKey] = rule[optionsKey];
+      }
+
       delete rule.loader;
-      if (optionsKey) delete rule[optionsKey];
+
+      if (optionsKey) {
+        delete rule[optionsKey];
+      }
     } else {
       entries = [].concat(rule.use || rule.loaders).map(expandEntry);
     }
@@ -88,7 +98,9 @@ function uniteEntries(newEntry, entry) {
   const [loaderName] = entry.loader.match(loaderNameRe);
   const [newLoaderName] = newEntry.loader.match(loaderNameRe);
 
-  if (loaderName !== newLoaderName) return false;
+  if (loaderName !== newLoaderName) {
+    return false;
+  }
 
   // Replace query values with newer ones
   mergeWith(entry, newEntry);

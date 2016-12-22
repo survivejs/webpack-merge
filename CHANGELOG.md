@@ -1,3 +1,19 @@
+2.0.0 / 2016-12-22
+==================
+
+  * Breaking - Disallow overriding configuration with empty arrays/objects (#48). If you want to override, use `merge.strategy`. Example:
+
+```javascript
+const a = {
+  entry: ['foo']
+};
+const b = {
+  entry: []
+};
+
+merge(a, b); // Yields a result, not b like before.
+```
+
 1.1.2 / 2016-12-18
 ==================
 

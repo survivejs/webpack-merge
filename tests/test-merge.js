@@ -172,7 +172,7 @@ function normalMergeTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b, c), result);
   });
 
-  it('should allow overriding with an empty array in ' + loadersKey, function () {
+  it('should not allow overriding with an empty array in ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -180,10 +180,8 @@ function normalMergeTest(merge, loadersKey) {
     }];
     const b = {};
     b[loadersKey] = [];
-    const result = {};
-    result[loadersKey] = [];
 
-    assert.deepEqual(merge(a, b), result);
+    assert.deepEqual(merge(a, b), a);
   });
 }
 

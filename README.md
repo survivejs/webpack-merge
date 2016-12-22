@@ -101,24 +101,6 @@ if(TARGET === 'build') {
 ...
 ```
 
-### Empty Arrays and Objects Override
-
-You can override existing arrays/objects like this:
-
-```javascript
-var common = {
-  entry: [APP_PATH, STYLE_PATH]
-  ...
-};
-
-if(TARGET === 'test') {
-  module.exports = merge(common, {
-    entry: [], // empty now
-    ...
-  });
-}
-```
-
 ## Smart Merging of Loaders
 
 Webpack-merge tries to be smart about merging loaders when `merge.smart` is used. Loaders with matching tests will be merged into a single loader value.
