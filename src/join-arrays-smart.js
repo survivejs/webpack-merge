@@ -1,5 +1,4 @@
 const isEqual = require('lodash.isequal');
-const isFunction = require('lodash.isfunction');
 const mergeWith = require('lodash.mergewith');
 const unionWith = require('lodash.unionwith');
 const differenceWith = require('lodash.differencewith');
@@ -125,10 +124,10 @@ function uniteEntries(newEntry, entry) {
 }
 
 function unitePlugins(newPlugin, plugin) {
-  if (!(newPlugin instanceof plugin.constructor)) return false;
-
-  // functions shouldn't be merged here
-  mergeWith(plugin, newPlugin, (a, b, k) => (isFunction(a) ? a : joinArrays()(a, b, k)));
+  if (!(newPlugin instanceof plugin.constructor)) {
+    return false;
+  }
+  joinArrays()(plugin, newPlugin, 'plugins');
   return true;
 }
 
