@@ -2,25 +2,33 @@ const isEqual = require('lodash.isequal');
 const mergeWith = require('lodash.mergewith');
 const unionWith = require('lodash.unionwith');
 const differenceWith = require('lodash.differencewith');
+const joinArrays = require('./join-arrays');
 
 const isArray = Array.isArray;
 
-module.exports = function uniteRules(newRule, rule, prepend) {
+function uniteRules(newRule, rule, strategy) {
   if (String(rule.test) !== String(newRule.test)
       || (newRule.enforce && rule.enforce !== newRule.enforce)
       || (newRule.include && !isSameValue(rule.include, newRule.include))
       || (newRule.exclude && !isSameValue(rule.exclude, newRule.exclude))) {
     return false;
+  } else if (!rule.test && !rule.include && !rule.exclude
+      && (rule.loader && rule.loader.split('?')[0]) !== (newRule.loader && newRule.loader.split('?')[0])) {
+    // Don't merge the rule if there isn't any identifying fields and the loaders don't match
+    return false;
   }
 
   // webpack 2 nested rules support
   if (rule.rules) {
-    rule.rules = prepend
-        ? [
-          ...differenceWith(newRule.rules, rule.rules, (b, a) => uniteRules(b, a, true)),
-          ...rule.rules
-        ]
-        : unionWith(rule.rules, newRule.rules, uniteRules);
+    const _uniteRules = (b, a) => uniteRules(b, a, strategy);
+    switch (strategy) {
+      case 'prepend':
+        rule.rules = [...differenceWith(newRule.rules, rule.rules, _uniteRules), ...rule.rules];
+        break;
+      default:
+        rule.rules = unionWith(rule.rules, newRule.rules, uniteRules);
+        break;
+    }
   }
 
   // newRule.loader should always override
@@ -63,9 +71,17 @@ module.exports = function uniteRules(newRule, rule, prepend) {
     const newEntries = [].concat(newRule.use || newRule.loaders).map(expandEntry);
 
     const loadersKey = rule.use || newRule.use ? 'use' : 'loaders';
-    rule[loadersKey] = prepend
-        ? [...differenceWith(newEntries, entries, uniteEntries), ...entries].map(unwrapEntry)
-        : unionWith(entries, newEntries, uniteEntries).map(unwrapEntry);
+    switch (strategy) {
+      case 'prepend':
+        rule[loadersKey] = [
+          ...differenceWith(newEntries, entries, uniteEntries),
+          ...entries
+        ].map(unwrapEntry);
+        break;
+      default:
+        rule[loadersKey] = unionWith(entries, newEntries, uniteEntries).map(unwrapEntry);
+        break;
+    }
   }
 
   if (newRule.include) {
@@ -77,7 +93,7 @@ module.exports = function uniteRules(newRule, rule, prepend) {
   }
 
   return true;
-};
+}
 
 /**
  * Check equality of two values using lodash's isEqual
@@ -106,3 +122,15 @@ function uniteEntries(newEntry, entry) {
   mergeWith(entry, newEntry);
   return true;
 }
+
+function unitePlugins(newPlugin, plugin) {
+  if (!(newPlugin instanceof plugin.constructor)) {
+    return false;
+  }
+  joinArrays()(plugin, newPlugin, 'plugins');
+  return true;
+}
+
+exports.uniteRules = uniteRules;
+exports.uniteEntries = uniteEntries;
+exports.unitePlugins = unitePlugins;

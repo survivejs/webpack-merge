@@ -12,8 +12,10 @@
   "rules": {
     "func-names": 0,
     "comma-dangle": [2, "never"],
+    "consistent-return": 0,
     "no-undef": [2],
     "no-undefined": 1,
+    "no-underscore-dangle": 0,
     "no-use-before-define": 0,
     // http://eslint.org/docs/rules/prefer-const
     "prefer-const": 1,
