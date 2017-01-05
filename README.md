@@ -43,15 +43,6 @@ var output = merge.smartStrategy(
     'module.loaders': 'prepend'
   }
 )(object1, object2, object3, ...);
-
-// It is possible to merge plugin contents too
-var output = merge.smartStrategy(
-  {
-    entry: 'prepend', // or 'replace'
-    'module.loaders': 'prepend'
-  },
-  ['LoaderOptionsPlugin']
-)(object1, object2, object3, ...);
 ```
 
 > Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.

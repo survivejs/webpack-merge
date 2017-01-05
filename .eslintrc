@@ -12,7 +12,6 @@
   "rules": {
     "func-names": 0,
     "comma-dangle": [2, "never"],
-    "consistent-return": 0,
     "no-undef": [2],
     "no-undefined": 1,
     "no-underscore-dangle": 0,

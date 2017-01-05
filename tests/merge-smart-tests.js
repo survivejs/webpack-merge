@@ -1,7 +1,6 @@
 /* eslint-env mocha */
 const assert = require('assert');
 const loadersKeys = require('./loaders-keys');
-const webpack = require('webpack');
 
 function mergeSmartTests(merge) {
   commonTests(merge);
@@ -604,93 +603,6 @@ function mergeSmartTest(merge, loadersKey) {
     ];
 
     assert.deepEqual(merge(common, eslint), result);
-  });
-
-  it('should not merge rules that only have a loader definition', function () {
-    // these shouldn't be merged because none of `test`, `include`, nor `exclude` are defined.
-    // This is useful when using Webpack 2 nested rules
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        rules: [{ loader: 'eslint' }]
-      }
-    ];
-    const isparta = {
-      module: {}
-    };
-    isparta.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        rules: [{ loader: 'isparta-instrumenter' }]
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        rules: [
-          { loader: 'eslint' },
-          { loader: 'isparta-instrumenter' }
-        ]
-      }
-    ];
-
-    assert.deepEqual(merge(common, isparta), result);
-  });
-
-  it('should not support merging plugins by default', function () {
-    const a = {
-      plugins: [
-        new webpack.LoaderOptionsPlugin({
-          options: {
-            babel: {
-              sourceMaps: true,
-              presets: ['es2015']
-            }
-          }
-        })
-      ]
-    };
-    const b = {
-      plugins: [
-        new webpack.LoaderOptionsPlugin({
-          options: {
-            babel: {
-              presets: ['es2016', 'stage-0']
-            }
-          }
-        })
-      ]
-    };
-    const result = {
-      plugins: [
-        new webpack.LoaderOptionsPlugin({
-          options: {
-            babel: {
-              sourceMaps: true,
-              presets: ['es2015']
-            }
-          }
-        }),
-        new webpack.LoaderOptionsPlugin({
-          options: {
-            babel: {
-              presets: ['es2016', 'stage-0']
-            }
-          }
-        })
-      ]
-    };
-    const merged = merge(a, b);
-
-    // Nasty, but plugins cannot be compared directly
-    assert.deepEqual(merged.plugins[0].options.options, result.plugins[0].options.options);
-    assert.deepEqual(merged.plugins[1].options.options, result.plugins[1].options.options);
   });
 }
 

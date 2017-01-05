@@ -1,4 +1,5 @@
 const isEqual = require('lodash.isequal');
+const isFunction = require('lodash.isfunction');
 const mergeWith = require('lodash.mergewith');
 const unionWith = require('lodash.unionwith');
 const differenceWith = require('lodash.differencewith');
@@ -123,20 +124,12 @@ function uniteEntries(newEntry, entry) {
   return true;
 }
 
-function unitePlugins(plugins, newPlugin, plugin) {
-  if (!plugins.length) {
-    return false;
-  }
+function unitePlugins(newPlugin, plugin) {
+  if (!(newPlugin instanceof plugin.constructor)) return false;
 
-  if (!(newPlugin instanceof plugin.constructor)) {
-    return false;
-  }
+  // functions shouldn't be merged here
+  mergeWith(plugin, newPlugin, (a, b, k) => (isFunction(a) ? a : joinArrays()(a, b, k)));
 
-  if (plugins.indexOf(plugin.constructor.name) < 0) {
-    return false;
-  }
-
-  joinArrays()(plugin, newPlugin, 'plugins');
   return true;
 }
 
