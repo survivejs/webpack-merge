@@ -1,3 +1,8 @@
+2.2.0 / 2017-01-05
+==================
+
+  * Bug fix - Drop `merge.smartStrategy(rules, plugins)` as that caused other issues (prototype copying for complex cases). That needs a better approach. #55
+
 2.1.1 / 2017-01-05
 ==================
 
