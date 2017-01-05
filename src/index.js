@@ -36,7 +36,7 @@ const mergeStrategy = (rules = {}) => merge({
   customizeArray: customizeArray(rules),
   customizeObject: customizeObject(rules)
 });
-const mergeSmartStrategy = (rules = {}) => merge({
+const mergeSmartStrategy = (rules = {}, plugins = []) => merge({
   customizeArray: (a, b, key) => {
     const topKey = key.split('.').slice(-1)[0];
     if (isRule(topKey)) {
@@ -52,11 +52,14 @@ const mergeSmartStrategy = (rules = {}) => merge({
     } else if (topKey === 'plugins') {
       switch (rules[key]) {
         case 'prepend':
-          return [...differenceWith(b, a, joinArraysSmart.unitePlugins), ...a];
+          return [
+            ...differenceWith(b, a, joinArraysSmart.unitePlugins.bind(null, plugins)),
+            ...a
+          ];
         case 'replace':
           return b;
         default: // append
-          return unionWith(a, b, joinArraysSmart.unitePlugins);
+          return unionWith(a, b, joinArraysSmart.unitePlugins.bind(null, plugins));
       }
     }
 

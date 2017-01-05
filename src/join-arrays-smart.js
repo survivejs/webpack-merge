@@ -123,10 +123,19 @@ function uniteEntries(newEntry, entry) {
   return true;
 }
 
-function unitePlugins(newPlugin, plugin) {
+function unitePlugins(plugins, newPlugin, plugin) {
+  if (!plugins.length) {
+    return false;
+  }
+
   if (!(newPlugin instanceof plugin.constructor)) {
     return false;
   }
+
+  if (plugins.indexOf(plugin.constructor.name) < 0) {
+    return false;
+  }
+
   joinArrays()(plugin, newPlugin, 'plugins');
   return true;
 }

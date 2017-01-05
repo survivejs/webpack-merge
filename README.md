@@ -18,25 +18,40 @@ var output = merge(object1, object2, object3, ...);
 var output = merge([object1, object2, object3]);
 
 // Customizing array/object behavior
-var output = merge({
-  customizeArray(a, b, key) { return [...a, ...b]; },
-  customizeObject(a, b, key) { return mergeWith(a, b); }
-})(object1, object2, object3, ...);
+var output = merge(
+  {
+    customizeArray(a, b, key) { return [...a, ...b]; },
+    customizeObject(a, b, key) { return mergeWith(a, b); }
+  }
+)(object1, object2, object3, ...);
 
 // Smarter merging for loaders, see below
 var output = merge.smart(object1, object2, object3, ...);
 
 // Merging with a specific merge strategy
-var output = merge.strategy({
-  entry: 'prepend', // or 'replace'
-  'module.loaders': 'prepend'
-})(object1, object2, object3, ...);
+var output = merge.strategy(
+  {
+    entry: 'prepend', // or 'replace'
+    'module.loaders': 'prepend'
+  }
+)(object1, object2, object3, ...);
 
 // The same idea works with smart merging too
-var output = merge.smartStrategy({
-  entry: 'prepend', // or 'replace'
-  'module.loaders': 'prepend'
-})(object1, object2, object3, ...);
+var output = merge.smartStrategy(
+  {
+    entry: 'prepend', // or 'replace'
+    'module.loaders': 'prepend'
+  }
+)(object1, object2, object3, ...);
+
+// It is possible to merge plugin contents too
+var output = merge.smartStrategy(
+  {
+    entry: 'prepend', // or 'replace'
+    'module.loaders': 'prepend'
+  },
+  ['LoaderOptionsPlugin']
+)(object1, object2, object3, ...);
 ```
 
 > Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.

@@ -643,7 +643,7 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(common, isparta), result);
   });
 
-  it('should support merging plugins', function () {
+  it('should not support merging plugins by default', function () {
     const a = {
       plugins: [
         new webpack.LoaderOptionsPlugin({
@@ -673,17 +673,24 @@ function mergeSmartTest(merge, loadersKey) {
           options: {
             babel: {
               sourceMaps: true,
-              presets: ['es2015', 'es2016', 'stage-0']
+              presets: ['es2015']
+            }
+          }
+        }),
+        new webpack.LoaderOptionsPlugin({
+          options: {
+            babel: {
+              presets: ['es2016', 'stage-0']
             }
           }
         })
       ]
     };
-    // The merged test function can't be compared
-    delete a.plugins[0].options.test;
-    delete b.plugins[0].options.test;
-    delete result.plugins[0].options.test;
-    assert.deepEqual(merge(a, b), result);
+    const merged = merge(a, b);
+
+    // Nasty, but plugins cannot be compared directly
+    assert.deepEqual(merged.plugins[0].options.options, result.plugins[0].options.options);
+    assert.deepEqual(merged.plugins[1].options.options, result.plugins[1].options.options);
   });
 }
 

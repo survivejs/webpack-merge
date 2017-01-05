@@ -1,3 +1,18 @@
+2.1.0 / 2017-01-05
+==================
+
+  * Feature - Allow `merge.smartStrategy` to merge plugin contents. API: `merge.smartStrategy(rules, plugins)`. #44. Example:
+
+```javascript
+const output = merge.smartStrategy(
+  {
+    entry: 'prepend', // or 'replace'
+    'module.loaders': 'prepend'
+  },
+  ['LoaderOptionsPlugin']
+)(object1, object2, object3, ...);
+```
+
 2.0.0 / 2016-12-22
 ==================
 
