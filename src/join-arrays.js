@@ -1,3 +1,4 @@
+const cloneDeep = require('lodash.clonedeep');
 const cloneDeepWith = require('lodash.clonedeepwith');
 const isBoolean = require('lodash.isboolean');
 const isFunction = require('lodash.isfunction');
@@ -60,7 +61,7 @@ function clonePrototype(o) {
   }
   const clone = Object.create(Object.getPrototypeOf(o));
   Object.getOwnPropertyNames(o).forEach((prop) => {
-    clone[prop] = cloneDeepWith(o[prop], clonePrototype);
+    clone[prop] = cloneDeep(o[prop]);
   });
   return clone;
 }

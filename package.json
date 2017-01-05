@@ -15,6 +15,7 @@
     "lib"
   ],
   "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
     "lodash.clonedeepwith": "^4.5.0",
     "lodash.differencewith": "^4.5.0",
     "lodash.isboolean": "^3.0.3",
