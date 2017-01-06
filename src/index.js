@@ -2,7 +2,7 @@ import {
   differenceWith, mergeWith, unionWith
 } from 'lodash';
 import joinArrays from './join-arrays';
-import * as joinArraysSmart from './join-arrays-smart';
+import { uniteRules } from './join-arrays-smart';
 
 function merge(...sources) {
   // This supports
@@ -30,36 +30,39 @@ function merge(...sources) {
   return mergeWith({}, ...sources, joinArrays());
 }
 
+const mergeSmart = merge({
+  customizeArray: (a, b, key) => {
+    if (isRule(key.split('.').slice(-1)[0])) {
+      return unionWith(a, b, uniteRules);
+    }
+
+    return null;
+  }
+});
+
 // rules: { <field>: <'append'|'prepend'|'replace'> }
 // All default to append but you can override here
 const mergeStrategy = (rules = {}) => merge({
   customizeArray: customizeArray(rules),
   customizeObject: customizeObject(rules)
 });
-const mergeSmartStrategy = (rules = {}, plugins = []) => merge({
+const mergeSmartStrategy = (rules = {}) => merge({
   customizeArray: (a, b, key) => {
     const topKey = key.split('.').slice(-1)[0];
+
     if (isRule(topKey)) {
-      const _uniteRules = (aRule, bRule) => joinArraysSmart.uniteRules(aRule, bRule, rules[key]);
-      switch (rules[key]) {
-        case 'prepend':
-          return [...differenceWith(b, a, _uniteRules), ...a];
-        case 'replace':
-          return b;
-        default: // append
-          return unionWith(a, b, _uniteRules);
-      }
-    } else if (topKey === 'plugins') {
       switch (rules[key]) {
         case 'prepend':
           return [
-            ...differenceWith(b, a, joinArraysSmart.unitePlugins.bind(null, plugins)),
+            ...differenceWith(b, a, (newRule, seenRule) => (
+              uniteRules(newRule, seenRule, 'prepend'))
+            ),
             ...a
           ];
         case 'replace':
           return b;
         default: // append
-          return unionWith(a, b, joinArraysSmart.unitePlugins.bind(null, plugins));
+          return unionWith(a, b, uniteRules);
       }
     }
 
@@ -99,6 +102,6 @@ function isRule(key) {
 }
 
 module.exports = merge;
+module.exports.smart = mergeSmart;
 module.exports.strategy = mergeStrategy;
-module.exports.smart = mergeSmartStrategy();
 module.exports.smartStrategy = mergeSmartStrategy;

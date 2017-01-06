@@ -1,5 +1,7 @@
 /* eslint-env mocha */
 const assert = require('assert');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const loadersKeys = require('./loaders-keys');
 
 function mergeSmartTests(merge) {
@@ -95,6 +97,25 @@ function commonTests(merge) {
     };
 
     assert.deepEqual(merge(a, b), result);
+  });
+
+  it('should not lose CopyWebpackPlugin (#56)', function () {
+    const a = {
+      plugins: [
+        new CopyWebpackPlugin()
+      ]
+    };
+    const b = {
+      plugins: [
+        new webpack.optimize.UglifyJsPlugin()
+      ]
+    };
+    const merged = merge(a, b);
+
+    assert.equal(merged.plugins.length, 2);
+    // CopyWebpackPlugin is actually a function that gets applied above
+    assert.ok(merged.plugins[0].apply);
+    assert.equal(merged.plugins[1].constructor.name, 'UglifyJsPlugin');
   });
 }
 

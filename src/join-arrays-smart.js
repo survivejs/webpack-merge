@@ -1,7 +1,6 @@
 import {
-  isEqual, isFunction, mergeWith, unionWith, differenceWith
+  isEqual, mergeWith, unionWith, differenceWith
 } from 'lodash';
-import joinArrays from './join-arrays';
 
 const isArray = Array.isArray;
 
@@ -122,17 +121,7 @@ function uniteEntries(newEntry, entry) {
   return true;
 }
 
-function unitePlugins(newPlugin, plugin) {
-  if (!(newPlugin instanceof plugin.constructor)) return false;
-
-  // functions shouldn't be merged here
-  mergeWith(plugin, newPlugin, (a, b, k) => (isFunction(a) ? a : joinArrays()(a, b, k)));
-
-  return true;
-}
-
 export {
   uniteRules,
-  uniteEntries,
-  unitePlugins
+  uniteEntries
 };
