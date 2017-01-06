@@ -1,9 +1,7 @@
-const isEqual = require('lodash.isequal');
-const isFunction = require('lodash.isfunction');
-const mergeWith = require('lodash.mergewith');
-const unionWith = require('lodash.unionwith');
-const differenceWith = require('lodash.differencewith');
-const joinArrays = require('./join-arrays');
+import {
+  isEqual, isFunction, mergeWith, unionWith, differenceWith
+} from 'lodash';
+import joinArrays from './join-arrays';
 
 const isArray = Array.isArray;
 
@@ -133,6 +131,8 @@ function unitePlugins(newPlugin, plugin) {
   return true;
 }
 
-exports.uniteRules = uniteRules;
-exports.uniteEntries = uniteEntries;
-exports.unitePlugins = unitePlugins;
+export {
+  uniteRules,
+  uniteEntries,
+  unitePlugins
+};

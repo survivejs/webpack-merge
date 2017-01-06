@@ -1,11 +1,10 @@
-const cloneDeep = require('lodash.clonedeep');
-const isFunction = require('lodash.isfunction');
-const isPlainObject = require('lodash.isplainobject');
-const mergeWith = require('lodash.mergewith');
+import {
+  cloneDeep, isFunction, isPlainObject, mergeWith
+} from 'lodash';
 
 const isArray = Array.isArray;
 
-module.exports = function joinArrays({
+export default function joinArrays({
   customizeArray,
   customizeObject,
   key
@@ -38,4 +37,4 @@ module.exports = function joinArrays({
 
     return b;
   };
-};
+}

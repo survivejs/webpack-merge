@@ -1,3 +1,8 @@
+2.3.0 / 2017-01-06
+==================
+
+  * Refactor - Depend only on `lodash` instead of individual packages as latter has been discontinued. #52
+
 2.2.0 / 2017-01-05
 ==================
 

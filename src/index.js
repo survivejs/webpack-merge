@@ -1,8 +1,8 @@
-const differenceWith = require('lodash.differencewith');
-const mergeWith = require('lodash.mergewith');
-const unionWith = require('lodash.unionwith');
-const joinArrays = require('./join-arrays');
-const joinArraysSmart = require('./join-arrays-smart');
+import {
+  differenceWith, mergeWith, unionWith
+} from 'lodash';
+import joinArrays from './join-arrays';
+import * as joinArraysSmart from './join-arrays-smart';
 
 function merge(...sources) {
   // This supports
