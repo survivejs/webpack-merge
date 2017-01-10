@@ -25,7 +25,6 @@ function uniteRules(newRule, rule, strategy) {
         break;
       default:
         rule.rules = unionWith(rule.rules, newRule.rules, uniteRules);
-        break;
     }
   }
 
@@ -78,7 +77,6 @@ function uniteRules(newRule, rule, strategy) {
         break;
       default:
         rule[loadersKey] = unionWith(entries, newEntries, uniteEntries).map(unwrapEntry);
-        break;
     }
   }
 
