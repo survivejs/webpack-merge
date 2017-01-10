@@ -7,6 +7,7 @@
     "build": "babel src -d lib",
     "watch": "npm-watch",
     "test": "mocha tests/test-*",
+    "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
     "test:lint": "eslint . --cache",
     "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
@@ -28,6 +29,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "git-prepush-hook": "^1.0.1",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "npm-watch": "^0.1.6",
     "webpack": "^1.14.0"
