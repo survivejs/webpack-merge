@@ -1,5 +1,6 @@
 /* eslint-env mocha */
 const assert = require('assert');
+const webpack = require('webpack');
 const webpackMerge = require('..');
 const mergeTests = require('./merge-tests');
 const loadersKeys = require('./loaders-keys');
@@ -258,6 +259,37 @@ function customizeMergeTests(merge) {
 
     assert.equal(receivedKey, 'entry');
     assert.deepEqual(result, first);
+  });
+
+  it('should customize plugins', function () {
+    let receivedKey;
+    const config1 = {
+      plugins: [
+        new webpack.DefinePlugin({
+          'process.env': {
+            NODE_ENV: JSON.stringify('development')
+          }
+        }),
+        new webpack.HotModuleReplacementPlugin()
+      ]
+    };
+    const config2 = {
+      plugins: [
+        new webpack.DefinePlugin({
+          __CLIENT__: true
+        }),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new webpack.HotModuleReplacementPlugin()
+      ]
+    };
+
+    merge({
+      customizeArray(a, b, key) {
+        receivedKey = key;
+      }
+    })(config1, config2);
+
+    assert.equal(receivedKey, 'plugins');
   });
 }
 
