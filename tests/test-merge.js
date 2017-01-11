@@ -201,7 +201,7 @@ function customizeMergeTests(merge) {
   });
 
   it('should pass key to array customizer', function () {
-    let receivedKey;
+    var receivedKey;
     const first = {
       entry: ['a']
     };
@@ -238,7 +238,7 @@ function customizeMergeTests(merge) {
   });
 
   it('should pass key to object customizer', function () {
-    let receivedKey;
+    var receivedKey;
     const first = {
       entry: {
         a: 'foo'
@@ -262,7 +262,7 @@ function customizeMergeTests(merge) {
   });
 
   it('should customize plugins', function () {
-    let receivedKey;
+    var receivedKey;
     const config1 = {
       plugins: [
         new webpack.DefinePlugin({
