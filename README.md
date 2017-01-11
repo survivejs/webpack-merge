@@ -25,14 +25,16 @@ var output = merge(
       if (key === 'extensions') {
         return _.uniq([...a, ...b]);
       }
+
       // Fall back to default merging
       return undefined;
     },
     customizeObject(a, b, key) {
       if (key === 'plugins') {
         // Custom merging
-        return _.mergeWith(a, b);
+        return _.merge({}, a, b);
       }
+
       // Fall back to default merging
       return undefined;
     }
