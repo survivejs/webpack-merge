@@ -30,7 +30,7 @@ var output = merge(
       return undefined;
     },
     customizeObject(a, b, key) {
-      if (key === 'plugins') {
+      if (key === 'module') {
         // Custom merging
         return _.merge({}, a, b);
       }
