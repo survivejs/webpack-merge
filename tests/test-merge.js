@@ -199,6 +199,26 @@ function customizeMergeTests(merge) {
     })(first, second), first);
   });
 
+  it('should pass key to array customizer', function () {
+    let receivedKey;
+    const first = {
+      entry: ['a']
+    };
+    const second = {
+      entry: ['b']
+    };
+    const result = merge({
+      customizeArray(a, b, key) {
+        receivedKey = key;
+
+        return a;
+      }
+    })(first, second);
+
+    assert.equal(receivedKey, 'entry');
+    assert.deepEqual(result, first);
+  });
+
   it('should allow overriding object behavior', function () {
     const first = {
       entry: {
@@ -214,6 +234,30 @@ function customizeMergeTests(merge) {
     assert.deepEqual(merge({
       customizeObject(a) { return a; }
     })(first, second), first);
+  });
+
+  it('should pass key to object customizer', function () {
+    let receivedKey;
+    const first = {
+      entry: {
+        a: 'foo'
+      }
+    };
+    const second = {
+      entry: {
+        a: 'bar'
+      }
+    };
+    const result = merge({
+      customizeObject(a, b, key) {
+        receivedKey = key;
+
+        return a;
+      }
+    })(first, second);
+
+    assert.equal(receivedKey, 'entry');
+    assert.deepEqual(result, first);
   });
 }
 
