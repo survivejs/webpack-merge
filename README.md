@@ -21,8 +21,21 @@ var output = merge([object1, object2, object3]);
 // Customizing array/object behavior
 var output = merge(
   {
-    customizeArray(a, b, key) { return [...a, ...b]; },
-    customizeObject(a, b, key) { return mergeWith(a, b); }
+    customizeArray(a, b, key) {
+      if (key === 'extensions') {
+        return _.uniq([...a, ...b]);
+      }
+      // Fall back to default merging
+      return undefined;
+    },
+    customizeObject(a, b, key) {
+      if (key === 'plugins') {
+        // Custom merging
+        return _.mergeWith(a, b);
+      }
+      // Fall back to default merging
+      return undefined;
+    }
   }
 )(object1, object2, object3, ...);
 
@@ -52,13 +65,13 @@ var output = merge.smartStrategy(
 
 **package.json**
 
-```json
+```json5
 {
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack"
   },
-  ...
+  // ...
 }
 ```
 
