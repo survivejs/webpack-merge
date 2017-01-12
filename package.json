@@ -8,7 +8,7 @@
     "watch": "npm-watch",
     "test": "mocha tests/test-*",
     "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
-    "test:lint": "eslint . --cache",
+    "test:lint": "eslint src/ tests/ --cache",
     "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
