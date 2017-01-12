@@ -8,7 +8,9 @@ This behavior is particularly useful in configuring webpack although it has uses
 
 There's also a webpack specific merge variant known as `merge.smart` that's able to take webpack specifics into account (i.e., it can flatten loader definitions).
 
-## Standard Merging - **`merge(...configuration | [...configuration])`**
+## Standard Merging
+
+### **`merge(...configuration | [...configuration])`**
 
 `merge` is the core, and the most important idea, of the API. Often this is all you need unless you want further customization.
 
@@ -72,7 +74,9 @@ const output = merge({
 // Output contains only single HotModuleReplacementPlugin now.
 ```
 
-## Merging with Strategies - **`merge.strategy({ <field>: '<prepend|append|replace>''})(...configuration | [...configuration])`**
+## Merging with Strategies
+
+### **`merge.strategy({ <field>: '<prepend|append|replace>''})(...configuration | [...configuration])`**
 
 Given you may want to configure merging behavior per field, there's a strategy variant:
 
@@ -99,7 +103,9 @@ var output = merge.smartStrategy(
 )(object1, object2, object3, ...);
 ```
 
-## Smart Merging - **`merge.smart(...configuration | [...configuration])`**
+## Smart Merging
+
+### **`merge.smart(...configuration | [...configuration])`**
 
 *webpack-merge* tries to be smart about merging loaders when `merge.smart` is used. Loaders with matching tests will be merged into a single loader value.
 
