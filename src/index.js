@@ -3,6 +3,7 @@ import {
 } from 'lodash';
 import joinArrays from './join-arrays';
 import { uniteRules } from './join-arrays-smart';
+import unique from './unique';
 
 function merge(...sources) {
   // This supports
@@ -105,3 +106,4 @@ module.exports = merge;
 module.exports.smart = mergeSmart;
 module.exports.strategy = mergeStrategy;
 module.exports.smartStrategy = mergeSmartStrategy;
+module.exports.unique = unique;

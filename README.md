@@ -8,7 +8,9 @@ This behavior is particularly useful in configuring webpack although it has uses
 
 There's also a webpack specific merge variant known as `merge.smart` that's able to take webpack specifics into account (i.e., it can flatten loader definitions).
 
-## API
+## Standard Merging - **`merge(...configuration | [...configuration])`**
+
+`merge` is the core, and the most important idea, of the API. Often this is all you need unless you want further customization.
 
 ```javascript
 // Default API
@@ -17,7 +19,13 @@ var output = merge(object1, object2, object3, ...);
 // You can pass an array of objects directly.
 // This works with all available functions.
 var output = merge([object1, object2, object3]);
+```
 
+### **`merge({ customizeArray, customizeObject })(...configuration | [...configuration])`**
+
+`merge` behavior can be customized per field through a curried customization API.
+
+```javascript
 // Customizing array/object behavior
 var output = merge(
   {
@@ -40,19 +48,49 @@ var output = merge(
     }
   }
 )(object1, object2, object3, ...);
+```
 
-// Smarter merging for loaders, see below
-var output = merge.smart(object1, object2, object3, ...);
+### **`merge.unique(<field>, <fields>, field => field)`**
 
+```javascript
+const output = merge({
+  customizeArray: merge.unique(
+    'plugins',
+    ['HotModuleReplacementPlugin'],
+    plugin => plugin.constructor && plugin.constructor.name
+  )
+})({
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
+}, {
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ]
+});
+
+// Output contains only single HotModuleReplacementPlugin now.
+```
+
+## Merging with Strategies - **`merge.strategy({ <field>: '<prepend|append|replace>''})(...configuration | [...configuration])`**
+
+Given you may want to configure merging behavior per field, there's a strategy variant:
+
+```javascript
 // Merging with a specific merge strategy
 var output = merge.strategy(
   {
-    entry: 'prepend', // or 'replace'
+    entry: 'prepend', // or 'replace', defaults to 'append'
     'module.loaders': 'prepend'
   }
 )(object1, object2, object3, ...);
+```
 
-// The same idea works with smart merging too
+### **`merge.smartStrategy({ <key>: '<prepend|append|replace>''})(...configuration | [...configuration])`**
+
+The same idea works with smart merging too (described below in greater detail).
+
+```javascript
 var output = merge.smartStrategy(
   {
     entry: 'prepend', // or 'replace'
@@ -61,9 +99,11 @@ var output = merge.smartStrategy(
 )(object1, object2, object3, ...);
 ```
 
-> Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
+## Smart Merging - **`merge.smart(...configuration | [...configuration])`**
 
-## Example
+*webpack-merge* tries to be smart about merging loaders when `merge.smart` is used. Loaders with matching tests will be merged into a single loader value.
+
+Note that the logic picks up webpack 2 `rules` kind of syntax as well. The examples below have been written in webpack 1 syntax.
 
 **package.json**
 
@@ -122,12 +162,6 @@ if(TARGET === 'build') {
 
 ...
 ```
-
-## Smart Merging of Loaders
-
-Webpack-merge tries to be smart about merging loaders when `merge.smart` is used. Loaders with matching tests will be merged into a single loader value.
-
-Note that the logic picks up webpack 2 `rules` kind of syntax as well. The examples below have been written in webpack 1 syntax.
 
 **Loader string values `loader: 'babel'` override each other.**
 
@@ -246,6 +280,8 @@ merge.smart({
   }]
 }
 ```
+
+> Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
 
 ## Development
 
