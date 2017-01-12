@@ -1,3 +1,8 @@
+2.4.0 / 2017-01-12
+==================
+
+  * Feature - Add `merge.unique` helper that plugs into `customizeArray`. This allows you to force only one plugin of a type to the end result. #58
+
 2.3.1 / 2017-01-06
 ==================
 
