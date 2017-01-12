@@ -5,7 +5,7 @@ function mergeUnique(key, uniques, getter = a => a) {
     k === key && [
       ...a,
       ...differenceWith(
-        b, a, item => uniques.includes(getter(item))
+        b, a, item => uniques.indexOf(getter(item)) >= 0
       )
     ]
   );
