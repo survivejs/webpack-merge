@@ -1,3 +1,8 @@
+2.5.0 / 2017-01-26
+==================
+
+  * Bug fix - Make sure `merge.smartStrategy` works with higher level nesting like `'module.rules.use': 'prepend'`. #64
+
 2.4.0 / 2017-01-12
 ==================
 

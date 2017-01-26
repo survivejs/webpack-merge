@@ -51,8 +51,88 @@ function mergeStrategySpecificTests(merge) {
     };
 
     assert.deepEqual(merge({
-      'module.loaders': 'prepend'
+      'module.loaders.loaders': 'prepend'
     })(a, b), result);
+  });
+
+  it('should work with two level nesting (#64)', function () {
+    const common = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /(node_modules|lib)/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  cacheDirectory: true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const prod = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            use: [
+              {
+                loader: 'string-replace-loader',
+                options: {
+                  multiple: [
+                    {
+                      search: /["']ngInject["'];*/,
+                      replace: '',
+                      flags: 'g'
+                    }
+                  ]
+                }
+              },
+              'ng-annotate-loader'
+            ]
+          }
+        ]
+      }
+    };
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /(node_modules|lib)/,
+            use: [
+              {
+                loader: 'string-replace-loader',
+                options: {
+                  multiple: [
+                    {
+                      search: /["']ngInject["'];*/,
+                      replace: '',
+                      flags: 'g'
+                    }
+                  ]
+                }
+              },
+              'ng-annotate-loader',
+              {
+                loader: 'babel-loader',
+                options: {
+                  cacheDirectory: true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge({
+      'module.rules.use': 'prepend'
+    })(common, prod), expected);
   });
 
   it('should work with nested arrays and replace', function () {

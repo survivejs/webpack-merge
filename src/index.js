@@ -34,7 +34,7 @@ function merge(...sources) {
 const mergeSmart = merge({
   customizeArray: (a, b, key) => {
     if (isRule(key.split('.').slice(-1)[0])) {
-      return unionWith(a, b, uniteRules);
+      return unionWith(a, b, uniteRules.bind(null, {}, key));
     }
 
     return null;
@@ -56,14 +56,14 @@ const mergeSmartStrategy = (rules = {}) => merge({
         case 'prepend':
           return [
             ...differenceWith(b, a, (newRule, seenRule) => (
-              uniteRules(newRule, seenRule, 'prepend'))
+              uniteRules(rules, key, newRule, seenRule, 'prepend'))
             ),
             ...a
           ];
         case 'replace':
           return b;
         default: // append
-          return unionWith(a, b, uniteRules);
+          return unionWith(a, b, uniteRules.bind(null, rules, key));
       }
     }
 

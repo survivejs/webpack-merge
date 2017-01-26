@@ -4,7 +4,7 @@ import {
 
 const isArray = Array.isArray;
 
-function uniteRules(newRule, rule, strategy) {
+function uniteRules(rules, key, newRule, rule) {
   if (String(rule.test) !== String(newRule.test)
       || (newRule.enforce && rule.enforce !== newRule.enforce)
       || (newRule.include && !isSameValue(rule.include, newRule.include))
@@ -18,8 +18,9 @@ function uniteRules(newRule, rule, strategy) {
 
   // webpack 2 nested rules support
   if (rule.rules) {
-    const _uniteRules = (b, a) => uniteRules(b, a, strategy);
-    switch (strategy) {
+    const _uniteRules = (b, a) => uniteRules(rules, key, b, a);
+
+    switch (rules[key]) {
       case 'prepend':
         rule.rules = [...differenceWith(newRule.rules, rule.rules, _uniteRules), ...rule.rules];
         break;
@@ -68,7 +69,9 @@ function uniteRules(newRule, rule, strategy) {
     const newEntries = [].concat(newRule.use || newRule.loaders).map(expandEntry);
 
     const loadersKey = rule.use || newRule.use ? 'use' : 'loaders';
-    switch (strategy) {
+    const resolvedKey = `${key}.${loadersKey}`;
+
+    switch (rules[resolvedKey]) {
       case 'prepend':
         rule[loadersKey] = [
           ...differenceWith(newEntries, entries, uniteEntries),
