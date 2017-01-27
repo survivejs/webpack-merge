@@ -55,6 +55,123 @@ function mergeStrategySpecificTests(merge) {
     })(a, b), result);
   });
 
+  it('should work with nested arrays and replace', function () {
+    const a = {
+      module: {
+        loaders: [
+          {
+            test: /.jsx?$/,
+            loaders: ['babel'],
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        loaders: [
+          {
+            test: /.jsx?$/,
+            loaders: ['react-hot'],
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        loaders: [
+          {
+            test: /.jsx?$/,
+            loaders: ['react-hot'],
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge({
+      'module.loaders.loaders': 'replace'
+    })(a, b), result);
+  });
+
+  it('should work with nested arrays and replace with rules', function () {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /.jsx?$/,
+            loaders: ['babel'],
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /.jsx?$/,
+            loaders: ['react-hot'],
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /.jsx?$/,
+            loaders: ['react-hot'],
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge({
+      'module.rules.loaders': 'replace'
+    })(a, b), result);
+  });
+
+  it('should work with use and same types (#63)', function () {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            use: 'babel'
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            use: 'coffee'
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            use: 'coffee'
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge({
+      'module.rules.use': 'replace'
+    })(a, b), result);
+  });
+
   it('should work with two level nesting (#64)', function () {
     const common = {
       module: {

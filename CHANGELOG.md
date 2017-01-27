@@ -1,3 +1,8 @@
+2.6.0 / 2017-01-27
+==================
+
+  * Bug fix - Support `replace` mode for `merge.smartStrategy`. #63
+
 2.5.0 / 2017-01-26
 ==================
 
