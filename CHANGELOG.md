@@ -1,3 +1,8 @@
+2.6.1 / 2017-01-29
+==================
+
+  * Bug fix - `merge.smart` should not merge rules that have differing `enforce` fields. #65
+
 2.6.0 / 2017-01-27
 ==================
 

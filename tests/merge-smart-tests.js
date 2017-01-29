@@ -13,6 +13,93 @@ function mergeSmartTests(merge) {
 }
 
 function commonTests(merge) {
+  it('should not merge if enforce rules are different (#65)', function () {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            exclude: /node_modules/
+          },
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge(a, b), result);
+  });
+
+  it('should not merge if enforce rules are different II (#65)', function () {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.vue$/,
+            loader: 'vue-loader'
+          },
+          {
+            test: /\.vue$/,
+            loader: 'eslint-loader',
+            enforce: 'pre',
+            exclude: /node_modules/
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge(a, b), result);
+  });
+
+
   it('should merge with matching exclude and loaders', function () {
     const a = {
       module: {

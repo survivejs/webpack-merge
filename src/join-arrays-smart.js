@@ -6,7 +6,7 @@ const isArray = Array.isArray;
 
 function uniteRules(rules, key, newRule, rule) {
   if (String(rule.test) !== String(newRule.test)
-      || (newRule.enforce && rule.enforce !== newRule.enforce)
+      || ((newRule.enforce || rule.enforce) && rule.enforce !== newRule.enforce)
       || (newRule.include && !isSameValue(rule.include, newRule.include))
       || (newRule.exclude && !isSameValue(rule.exclude, newRule.exclude))) {
     return false;
