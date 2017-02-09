@@ -14,6 +14,9 @@ function uniteRules(rules, key, newRule, rule) {
       && (rule.loader && rule.loader.split('?')[0]) !== (newRule.loader && newRule.loader.split('?')[0])) {
     // Don't merge the rule if there isn't any identifying fields and the loaders don't match
     return false;
+  } else if ((rule.include || rule.exclude) && (!newRule.include && !newRule.exclude)) {
+    // Don't merge child without include/exclude to parent that has either
+    return false;
   }
 
   // newRule.loader should always override

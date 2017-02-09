@@ -196,6 +196,7 @@ function mergeStrategySpecificTests(merge) {
         rules: [
           {
             test: /\.js$/,
+            exclude: /(node_modules|lib)/,
             use: [
               {
                 loader: 'string-replace-loader',
