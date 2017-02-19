@@ -225,6 +225,82 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(a, result), result);
   });
 
+  it('should not merge to parent if there is no include for ' + loadersKey + ' #68', function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['babel'],
+        include: 'apps'
+      }
+    ];
+    const strip = {
+      module: {}
+    };
+    strip.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['strip?strip[]=debug']
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['babel'],
+        include: 'apps'
+      },
+      {
+        test: /\.js$/,
+        loaders: ['strip?strip[]=debug']
+      }
+    ];
+
+    assert.deepEqual(merge(common, strip), result);
+  });
+
+  it('should not merge to parent if there is no exclude for ' + loadersKey + ' #68', function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['babel'],
+        exclude: 'apps'
+      }
+    ];
+    const strip = {
+      module: {}
+    };
+    strip.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['strip?strip[]=debug']
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.js$/,
+        loaders: ['babel'],
+        exclude: 'apps'
+      },
+      {
+        test: /\.js$/,
+        loaders: ['strip?strip[]=debug']
+      }
+    ];
+
+    assert.deepEqual(merge(common, strip), result);
+  });
+
   it('should append loaders with ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
@@ -345,7 +421,7 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should override loaders with props include ' + loadersKey, function () {
+  it('should not override loaders with props include ' + loadersKey, function () {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -360,9 +436,13 @@ function mergeSmartTest(merge, loadersKey) {
     const result = {};
     result[loadersKey] = [{
       test: /\.js$/,
-      loaders: ['a', 'b'],
+      loaders: ['a'],
       include: './path'
+    }, {
+      test: /\.js$/,
+      loaders: ['a', 'b']
     }];
+
     assert.deepEqual(merge(a, b), result);
   });
 
@@ -615,7 +695,7 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(common, isparta), result);
   });
 
-  it('should use parent include/exclude for ' + loadersKey, function () {
+  it('should not use parent include/exclude for ' + loadersKey, function () {
     const common = {
       module: {}
     };
@@ -646,20 +726,24 @@ function mergeSmartTest(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.js$/,
-        loaders: ['babel', 'strip?strip[]=debug'],
         include: [
           'apps',
           'lib',
           'thirdparty'
         ],
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        loaders: ['babel']
+      },
+      {
+        test: /\.js$/,
+        loaders: ['strip?strip[]=debug']
       }
     ];
 
     assert.deepEqual(merge(common, strip), result);
   });
 
-  it('should use parent include/exclude even if only loader string is specified for ' + loadersKey, function () {
+  it('should not use parent include/exclude even if only loader string is specified for ' + loadersKey, function () {
     const common = {
       module: {}
     };
@@ -695,18 +779,22 @@ function mergeSmartTest(merge, loadersKey) {
     result.module[loadersKey] = [
       {
         test: /\.js$/,
-        loader: 'eslint',
-        query: {
-          rules: {
-            'no-debugger': 0
-          }
-        },
         include: [
           'apps',
           'lib',
           'thirdparty'
         ],
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        loaders: 'eslint'
+      },
+      {
+        test: /\.js$/,
+        loader: 'eslint',
+        query: {
+          rules: {
+            'no-debugger': 0
+          }
+        }
       }
     ];
 
