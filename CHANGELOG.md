@@ -1,3 +1,8 @@
+3.0.0 / 2017-02-19
+==================
+
+  * Breaking fix - `merge.smart` should not merge a child missing `include`/`exclude` to a parent that has either. This is safer and more predictable behavior than the old one. #69
+
 2.6.1 / 2017-01-29
 ==================
 
