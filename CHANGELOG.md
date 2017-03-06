@@ -1,3 +1,30 @@
+4.0.0 / 2017-03-06
+==================
+
+  * Breaking feature - `merge.smart` allows re-ordering loaders like below. #70
+
+```javascript
+merge.smart({
+  loaders: [{
+    test: /\.js$/,
+    loaders: ['babel']
+  }]
+}, {
+  loaders: [{
+    test: /\.js$/,
+    loaders: ['react-hot', 'babel']
+  }]
+});
+// will become
+{
+  loaders: [{
+    test: /\.js$/,
+    // order of second argument is respected
+    loaders: ['react-hot', 'babel']
+  }]
+}
+```
+
 3.0.0 / 2017-02-19
 ==================
 
