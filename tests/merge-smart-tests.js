@@ -800,6 +800,49 @@ function mergeSmartTest(merge, loadersKey) {
 
     assert.deepEqual(merge(common, eslint), result);
   });
+
+  it('should respect a new order for ' + loadersKey, function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ];
+    const extractText = {
+      module: {}
+    };
+    extractText.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          'extract-text',
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          'extract-text',
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ];
+
+    assert.deepEqual(merge(common, extractText), result);
+  });
 }
 
 module.exports = mergeSmartTests;

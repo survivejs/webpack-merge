@@ -72,7 +72,13 @@ function uniteRules(rules, key, newRule, rule) {
         rule[loadersKey] = newRule.use || newRule.loaders;
         break;
       default:
-        rule[loadersKey] = unionWith(entries, newEntries, uniteEntries).map(unwrapEntry);
+        rule[loadersKey] = unionWith(
+          // Remove existing entries so that we can respect the order of the new
+          // entries
+          differenceWith(entries, newEntries, isEqual),
+          newEntries,
+          uniteEntries
+        ).map(unwrapEntry);
     }
   }
 

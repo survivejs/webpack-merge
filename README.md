@@ -217,7 +217,32 @@ merge.smart({
 }
 ```
 
-**Loader query strings `loaders: ['babel?plugins[]=object-assign']` will be overridden**
+**Loader array values `loaders: ['babel']` can be reordered by including
+original loaders.**
+
+```javascript
+merge.smart({
+  loaders: [{
+    test: /\.js$/,
+    loaders: ['babel']
+  }]
+}, {
+  loaders: [{
+    test: /\.js$/,
+    loaders: ['react-hot', 'babel']
+  }]
+});
+// will become
+{
+  loaders: [{
+    test: /\.js$/,
+    // order of second argument is respected
+    loaders: ['react-hot', 'babel']
+  }]
+}
+```
+
+**Loader query strings `loaders: ['babel?plugins[]=object-assign']` will be overridden.**
 
 ```javascript
 merge.smart({
