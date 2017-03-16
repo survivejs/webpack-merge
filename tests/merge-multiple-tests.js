@@ -48,6 +48,29 @@ function multipleTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
+  it('should add different configurations without merging', function () {
+    const a = {
+      client: {
+        entry: './client.js'
+      }
+    };
+    const b = {
+      server: {
+        entry: './server.js'
+      }
+    };
+    const result = [
+      {
+        entry: './client.js'
+      },
+      {
+        entry: './server.js'
+      }
+    ];
+
+    assert.deepEqual(merge(a, b), result);
+  });
+
   it('should work with an array of objects', function () {
     const a = {
       client: {
@@ -104,6 +127,38 @@ function multipleTests(merge) {
         entry: {
           main: './server.js'
         }
+      }
+    ];
+
+    assert.deepEqual(merge(a, b), result);
+  });
+
+  it('should merge where keys exist and add where not', function () {
+    const a = {
+      client: {
+        entry: './client.js'
+      },
+      server: {
+        entry: './server.js'
+      }
+    };
+    const b = {
+      server: {
+        entry: './replaced.js'
+      },
+      test: {
+        entry: './test.js'
+      }
+    };
+    const result = [
+      {
+        entry: './client.js'
+      },
+      {
+        entry: './replaced.js'
+      },
+      {
+        entry: './test.js'
       }
     ];
 
