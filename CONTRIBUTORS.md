@@ -13,3 +13,4 @@
 * [Kyle Herock](https://github.com/rockmacaca) - Improved webpack 2 support, avoided concatenating loaders if the first matching entry's include/exclude doesn't match. #41
 * [Steven Haddix](https://github.com/steven-haddix) - Clarify description. #42
 * [Artem Sapegin](https://github.com/sapegin) - Tweaked customizeArray/customizeObject example. #60
+* [Dan Kirkham](https://github.com/herecydev) - `merge.multiple`. #74
