@@ -312,6 +312,43 @@ merge.smart({
 }
 ```
 
+## Multiple Merging
+
+### **`merge.multiple(...configuration | [...configuration])`**
+
+Sometimes you may need to support multiple targets, *webpack-merge* will accept an object where each key represents the target configuration. The output becomes an *array* of configurations where matching keys are merged and non-matching keys are added.
+
+```javascript
+var path = require('path');
+var baseConfig = {
+    server: {
+      target: 'node',
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'lib.node.js'
+      }
+    },
+    client: {
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'lib.js'
+      }
+    }
+  };
+
+// specialized configuration
+var production = {
+    client: {
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[hash].js'
+      }
+    }
+  }
+
+module.exports = merge.multiple(baseConfig, production)
+```
+
 > Check out [SurviveJS - Webpack and React](http://survivejs.com/) to dig deeper into the topic.
 
 ## Development

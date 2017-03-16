@@ -1,5 +1,5 @@
 import {
-  differenceWith, mergeWith, unionWith
+  differenceWith, mergeWith, unionWith, values
 } from 'lodash';
 import joinArrays from './join-arrays';
 import { uniteRules } from './join-arrays-smart';
@@ -40,6 +40,8 @@ const mergeSmart = merge({
     return null;
   }
 });
+
+const mergeMultiple = (...sources) => values(merge(sources));
 
 // rules: { <field>: <'append'|'prepend'|'replace'> }
 // All default to append but you can override here
@@ -103,6 +105,7 @@ function isRule(key) {
 }
 
 module.exports = merge;
+module.exports.multiple = mergeMultiple;
 module.exports.smart = mergeSmart;
 module.exports.strategy = mergeStrategy;
 module.exports.smartStrategy = mergeSmartStrategy;
