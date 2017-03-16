@@ -1,3 +1,8 @@
+4.1.0 / 2017-03-16
+==================
+
+  * Feature - `merge.multiple` to allow working with webpack multi-compiler mode. It accepts multiple objects and returns an array you can push to webpack. #74
+
 4.0.0 / 2017-03-06
 ==================
 
