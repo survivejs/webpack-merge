@@ -28,7 +28,7 @@ function multipleTests(merge) {
         entry: './client.js'
       },
       server: {
-        entry: './server.js',
+        entry: './server.js'
       }
     };
     const b = {
