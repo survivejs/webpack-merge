@@ -19,6 +19,22 @@ function uniteRules(rules, key, newRule, rule) {
     return false;
   }
 
+  // webpack 2 nested rules support
+  if (rule.rules) {
+    const _uniteRules = (b, a) => uniteRules(rules, key + '.rules', b, a);
+    switch (rules[key]) {
+      case 'prepend':
+        rule.rules = [...differenceWith(newRule.rules, rule.rules, _uniteRules), ...rule.rules];
+        break;
+      case 'replace':
+        rule.rules = newRule.rules;
+        break;
+      default:
+        rule.rules = unionWith(rule.rules, newRule.rules, _uniteRules);
+        break;
+    }
+  }
+
   // newRule.loader should always override
   if (newRule.loader) {
     const optionsKey = newRule.options ? 'options' : newRule.query && 'query';

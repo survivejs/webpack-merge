@@ -292,4 +292,97 @@ function mergeStrategySpecificTests(merge) {
       'module.loaders': 'replace'
     })(a, b), result);
   });
+
+  it('should work with nested rules', function () {
+    const common = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            rules: [
+              {
+                exclude: /(node_modules|lib)/,
+                use: [
+                  {
+                    loader: 'babel-loader',
+                    options: {
+                      cacheDirectory: true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const prod = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            rules: [
+              {
+                exclude: /(node_modules|lib)/,
+                use: [
+                  {
+                    loader: 'string-replace-loader',
+                    options: {
+                      multiple: [
+                        {
+                          search: /["']ngInject["'];*/,
+                          replace: '',
+                          flags: 'g'
+                        }
+                      ]
+                    }
+                  },
+                  'ng-annotate-loader'
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            rules: [
+              {
+                exclude: /(node_modules|lib)/,
+                use: [
+                  {
+                    loader: 'string-replace-loader',
+                    options: {
+                      multiple: [
+                        {
+                          search: /["']ngInject["'];*/,
+                          replace: '',
+                          flags: 'g'
+                        }
+                      ]
+                    }
+                  },
+                  'ng-annotate-loader',
+                  {
+                    loader: 'babel-loader',
+                    options: {
+                      cacheDirectory: true
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    assert.deepEqual(merge({
+      'module.rules.rules.use': 'prepend'
+    })(common, prod), expected);
+  });
 }
