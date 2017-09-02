@@ -36,7 +36,7 @@ declare namespace Merge {
    */
   const smartStrategy: (options: StrategyMap) => ConfigurationJoiner
 
-  interface NonstandartConfigurationJoiner {
+  interface NonstandardConfigurationJoiner {
     (...configuration: any[]): Configuration
     (configuration: any[]): Configuration
   }
@@ -44,12 +44,12 @@ declare namespace Merge {
   /**
    * Merging with a smart merge strategy
    */
-  const smart: NonstandartConfigurationJoiner
+  const smart: NonstandardConfigurationJoiner
 
   /**
    * Merging with a multiple merge strategy
    */
-  const multiple: NonstandartConfigurationJoiner
+  const multiple: NonstandardConfigurationJoiner
 }
 
 /**
