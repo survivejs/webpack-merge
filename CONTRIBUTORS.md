@@ -14,3 +14,4 @@
 * [Steven Haddix](https://github.com/steven-haddix) - Clarify description. #42
 * [Artem Sapegin](https://github.com/sapegin) - Tweaked customizeArray/customizeObject example. #60
 * [Dan Kirkham](https://github.com/herecydev) - `merge.multiple`. #74
+* [Ahmed Elmehri](https://github.com/ahmehri) - Add `customizeArray` and `customizeObject` examples. #93
