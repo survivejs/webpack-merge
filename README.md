@@ -51,6 +51,35 @@ var output = merge(
   }
 )(object1, object2, object3, ...);
 ```
+For example, if the previous code was invoked with only `object1` and `object2`
+with `object1` as:
+```
+{
+    foo1: ['object1'],
+    foo2: ['object1'],
+    bar1: { object1: {} },
+    bar2: { object1: {} },
+}
+```
+and `object2` as:
+```
+{
+    foo1: ['object2'],
+    foo2: ['object2'],
+    bar1: { object2: {} },
+    bar2: { object2: {} },
+}
+```
+then `customizeArray` will be invoked for each property of `Array` type, i.e:
+```
+customizeArray(['object1'], ['object2'], 'foo1');
+customizeArray(['object1'], ['object2'], 'foo2');
+```
+and `customizeObject` will be invoked for each property of `Object` type, i.e:
+```
+customizeObject({ object1: {} }, { object2: {} }, bar1);
+customizeObject({ object1: {} }, { object2: {} }, bar2);
+```
 
 ### **`merge.unique(<field>, <fields>, field => field)`**
 
