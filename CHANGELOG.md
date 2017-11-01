@@ -1,3 +1,8 @@
+4.1.1 / 2017-11-01
+==================
+
+  * Docs - Add `customizeArray` and `customizeObject` examples. #93
+
 4.1.0 / 2017-03-16
 ==================
 
