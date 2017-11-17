@@ -12,6 +12,7 @@
     "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
+  "typings": "index.d.ts",
   "files": [
     "lib"
   ],
