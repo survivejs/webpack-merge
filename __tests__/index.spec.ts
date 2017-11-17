@@ -1,4 +1,4 @@
-import merge from '../src/index';
+import merge from '../src/merge';
 import { loadersKeys, LoaderKey } from '../src/loaderKeys';
 
 describe('Merge', () => {
@@ -6,7 +6,6 @@ describe('Merge', () => {
     normalMergeTest(merge, loadersKey);
   });
 });
-
 
 function normalMergeTest(mergeFn: typeof merge, loadersKey: LoaderKey) {
   it('should append recursive structures with ' + loadersKey, function () {
