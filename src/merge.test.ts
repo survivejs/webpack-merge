@@ -3,11 +3,11 @@ import { loadersKeys, LoaderKey } from '../src/loaderKeys';
 
 describe('Merge', () => {
   loadersKeys.forEach(function (loadersKey) {
-    normalMergeTest(merge, loadersKey);
+    defaultMergeTests(merge, loadersKey);
   });
 });
 
-function normalMergeTest(mergeFn: typeof merge, loadersKey: LoaderKey) {
+function defaultMergeTests(mergeFn: typeof merge, loadersKey: LoaderKey) {
   it('should append recursive structures with ' + loadersKey, function () {
     const a = {
       module: {
