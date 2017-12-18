@@ -1,126 +1,112 @@
-const isArray = Array.isArray;
-const isPlainObject = require('lodash.isplainobject');
-const merge = require('lodash.merge');
-const find = require('lodash.find');
-const isEqual = require('lodash.isequal');
+import {
+  differenceWith, mergeWith, unionWith, values
+} from 'lodash';
+import joinArrays from './join-arrays';
+import { uniteRules } from './join-arrays-smart';
+import unique from './unique';
 
-const loaderNameRe = /^([^\?]+)/ig;
-
-function mergeLoaders(currentLoaders, newLoaders) {
-  return newLoaders.reduce((mergedLoaders, loader) => {
-    if (mergedLoaders.every(
-      l => loader.match(loaderNameRe)[0] !== l.match(loaderNameRe)[0])
-    ) {
-      return mergedLoaders.concat([loader]);
+function merge(...sources) {
+  // This supports
+  // merge([<object>] | ...<object>)
+  // merge({ customizeArray: <fn>, customizeObject: <fn>})([<object>] | ...<object>)
+  // where fn = (a, b, key)
+  if (sources.length === 1) {
+    if (Array.isArray(sources[0])) {
+      return mergeWith({}, ...sources[0], joinArrays(sources[0]));
     }
 
-    // Replace query values with newer ones
-    return mergedLoaders.map(l => {
-      if (loader.match(loaderNameRe)[0] === l.match(loaderNameRe)[0]) {
-        return loader;
+    if (sources[0].customizeArray || sources[0].customizeObject) {
+      return (...structures) => {
+        if (Array.isArray(structures[0])) {
+          return mergeWith({}, ...structures[0], joinArrays(sources[0]));
+        }
+
+        return mergeWith({}, ...structures, joinArrays(sources[0]));
+      };
+    }
+
+    return sources[0];
+  }
+
+  return mergeWith({}, ...sources, joinArrays());
+}
+
+const mergeSmart = merge({
+  customizeArray: (a, b, key) => {
+    if (isRule(key.split('.').slice(-1)[0])) {
+      return unionWith(a, b, uniteRules.bind(null, {}, key));
+    }
+
+    return null;
+  }
+});
+
+const mergeMultiple = (...sources) => values(merge(sources));
+
+// rules: { <field>: <'append'|'prepend'|'replace'> }
+// All default to append but you can override here
+const mergeStrategy = (rules = {}) => merge({
+  customizeArray: customizeArray(rules),
+  customizeObject: customizeObject(rules)
+});
+const mergeSmartStrategy = (rules = {}) => merge({
+  customizeArray: (a, b, key) => {
+    const topKey = key.split('.').slice(-1)[0];
+
+    if (isRule(topKey)) {
+      switch (rules[key]) {
+        case 'prepend':
+          return [
+            ...differenceWith(b, a, (newRule, seenRule) => (
+              uniteRules(rules, key, newRule, seenRule, 'prepend'))
+            ),
+            ...a
+          ];
+        case 'replace':
+          return b;
+        default: // append
+          return unionWith(a, b, uniteRules.bind(null, rules, key));
       }
+    }
 
-      return l;
-    });
-  }, currentLoaders);
+    return customizeArray(rules)(a, b, key);
+  },
+  customizeObject: customizeObject(rules)
+});
+
+function customizeArray(rules) {
+  return (a, b, key) => {
+    switch (rules[key]) {
+      case 'prepend':
+        return [...b, ...a];
+      case 'replace':
+        return b;
+      default: // append
+        return false;
+    }
+  };
 }
 
-/**
- * Check equality of two values using lodash's isEqual
- * Arrays need to be sorted for equality checking
- * but clone them first so as not to disrupt the sort order in tests
- */
-function isSameValue(a, b) {
-  const [propA, propB] = [a, b].map(function (value) {
-    return isArray(value) ? value.slice().sort() : value;
-  });
-
-  return isEqual(propA, propB);
+function customizeObject(rules) {
+  return (a, b, key) => {
+    switch (rules[key]) {
+      case 'prepend':
+        return mergeWith({}, b, a, joinArrays());
+      case 'replace':
+        return b;
+      default: // append
+        return false;
+    }
+  };
 }
 
-function reduceLoaders(mergedLoaderConfigs, loaderConfig) {
-  const foundLoader = find(
-    mergedLoaderConfigs,
-    l => String(l.test) === String(loaderConfig.test)
-  );
-
-  if (foundLoader) {
-    /**
-     * When both loaders have different `include` or `exclude`
-     * properties, concat them
-     */
-    if ((foundLoader.include && !isSameValue(foundLoader.include, loaderConfig.include)) ||
-        (foundLoader.exclude && !isSameValue(foundLoader.exclude, loaderConfig.exclude))) {
-      return [loaderConfig].concat(mergedLoaderConfigs);
-    }
-
-    // foundLoader.loader is intentionally ignored, because a string loader value should always override
-    if (foundLoader.loaders) {
-      const newLoaders = loaderConfig.loader ? [loaderConfig.loader] : loaderConfig.loaders || [];
-
-      foundLoader.loaders = mergeLoaders(newLoaders, foundLoader.loaders);
-    }
-
-    if (loaderConfig.include) {
-      foundLoader.include = loaderConfig.include;
-    }
-
-    if (loaderConfig.exclude) {
-      foundLoader.exclude = loaderConfig.exclude;
-    }
-
-    return mergedLoaderConfigs;
-  }
-
-  return [loaderConfig].concat(mergedLoaderConfigs);
+function isRule(key) {
+  return ['preLoaders', 'loaders', 'postLoaders', 'rules'].indexOf(key) >= 0;
 }
 
-function joinArrays(customizer, a, b, key) {
-  if (isArray(a) && isArray(b)) {
-    const customResult = customizer(a, b, key);
-
-    if (!b.length) {
-      return [];
-    }
-
-    if (customResult) {
-      return customResult;
-    }
-
-    return a.concat(b);
-  }
-
-  if (isPlainObject(a) && isPlainObject(b)) {
-    if (!Object.keys(b).length) {
-      return {};
-    }
-
-    return merge({}, a, b, joinArrays.bind(null, customizer));
-  }
-
-  return b;
-}
-
-module.exports = function () {
-  const args = Array.prototype.slice.call(arguments);
-
-  return merge.apply(null, [{}].concat(args).concat([
-    joinArrays.bind(null, () => {})
-  ]));
-};
-
-module.exports.smart = function webpackMerge() {
-  const args = Array.prototype.slice.call(arguments);
-
-  return merge.apply(null, [{}].concat(args).concat([
-    joinArrays.bind(null, function (a, b, key) {
-      if (isLoader(key)) {
-        return a.reduce(reduceLoaders, b.slice());
-      }
-    })
-  ]));
-};
-
-function isLoader(key) {
-  return ['preLoaders', 'loaders', 'postLoaders'].indexOf(key) >= 0;
-}
+module.exports = merge;
+module.exports.multiple = mergeMultiple;
+module.exports.smart = mergeSmart;
+module.exports.strategy = mergeStrategy;
+module.exports.smartStrategy = mergeSmartStrategy;
+module.exports.unique = unique;

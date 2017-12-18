@@ -1,3 +1,197 @@
+4.1.1 / 2017-11-01
+==================
+
+  * Docs - Add `customizeArray` and `customizeObject` examples. #93
+
+4.1.0 / 2017-03-16
+==================
+
+  * Feature - `merge.multiple` to allow working with webpack multi-compiler mode. It accepts multiple objects and returns an array you can push to webpack. #74
+
+4.0.0 / 2017-03-06
+==================
+
+  * Breaking feature - `merge.smart` allows re-ordering loaders like below. #70
+
+```javascript
+merge.smart({
+  loaders: [{
+    test: /\.js$/,
+    loaders: ['babel']
+  }]
+}, {
+  loaders: [{
+    test: /\.js$/,
+    loaders: ['react-hot', 'babel']
+  }]
+});
+// will become
+{
+  loaders: [{
+    test: /\.js$/,
+    // order of second argument is respected
+    loaders: ['react-hot', 'babel']
+  }]
+}
+```
+
+3.0.0 / 2017-02-19
+==================
+
+  * Breaking fix - `merge.smart` should not merge a child missing `include`/`exclude` to a parent that has either. This is safer and more predictable behavior than the old one. #69
+
+2.6.1 / 2017-01-29
+==================
+
+  * Bug fix - `merge.smart` should not merge rules that have differing `enforce` fields. #65
+
+2.6.0 / 2017-01-27
+==================
+
+  * Bug fix - Support `replace` mode for `merge.smartStrategy`. #63
+
+2.5.0 / 2017-01-26
+==================
+
+  * Bug fix - Make sure `merge.smartStrategy` works with higher level nesting like `'module.rules.use': 'prepend'`. #64
+
+2.4.0 / 2017-01-12
+==================
+
+  * Feature - Add `merge.unique` helper that plugs into `customizeArray`. This allows you to force only one plugin of a type to the end result. #58
+
+2.3.1 / 2017-01-06
+==================
+
+  * Bug fix - Clear up `CopyWebpackPlugin` handling. #56
+
+2.3.0 / 2017-01-06
+==================
+
+  * Refactor - Depend only on `lodash` instead of individual packages as latter has been discontinued. #52
+
+2.2.0 / 2017-01-05
+==================
+
+  * Bug fix - Drop `merge.smartStrategy(rules, plugins)` as that caused other issues (prototype copying for complex cases). That needs a better approach. #55
+
+2.1.1 / 2017-01-05
+==================
+
+  * Bug fix - Avoid recursion at `merge.smart`. #53
+
+2.1.0 / 2017-01-05
+==================
+
+  * Feature - Allow `merge.smartStrategy` to merge plugin contents. API: `merge.smartStrategy(rules, plugins)`. #44. Example:
+
+```javascript
+const output = merge.smartStrategy(
+  {
+    entry: 'prepend', // or 'replace'
+    'module.loaders': 'prepend'
+  },
+  ['LoaderOptionsPlugin']
+)(object1, object2, object3, ...);
+```
+
+2.0.0 / 2016-12-22
+==================
+
+  * Breaking - Disallow overriding configuration with empty arrays/objects (#48). If you want to override, use `merge.strategy`. Example:
+
+```javascript
+const a = {
+  entry: ['foo']
+};
+const b = {
+  entry: []
+};
+
+merge(a, b); // Yields a result, not b like before.
+```
+
+1.1.2 / 2016-12-18
+==================
+
+  * Bug fix - `merge({ entry: {} })` should return the same result as input instead of a function.
+
+1.1.1 / 2016-12-11
+==================
+
+  * Bug fix - Support previously undocumented, yet used, `merge([<object>])` format. This works with all available functions. #46
+
+1.1.0 / 2016-12-09
+==================
+
+  * Feature - Allow `merge` behavior to be customized with overrides. Example:
+
+```javascript
+var output = merge({
+  customizeArray(a, b, key) { return [...a, ...b]; },
+  customizeObject(a, b, key) { return mergeWith(a, b); }
+})(object1, object2, object3, ...);
+```
+
+This allows you to guarantee array uniqueness and so on.
+
+1.0.2 / 2016-11-29
+==================
+
+  * Bug fix - `merge` should not mutate inputs with mismatched keys.
+
+1.0.0 / 2016-11-28
+==================
+
+  * Feature: Support merging Webpack 2 Rule.use. #38
+  * Bug fix - Don't concat loaders if the first matching entry's include/exclude doesn't match. #39
+
+0.20.0 / 2016-11-27
+===================
+
+  * Feature: Add support for merging functions. This feature has been designed `postcss` in mind. It executes the functions, picks their results, and packs them again.
+
+0.19.0 / 2016-11-26
+===================
+
+  * Feature: Add support for 'replace' option at `merge.strategy`. It literally replaces the old field value with the newer one. #40
+
+0.18.0 / 2016-11-24
+===================
+
+  * Feature: Add support for recursive definitions at `merge.strategy`. Example:
+
+```javascript
+var output = merge.strategy({
+  entry: 'prepend',
+  'module.loaders': 'prepend'
+})(object1, object2, object3, ...);
+```
+
+  * Feature: Add `merge.smartStrategy`. This combines the ideas of `merge.smart` and `merge.strategy` into one. Example:
+
+```javascript
+var output = merge.smartStrategy({
+  entry: 'prepend',
+  'module.loaders': 'prepend'
+})(object1, object2, object3, ...);
+```
+
+0.17.0 / 2016-11-16
+===================
+
+  * Feature: Add support for `merge.strategy`. Now you can customize merging behavior per root level configuration field. Example: `merge.strategy({ entry: 'prepend' })(object1, object2, object3, ...);`. #17
+
+0.16.0 / 2016-11-14
+===================
+
+  * Feature: Add support for webpack 2 at `merge.smart`. It should pick up `module.rules` as you might expect now. #35
+
+0.15.0 / 2016-10-18
+===================
+
+  * Breaking: Rework `merge.smart` so that it **appends** loaders instead of **prepending** them. This is the logical thing to do as it allows you to specify behavior better as you `merge`. #32
+
 0.14.1 / 2016-07-25
 ===================
 
