@@ -341,6 +341,103 @@ merge.smart({
 }
 ```
 
+### **loaders**, **preLoaders**, **postLoaders** and **rules**
+Be careful when merging configuration with **loaders**, **preLoaders**, **postLoaders** and **rules**.
+If those sections in your configurations contains **exclude** and **include** keys and values of **exclude** and **include** keys are not equal you will get some none expected behavior.
+F.e.
+Common
+```javascript
+{
+  module: {
+    rules: [{
+        test: /\.css$/,
+        include: /src/,
+        use: ['css-loader', 'postcss-loader']
+      }]
+  }
+}
+```
+Dev
+```javascript
+const merge = require('webpack-merge').smartStrategy({
+  entry: 'prepend',
+  'module.rules.use': 'prepend'
+})
+
+merge(common, {
+  module: {
+    rules: [{
+        test: /\.css$/,
+        use: ['style-loader']
+      }]
+  }
+})
+```
+You could expect something like
+```javascript
+{
+  test: /\.css$/,
+  include: /src/,
+  use: [ 'style-loader', 'css-loader', 'postcss-loader' ]
+}
+```
+But you will get
+```javascript
+
+module: {
+  rules: [
+    {
+      test: /\.css$/,
+      include: /src/,
+      use: ['css-loader', 'postcss-loader']
+    },
+    {
+      test: /\.css$/,
+      use: ['style-loader']
+    }
+  ]
+}
+```
+
+You will have desired structure of result only when **exclude** and **include** keys values are equal.
+If we are talking about this particular example you should add **include** key to dev config:
+
+```javascript
+// Common
+{
+  module: {
+    rules: [{
+        test: /\.css$/,
+        include: /src/,
+        use: ['css-loader', 'postcss-loader']
+      }]
+  }
+}
+
+// Dev
+const merge = require('webpack-merge').smartStrategy({
+  entry: 'prepend',
+  'module.rules.use': 'prepend'
+})
+
+merge(common, {
+  module: {
+    rules: [{
+        test: /\.css$/,
+        include: /src/,
+        use: ['style-loader']
+      }]
+  }
+})
+
+// Result
+{
+  test: /\.css$/,
+  include: /src/,
+  use: [ 'style-loader', 'css-loader', 'postcss-loader' ]
+}
+```
+
 ## Multiple Merging
 
 ### **`merge.multiple(...configuration | [...configuration])`**
