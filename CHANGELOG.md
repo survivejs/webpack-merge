@@ -1,3 +1,8 @@
+4.1.3 / 2018-06-04
+==================
+
+  * Fix - Smart merge respects the existing loader order #79
+
 4.1.1 / 2017-11-01
 ==================
 

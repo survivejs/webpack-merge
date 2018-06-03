@@ -843,6 +843,90 @@ function mergeSmartTest(merge, loadersKey) {
 
     assert.deepEqual(merge(common, extractText), result);
   });
+
+  it('should respect the existing order for ' + loadersKey, function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'css-loader', options: { myOptions: true } },
+          { loader: 'style-loader' }
+        ]
+      }
+    ];
+    const extractText = {
+      module: {}
+    };
+    extractText.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader', options: { someSetting: true } }
+        ]
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'css-loader', options: { myOptions: true } },
+          { loader: 'style-loader', options: { someSetting: true } }
+        ]
+      }
+    ];
+
+    assert.deepEqual(merge(common, extractText), result);
+  });
+
+  it('should respect second order when existing/new have conflicting orders for ' + loadersKey, function () {
+    const common = {
+      module: {}
+    };
+    common.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'css-loader' },
+          { loader: 'style-loader' },
+          { loader: 'other-loader' }
+        ]
+      }
+    ];
+
+    const extractText = {
+      module: {}
+    };
+    extractText.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
+        ]
+      }
+    ];
+    const result = {
+      module: {}
+    };
+    result.module[loadersKey] = [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'other-loader'
+        ]
+      }
+    ];
+
+    assert.deepEqual(merge(common, extractText), result);
+  });
 }
 
 module.exports = mergeSmartTests;
