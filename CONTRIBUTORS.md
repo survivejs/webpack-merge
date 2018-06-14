@@ -16,4 +16,4 @@
 * [Dan Kirkham](https://github.com/herecydev) - `merge.multiple`. #74
 * [Ahmed Elmehri](https://github.com/ahmehri) - Add `customizeArray` and `customizeObject` examples. #93
 * [Flávio](https://github.com/flaviorocks) - Maintenance - Update lodash, #97, #98
-* [Amy-Lynn](https://github.com/Amy-Lynn) - Smart merge should maintain existing loader order. #79, #101
+* [Amy Lynn](https://github.com/Amy-Lynn) - Smart merge should maintain existing loader order. #79, #101
