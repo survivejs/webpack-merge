@@ -1,3 +1,8 @@
+4.1.4 / 2018-08-01
+==================
+
+  * Maintenance - Remove bitHound from the README as it closed down. #102
+
 4.1.3 / 2018-06-14
 ==================
 
