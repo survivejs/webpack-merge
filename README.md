@@ -446,7 +446,8 @@ module.exports = merge.multiple(baseConfig, production)
 ## Development
 
 1. `npm i`
-2. `npm run watch`
+1. `npm run build`
+1. `npm run watch`
 
 Before contributing, please open an issue where to discuss.
 
