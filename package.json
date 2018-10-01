@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src -d lib",
     "watch": "npm-watch",
-    "lint": "tslint --format stylish",
+    "lint": "tslint --format stylish --project .",
     "test": "mocha tests/test-*",
     "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
     "tsc": "tsc",
@@ -51,7 +51,7 @@
   "license": "MIT",
   "lint-staged": {
     "*.{ts}": [
-      "tslint --fix --format stylish",
+      "npm run lint -- --fix",
       "git add"
     ],
     "*.{ts,json,md}": [
