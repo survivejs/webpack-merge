@@ -1,5 +1,5 @@
-export type CustomizeArray = (a: any, b: any, key: Key) => void;
-export type CustomizeObject = (a: any, b: any, key: Key) => void;
+export type CustomizeArray = (a: any, b: any, key: Key) => any;
+export type CustomizeObject = (a: any, b: any, key: Key) => any;
 
 export type Key = string;
 
