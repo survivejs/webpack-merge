@@ -6,7 +6,6 @@
     "strict": true,
     "sourceMap": true,
     "outDir": "lib",
-    "jsx": "react",
     "typeRoots": [
       "node_modules/@types"
     ]
@@ -14,3 +13,4 @@
   "include": [
     "src/**/*.ts"
   ]
+}
