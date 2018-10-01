@@ -5,7 +5,7 @@ const normalMergeTests = require('./test-merge');
 const mergeTests = require('./merge-tests');
 const mergeStrategyTests = require('./merge-strategy-tests');
 
-describe('Merge strategy', function () {
+describe('Merge strategy', () => {
   const merge = webpackMerge.strategy;
 
   normalMergeTests(merge());
@@ -15,7 +15,7 @@ describe('Merge strategy', function () {
 });
 
 function mergeStrategySpecificTests(merge) {
-  it('should work with nested arrays and prepend', function () {
+  test('should work with nested arrays and prepend', () => {
     const a = {
       module: {
         loaders: [

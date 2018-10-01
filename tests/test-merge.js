@@ -5,7 +5,7 @@ const webpackMerge = require('..');
 const mergeTests = require('./merge-tests');
 const loadersKeys = require('./loaders-keys');
 
-describe('Merge', function () {
+describe('Merge', () => {
   const merge = webpackMerge;
 
   normalMergeTests(merge);
@@ -20,7 +20,7 @@ function normalMergeTests(merge) {
 }
 
 function normalMergeTest(merge, loadersKey) {
-  it('should append recursive structures with ' + loadersKey, function () {
+  test('should append recursive structures with ' + loadersKey, () => {
     const a = {
       module: {}
     };
@@ -61,36 +61,39 @@ function normalMergeTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not override loader string values with ' + loadersKey, function () {
-    const a = {};
-    a[loadersKey] = [{
-      test: /\.js$/,
-      loader: 'a'
-    }];
-    const b = {};
-    b[loadersKey] = [{
-      test: /\.js$/,
-      loader: 'b'
-    }, {
-      test: /\.css$/,
-      loader: 'b'
-    }];
-    const result = {};
-    result[loadersKey] = [{
-      test: /\.js$/,
-      loader: 'a'
-    }, {
-      test: /\.js$/,
-      loader: 'b'
-    }, {
-      test: /\.css$/,
-      loader: 'b'
-    }];
+  test(
+    'should not override loader string values with ' + loadersKey,
+    () => {
+      const a = {};
+      a[loadersKey] = [{
+        test: /\.js$/,
+        loader: 'a'
+      }];
+      const b = {};
+      b[loadersKey] = [{
+        test: /\.js$/,
+        loader: 'b'
+      }, {
+        test: /\.css$/,
+        loader: 'b'
+      }];
+      const result = {};
+      result[loadersKey] = [{
+        test: /\.js$/,
+        loader: 'a'
+      }, {
+        test: /\.js$/,
+        loader: 'b'
+      }, {
+        test: /\.css$/,
+        loader: 'b'
+      }];
 
-    assert.deepEqual(merge(a, b), result);
-  });
+      assert.deepEqual(merge(a, b), result);
+    }
+  );
 
-  it('should not append loaders with ' + loadersKey, function () {
+  test('should not append loaders with ' + loadersKey, () => {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -119,7 +122,7 @@ function normalMergeTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should duplicate loaders with ' + loadersKey, function () {
+  test('should duplicate loaders with ' + loadersKey, () => {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -142,52 +145,58 @@ function normalMergeTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not override query options for the same loader with ' + loadersKey, function () {
-    const a = {};
-    a[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a?1']
-    }];
-    const b = {};
-    b[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a?2', 'b']
-    }];
-    const c = {};
-    c[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a', 'b?3']
-    }];
-    const result = {};
-    result[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a?1']
-    }, {
-      test: /\.js$/,
-      loaders: ['a?2', 'b']
-    }, {
-      test: /\.js$/,
-      loaders: ['a', 'b?3']
-    }];
+  test(
+    'should not override query options for the same loader with ' + loadersKey,
+    () => {
+      const a = {};
+      a[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a?1']
+      }];
+      const b = {};
+      b[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a?2', 'b']
+      }];
+      const c = {};
+      c[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a', 'b?3']
+      }];
+      const result = {};
+      result[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a?1']
+      }, {
+        test: /\.js$/,
+        loaders: ['a?2', 'b']
+      }, {
+        test: /\.js$/,
+        loaders: ['a', 'b?3']
+      }];
 
-    assert.deepEqual(merge(a, b, c), result);
-  });
+      assert.deepEqual(merge(a, b, c), result);
+    }
+  );
 
-  it('should not allow overriding with an empty array in ' + loadersKey, function () {
-    const a = {};
-    a[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a?1']
-    }];
-    const b = {};
-    b[loadersKey] = [];
+  test(
+    'should not allow overriding with an empty array in ' + loadersKey,
+    () => {
+      const a = {};
+      a[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a?1']
+      }];
+      const b = {};
+      b[loadersKey] = [];
 
-    assert.deepEqual(merge(a, b), a);
-  });
+      assert.deepEqual(merge(a, b), a);
+    }
+  );
 }
 
 function customizeMergeTests(merge) {
-  it('should allow overriding array behavior', function () {
+  test('should allow overriding array behavior', () => {
     const first = {
       entry: ['a']
     };
@@ -200,7 +209,7 @@ function customizeMergeTests(merge) {
     })(first, second), first);
   });
 
-  it('should pass key to array customizer', function () {
+  test('should pass key to array customizer', () => {
     var receivedKey;
     const first = {
       entry: ['a']
@@ -220,7 +229,7 @@ function customizeMergeTests(merge) {
     assert.deepEqual(result, first);
   });
 
-  it('should allow overriding object behavior', function () {
+  test('should allow overriding object behavior', () => {
     const first = {
       entry: {
         a: 'foo'
@@ -237,7 +246,7 @@ function customizeMergeTests(merge) {
     })(first, second), first);
   });
 
-  it('should pass key to object customizer', function () {
+  test('should pass key to object customizer', () => {
     var receivedKey;
     const first = {
       entry: {
@@ -261,7 +270,7 @@ function customizeMergeTests(merge) {
     assert.deepEqual(result, first);
   });
 
-  it('should customize plugins', function () {
+  test('should customize plugins', () => {
     var receivedKey;
     const config1 = {
       plugins: [

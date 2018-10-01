@@ -3,8 +3,8 @@ const assert = require('assert');
 const webpack = require('webpack');
 const merge = require('..');
 
-describe('Unique', function () {
-  it('should allow unique definitions', function () {
+describe('Unique', () => {
+  test('should allow unique definitions', () => {
     const output = merge({
       customizeArray: merge.unique(
         'plugins',

@@ -5,7 +5,7 @@ const mergeTests = require('./merge-tests');
 const mergeSmartTests = require('./merge-smart-tests');
 const mergeStrategyTests = require('./merge-strategy-tests');
 
-describe('Smart merge strategy', function () {
+describe('Smart merge strategy', () => {
   const merge = webpackMerge.smartStrategy;
 
   mergeTests(merge());
@@ -15,7 +15,7 @@ describe('Smart merge strategy', function () {
 });
 
 function mergeStrategySpecificTests(merge) {
-  it('should work with nested arrays and prepend', function () {
+  test('should work with nested arrays and prepend', () => {
     const a = {
       module: {
         loaders: [
@@ -55,7 +55,7 @@ function mergeStrategySpecificTests(merge) {
     })(a, b), result);
   });
 
-  it('should work with nested arrays and replace', function () {
+  test('should work with nested arrays and replace', () => {
     const a = {
       module: {
         loaders: [
@@ -95,7 +95,7 @@ function mergeStrategySpecificTests(merge) {
     })(a, b), result);
   });
 
-  it('should work with nested arrays and replace with rules', function () {
+  test('should work with nested arrays and replace with rules', () => {
     const a = {
       module: {
         rules: [
@@ -135,7 +135,7 @@ function mergeStrategySpecificTests(merge) {
     })(a, b), result);
   });
 
-  it('should work with use and same types (#63)', function () {
+  test('should work with use and same types (#63)', () => {
     const a = {
       module: {
         rules: [
@@ -172,7 +172,7 @@ function mergeStrategySpecificTests(merge) {
     })(a, b), result);
   });
 
-  it('should work with two level nesting (#64)', function () {
+  test('should work with two level nesting (#64)', () => {
     const common = {
       module: {
         rules: [
@@ -253,7 +253,7 @@ function mergeStrategySpecificTests(merge) {
     })(common, prod), expected);
   });
 
-  it('should work with nested arrays and replace', function () {
+  test('should work with nested arrays and replace', () => {
     const a = {
       module: {
         loaders: [

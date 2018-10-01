@@ -13,7 +13,7 @@ function mergeSmartTests(merge) {
 }
 
 function commonTests(merge) {
-  it('should not merge if enforce rules are different (#65)', function () {
+  test('should not merge if enforce rules are different (#65)', () => {
     const a = {
       module: {
         rules: [
@@ -56,7 +56,7 @@ function commonTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not merge if enforce rules are different II (#65)', function () {
+  test('should not merge if enforce rules are different II (#65)', () => {
     const a = {
       module: {
         rules: [
@@ -100,7 +100,7 @@ function commonTests(merge) {
   });
 
 
-  it('should merge with matching exclude and loaders', function () {
+  test('should merge with matching exclude and loaders', () => {
     const a = {
       module: {
         loaders: [
@@ -138,55 +138,58 @@ function commonTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('in lists with matching `test` properties, should merge with matching exclude and loaders', function () {
-    const a = {
-      module: {
-        loaders: [
-          {
-            test: /\.js$/,
-            include: './src',
-            loaders: ['babel']
-          },
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loaders: ['babel']
-          }
-        ]
-      }
-    };
-    const b = {
-      module: {
-        loaders: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loaders: ['coffee', 'foo']
-          }
-        ]
-      }
-    };
-    const result = {
-      module: {
-        loaders: [
-          {
-            test: /\.js$/,
-            include: './src',
-            loaders: ['babel']
-          },
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loaders: ['babel', 'coffee', 'foo']
-          }
-        ]
-      }
-    };
+  test(
+    'in lists with matching `test` properties, should merge with matching exclude and loaders',
+    () => {
+      const a = {
+        module: {
+          loaders: [
+            {
+              test: /\.js$/,
+              include: './src',
+              loaders: ['babel']
+            },
+            {
+              test: /\.js$/,
+              exclude: /node_modules/,
+              loaders: ['babel']
+            }
+          ]
+        }
+      };
+      const b = {
+        module: {
+          loaders: [
+            {
+              test: /\.js$/,
+              exclude: /node_modules/,
+              loaders: ['coffee', 'foo']
+            }
+          ]
+        }
+      };
+      const result = {
+        module: {
+          loaders: [
+            {
+              test: /\.js$/,
+              include: './src',
+              loaders: ['babel']
+            },
+            {
+              test: /\.js$/,
+              exclude: /node_modules/,
+              loaders: ['babel', 'coffee', 'foo']
+            }
+          ]
+        }
+      };
 
-    assert.deepEqual(merge(a, b), result);
-  });
+      assert.deepEqual(merge(a, b), result);
+    }
+  );
 
-  it('should not lose CopyWebpackPlugin (#56)', function () {
+  test('should not lose CopyWebpackPlugin (#56)', () => {
     const a = {
       plugins: [
         new CopyWebpackPlugin()
@@ -207,7 +210,7 @@ function commonTests(merge) {
 }
 
 function mergeSmartTest(merge, loadersKey) {
-  it('should override loader string values with ' + loadersKey, function () {
+  test('should override loader string values with ' + loadersKey, () => {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -225,83 +228,89 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(a, result), result);
   });
 
-  it('should not merge to parent if there is no include for ' + loadersKey + ' #68', function () {
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ['babel'],
-        include: 'apps'
-      }
-    ];
-    const strip = {
-      module: {}
-    };
-    strip.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ['strip?strip[]=debug']
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ['babel'],
-        include: 'apps'
-      },
-      {
-        test: /\.js$/,
-        loaders: ['strip?strip[]=debug']
-      }
-    ];
+  test(
+    'should not merge to parent if there is no include for ' + loadersKey + ' #68',
+    () => {
+      const common = {
+        module: {}
+      };
+      common.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          loaders: ['babel'],
+          include: 'apps'
+        }
+      ];
+      const strip = {
+        module: {}
+      };
+      strip.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          loaders: ['strip?strip[]=debug']
+        }
+      ];
+      const result = {
+        module: {}
+      };
+      result.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          loaders: ['babel'],
+          include: 'apps'
+        },
+        {
+          test: /\.js$/,
+          loaders: ['strip?strip[]=debug']
+        }
+      ];
 
-    assert.deepEqual(merge(common, strip), result);
-  });
+      assert.deepEqual(merge(common, strip), result);
+    }
+  );
 
-  it('should not merge to parent if there is no exclude for ' + loadersKey + ' #68', function () {
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ['babel'],
-        exclude: 'apps'
-      }
-    ];
-    const strip = {
-      module: {}
-    };
-    strip.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ['strip?strip[]=debug']
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ['babel'],
-        exclude: 'apps'
-      },
-      {
-        test: /\.js$/,
-        loaders: ['strip?strip[]=debug']
-      }
-    ];
+  test(
+    'should not merge to parent if there is no exclude for ' + loadersKey + ' #68',
+    () => {
+      const common = {
+        module: {}
+      };
+      common.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          loaders: ['babel'],
+          exclude: 'apps'
+        }
+      ];
+      const strip = {
+        module: {}
+      };
+      strip.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          loaders: ['strip?strip[]=debug']
+        }
+      ];
+      const result = {
+        module: {}
+      };
+      result.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          loaders: ['babel'],
+          exclude: 'apps'
+        },
+        {
+          test: /\.js$/,
+          loaders: ['strip?strip[]=debug']
+        }
+      ];
 
-    assert.deepEqual(merge(common, strip), result);
-  });
+      assert.deepEqual(merge(common, strip), result);
+    }
+  );
 
-  it('should append loaders with ' + loadersKey, function () {
+  test('should append loaders with ' + loadersKey, () => {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -331,49 +340,55 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should compare loaders by their whole name with ' + loadersKey, function () {
-    const a = {};
-    a[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['aa']
-    }];
-    const b = {};
-    b[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['ab']
-    }];
-    const result = {};
-    result[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['aa', 'ab']
-    }];
+  test(
+    'should compare loaders by their whole name with ' + loadersKey,
+    () => {
+      const a = {};
+      a[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['aa']
+      }];
+      const b = {};
+      b[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['ab']
+      }];
+      const result = {};
+      result[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['aa', 'ab']
+      }];
 
-    assert.deepEqual(merge(a, b), result);
-  });
+      assert.deepEqual(merge(a, b), result);
+    }
+  );
 
-  it('should be able to merge loaders referenced by path with ' + loadersKey, function () {
-    const a = {};
-    a[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['/foo/bar-a.js?a=b']
-    }];
-    const b = {};
-    b[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['/foo/bar-b.js?c=d']
-    }];
-    const result = {};
-    result[loadersKey] = [{
-      test: /\.js$/,
-      // loaders are evaluated from right to left so it makes sense to
-      // append here
-      loaders: ['/foo/bar-a.js?a=b', '/foo/bar-b.js?c=d']
-    }];
+  test(
+    'should be able to merge loaders referenced by path with ' + loadersKey,
+    () => {
+      const a = {};
+      a[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['/foo/bar-a.js?a=b']
+      }];
+      const b = {};
+      b[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['/foo/bar-b.js?c=d']
+      }];
+      const result = {};
+      result[loadersKey] = [{
+        test: /\.js$/,
+        // loaders are evaluated from right to left so it makes sense to
+        // append here
+        loaders: ['/foo/bar-a.js?a=b', '/foo/bar-b.js?c=d']
+      }];
 
-    assert.deepEqual(merge(a, b), result);
-  });
+      assert.deepEqual(merge(a, b), result);
+    }
+  );
 
-  it('should append loader and loaders with ' + loadersKey, function () {
+  test('should append loader and loaders with ' + loadersKey, () => {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -401,7 +416,7 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not duplicate loaders with ' + loadersKey, function () {
+  test('should not duplicate loaders with ' + loadersKey, () => {
     const a = {};
     a[loadersKey] = [{
       test: /\.js$/,
@@ -421,57 +436,63 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not override loaders with props include ' + loadersKey, function () {
-    const a = {};
-    a[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a'],
-      include: './path'
-    }];
-    const b = {};
-    b[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a', 'b']
-    }];
-    const result = {};
-    result[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a'],
-      include: './path'
-    }, {
-      test: /\.js$/,
-      loaders: ['a', 'b']
-    }];
+  test(
+    'should not override loaders with props include ' + loadersKey,
+    () => {
+      const a = {};
+      a[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a'],
+        include: './path'
+      }];
+      const b = {};
+      b[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a', 'b']
+      }];
+      const result = {};
+      result[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a'],
+        include: './path'
+      }, {
+        test: /\.js$/,
+        loaders: ['a', 'b']
+      }];
 
-    assert.deepEqual(merge(a, b), result);
-  });
+      assert.deepEqual(merge(a, b), result);
+    }
+  );
 
-  it('should override query options for the same loader with ' + loadersKey, function () {
-    const a = {};
-    a[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a?1']
-    }];
-    const b = {};
-    b[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a?2', 'b']
-    }];
-    const c = {};
-    c[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a', 'b?3']
-    }];
-    const result = {};
-    result[loadersKey] = [{
-      test: /\.js$/,
-      loaders: ['a', 'b?3']
-    }];
+  test(
+    'should override query options for the same loader with ' + loadersKey,
+    () => {
+      const a = {};
+      a[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a?1']
+      }];
+      const b = {};
+      b[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a?2', 'b']
+      }];
+      const c = {};
+      c[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a', 'b?3']
+      }];
+      const result = {};
+      result[loadersKey] = [{
+        test: /\.js$/,
+        loaders: ['a', 'b?3']
+      }];
 
-    assert.deepEqual(merge(a, b, c), result);
-  });
+      assert.deepEqual(merge(a, b, c), result);
+    }
+  );
 
-  it('should merge module.loaders for ' + loadersKey, function () {
+  test('should merge module.loaders for ' + loadersKey, () => {
     const common = {
       module: {}
     };
@@ -503,199 +524,211 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(common, isparta), result);
   });
 
-  it('should not merge if a loader has include for ' + loadersKey, function () {
-    // these shouldn't be merged because `include` is defined.
-    // instead, it should prepend to guarantee sane evaluation order
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        include: [
-          'foo',
-          'bar'
-        ]
-      }
-    ];
-    const isparta = {
-      module: {}
-    };
-    isparta.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['isparta-instrumenter'],
-        include: 'baz'
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        include: [
-          'foo',
-          'bar'
-        ]
-      },
-      {
-        test: /\.jsx?$/,
-        loaders: ['isparta-instrumenter'],
-        include: 'baz'
-      }
-    ];
+  test(
+    'should not merge if a loader has include for ' + loadersKey,
+    () => {
+      // these shouldn't be merged because `include` is defined.
+      // instead, it should prepend to guarantee sane evaluation order
+      const common = {
+        module: {}
+      };
+      common.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          include: [
+            'foo',
+            'bar'
+          ]
+        }
+      ];
+      const isparta = {
+        module: {}
+      };
+      isparta.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['isparta-instrumenter'],
+          include: 'baz'
+        }
+      ];
+      const result = {
+        module: {}
+      };
+      result.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          include: [
+            'foo',
+            'bar'
+          ]
+        },
+        {
+          test: /\.jsx?$/,
+          loaders: ['isparta-instrumenter'],
+          include: 'baz'
+        }
+      ];
 
-    assert.deepEqual(merge(common, isparta), result);
-  });
+      assert.deepEqual(merge(common, isparta), result);
+    }
+  );
 
-  it('should not merge if a loader has include and string loader values for ' + loadersKey, function () {
-    // these shouldn't be merged because `include` is defined.
-    // instead, it should prepend to guarantee sane evaluation order
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        include: [
-          'foo',
-          'bar'
-        ]
-      }
-    ];
-    const isparta = {
-      module: {}
-    };
-    isparta.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loader: 'isparta-instrumenter',
-        include: 'baz'
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        include: [
-          'foo',
-          'bar'
-        ]
-      },
-      {
-        test: /\.jsx?$/,
-        loader: 'isparta-instrumenter',
-        include: 'baz'
-      }
-    ];
+  test(
+    'should not merge if a loader has include and string loader values for ' + loadersKey,
+    () => {
+      // these shouldn't be merged because `include` is defined.
+      // instead, it should prepend to guarantee sane evaluation order
+      const common = {
+        module: {}
+      };
+      common.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          include: [
+            'foo',
+            'bar'
+          ]
+        }
+      ];
+      const isparta = {
+        module: {}
+      };
+      isparta.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loader: 'isparta-instrumenter',
+          include: 'baz'
+        }
+      ];
+      const result = {
+        module: {}
+      };
+      result.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          include: [
+            'foo',
+            'bar'
+          ]
+        },
+        {
+          test: /\.jsx?$/,
+          loader: 'isparta-instrumenter',
+          include: 'baz'
+        }
+      ];
 
-    assert.deepEqual(merge(common, isparta), result);
-  });
+      assert.deepEqual(merge(common, isparta), result);
+    }
+  );
 
-  it('should not merge if a loader has exclude for ' + loadersKey, function () {
-    // these shouldn't be merged because `exclude` is defined.
-    // instead, it should prepend to guarantee sane evaluation order
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        exclude: [
-          'foo',
-          'bar'
-        ]
-      }
-    ];
-    const isparta = {
-      module: {}
-    };
-    isparta.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['isparta-instrumenter'],
-        exclude: 'baz'
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        exclude: [
-          'foo',
-          'bar'
-        ]
-      },
-      {
-        test: /\.jsx?$/,
-        loaders: ['isparta-instrumenter'],
-        exclude: 'baz'
-      }
-    ];
+  test(
+    'should not merge if a loader has exclude for ' + loadersKey,
+    () => {
+      // these shouldn't be merged because `exclude` is defined.
+      // instead, it should prepend to guarantee sane evaluation order
+      const common = {
+        module: {}
+      };
+      common.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          exclude: [
+            'foo',
+            'bar'
+          ]
+        }
+      ];
+      const isparta = {
+        module: {}
+      };
+      isparta.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['isparta-instrumenter'],
+          exclude: 'baz'
+        }
+      ];
+      const result = {
+        module: {}
+      };
+      result.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          exclude: [
+            'foo',
+            'bar'
+          ]
+        },
+        {
+          test: /\.jsx?$/,
+          loaders: ['isparta-instrumenter'],
+          exclude: 'baz'
+        }
+      ];
 
-    assert.deepEqual(merge(common, isparta), result);
-  });
+      assert.deepEqual(merge(common, isparta), result);
+    }
+  );
 
-  it('should not merge if a loader has exclude and string loader values for ' + loadersKey, function () {
-    // these shouldn't be merged because `exclude` is defined.
-    // instead, it should prepend to guarantee sane evaluation order
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        exclude: [
-          'foo',
-          'bar'
-        ]
-      }
-    ];
-    const isparta = {
-      module: {}
-    };
-    isparta.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loader: 'isparta-instrumenter',
-        exclude: 'baz'
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        exclude: [
-          'foo',
-          'bar'
-        ]
-      },
-      {
-        test: /\.jsx?$/,
-        loader: 'isparta-instrumenter',
-        exclude: 'baz'
-      }
-    ];
+  test(
+    'should not merge if a loader has exclude and string loader values for ' + loadersKey,
+    () => {
+      // these shouldn't be merged because `exclude` is defined.
+      // instead, it should prepend to guarantee sane evaluation order
+      const common = {
+        module: {}
+      };
+      common.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          exclude: [
+            'foo',
+            'bar'
+          ]
+        }
+      ];
+      const isparta = {
+        module: {}
+      };
+      isparta.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loader: 'isparta-instrumenter',
+          exclude: 'baz'
+        }
+      ];
+      const result = {
+        module: {}
+      };
+      result.module[loadersKey] = [
+        {
+          test: /\.jsx?$/,
+          loaders: ['eslint'],
+          exclude: [
+            'foo',
+            'bar'
+          ]
+        },
+        {
+          test: /\.jsx?$/,
+          loader: 'isparta-instrumenter',
+          exclude: 'baz'
+        }
+      ];
 
-    assert.deepEqual(merge(common, isparta), result);
-  });
+      assert.deepEqual(merge(common, isparta), result);
+    }
+  );
 
-  it('should not use parent include/exclude for ' + loadersKey, function () {
+  test('should not use parent include/exclude for ' + loadersKey, () => {
     const common = {
       module: {}
     };
@@ -743,65 +776,68 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(common, strip), result);
   });
 
-  it('should not use parent include/exclude even if only loader string is specified for ' + loadersKey, function () {
-    const common = {
-      module: {}
-    };
-    common.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        include: [
-          'apps',
-          'lib',
-          'thirdparty'
-        ],
-        exclude: /node_modules/,
-        loaders: 'eslint'
-      }
-    ];
-    const eslint = {
-      module: {}
-    };
-    eslint.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        query: {
-          rules: {
-            'no-debugger': 0
+  test(
+    'should not use parent include/exclude even if only loader string is specified for ' + loadersKey,
+    () => {
+      const common = {
+        module: {}
+      };
+      common.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          include: [
+            'apps',
+            'lib',
+            'thirdparty'
+          ],
+          exclude: /node_modules/,
+          loaders: 'eslint'
+        }
+      ];
+      const eslint = {
+        module: {}
+      };
+      eslint.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          loader: 'eslint',
+          query: {
+            rules: {
+              'no-debugger': 0
+            }
           }
         }
-      }
-    ];
-    const result = {
-      module: {}
-    };
-    result.module[loadersKey] = [
-      {
-        test: /\.js$/,
-        include: [
-          'apps',
-          'lib',
-          'thirdparty'
-        ],
-        exclude: /node_modules/,
-        loaders: 'eslint'
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint',
-        query: {
-          rules: {
-            'no-debugger': 0
+      ];
+      const result = {
+        module: {}
+      };
+      result.module[loadersKey] = [
+        {
+          test: /\.js$/,
+          include: [
+            'apps',
+            'lib',
+            'thirdparty'
+          ],
+          exclude: /node_modules/,
+          loaders: 'eslint'
+        },
+        {
+          test: /\.js$/,
+          loader: 'eslint',
+          query: {
+            rules: {
+              'no-debugger': 0
+            }
           }
         }
-      }
-    ];
+      ];
 
-    assert.deepEqual(merge(common, eslint), result);
-  });
+      assert.deepEqual(merge(common, eslint), result);
+    }
+  );
 
-  it('should respect a new order for ' + loadersKey, function () {
+  test('should respect a new order for ' + loadersKey, () => {
     const common = {
       module: {}
     };
@@ -844,7 +880,7 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(common, extractText), result);
   });
 
-  it('should respect the existing order for ' + loadersKey, function () {
+  test('should respect the existing order for ' + loadersKey, () => {
     const common = {
       module: {}
     };
@@ -884,7 +920,9 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(common, extractText), result);
   });
 
-  it('should respect second order when existing/new have conflicting orders for ' + loadersKey, function () {
+  test(
+    'should respect second order when existing/new have conflicting orders for ' + loadersKey,
+  () => {
     const common = {
       module: {}
     };
@@ -928,7 +966,7 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(common, extractText), result);
   });
 
-  it('should merge oneOf rules for ' + loadersKey, function () {
+  test('should merge oneOf rules for ' + loadersKey, function () {
     const a = {
       [loadersKey]: [{
         oneOf: [
@@ -958,7 +996,7 @@ function mergeSmartTest(merge, loadersKey) {
     assert.deepEqual(merge(a, result), result);
   });
 
-  it('should overwrite with oneOf for ' + loadersKey, function () {
+  test('should overwrite with oneOf for ' + loadersKey, function () {
     const a = {
       [loadersKey]: [
         {

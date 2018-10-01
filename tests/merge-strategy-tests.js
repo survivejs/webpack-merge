@@ -2,7 +2,7 @@
 const assert = require('assert');
 
 function mergeStrategyTests(merge) {
-  it('should allow setting to array append', function () {
+  test('should allow setting to array append', () => {
     const a = {
       entry: ['foo', 'bar', 'baz']
     };
@@ -18,7 +18,7 @@ function mergeStrategyTests(merge) {
     })(a, b), result);
   });
 
-  it('should allow setting to array prepend', function () {
+  test('should allow setting to array prepend', () => {
     const a = {
       entry: ['foo', 'bar', 'baz']
     };
@@ -34,7 +34,7 @@ function mergeStrategyTests(merge) {
     })(a, b), result);
   });
 
-  it('should allow setting to object append', function () {
+  test('should allow setting to object append', () => {
     const a = {
       entry: {
         foo: 'bar'
@@ -60,7 +60,7 @@ function mergeStrategyTests(merge) {
     );
   });
 
-  it('should allow setting to object prepend', function () {
+  test('should allow setting to object prepend', () => {
     const a = {
       entry: {
         foo: 'bar'
@@ -86,7 +86,7 @@ function mergeStrategyTests(merge) {
     );
   });
 
-  it('should allow replace strategy for arrays', function () {
+  test('should allow replace strategy for arrays', () => {
     const a = {
       entry: [
         'foo'
@@ -111,7 +111,7 @@ function mergeStrategyTests(merge) {
     );
   });
 
-  it('should allow replace strategy for objects', function () {
+  test('should allow replace strategy for objects', () => {
     const a = {
       entry: {
         foo: 'bar'
@@ -136,7 +136,7 @@ function mergeStrategyTests(merge) {
     );
   });
 
-  it('should merge functions returning arrays with prepend', function () {
+  test('should merge functions returning arrays with prepend', () => {
     const a = {
       postcss() {
         return ['a'];
@@ -157,7 +157,7 @@ function mergeStrategyTests(merge) {
     );
   });
 
-  it('should merge functions returning objects with prepend', function () {
+  test('should merge functions returning objects with prepend', () => {
     const a = {
       postcss() {
         return {
@@ -189,7 +189,7 @@ function mergeStrategyTests(merge) {
     );
   });
 
-  it('should merge functions returning arrays with replace', function () {
+  test('should merge functions returning arrays with replace', () => {
     const a = {
       postcss() {
         return ['a'];
@@ -210,7 +210,7 @@ function mergeStrategyTests(merge) {
     );
   });
 
-  it('should merge functions returning objects with replace', function () {
+  test('should merge functions returning objects with replace', () => {
     const a = {
       postcss() {
         return ['a'];

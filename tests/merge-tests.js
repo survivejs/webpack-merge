@@ -2,7 +2,7 @@
 const assert = require('assert');
 
 function mergeTests(merge) {
-  it('should return the same config', function () {
+  test('should return the same config', () => {
     const config = {
       entry: {
         app: 'app'
@@ -17,7 +17,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(config), config);
   });
 
-  it('should append arrays of multiple objects by default', function () {
+  test('should append arrays of multiple objects by default', () => {
     const a = {
       foo: ['a']
     };
@@ -34,7 +34,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b, c), result);
   });
 
-  it('should work with an array of objects', function () {
+  test('should work with an array of objects', () => {
     const a = {
       foo: ['a']
     };
@@ -51,7 +51,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge([a, b, c]), result);
   });
 
-  it('should override objects', function () {
+  test('should override objects', () => {
     const a = {
       foo: 'a'
     };
@@ -62,7 +62,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, result), result);
   });
 
-  it('should append arrays by default', function () {
+  test('should append arrays by default', () => {
     const a = {
       foo: ['a']
     };
@@ -76,7 +76,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should append arrays without mutating', function () {
+  test('should append arrays without mutating', () => {
     const a = {
       foo: ['a']
     };
@@ -93,7 +93,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should override objects of multiple objects', function () {
+  test('should override objects of multiple objects', () => {
     const a = {
       foo: 'a'
     };
@@ -107,7 +107,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b, result), result);
   });
 
-  it('should deeply merge objects', function () {
+  test('should deeply merge objects', () => {
     const a = {
       foo: { bar: 'a' }
     };
@@ -124,7 +124,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not error when there are no matching loaders', function () {
+  test('should not error when there are no matching loaders', () => {
     const a = {
       loaders: [{
         test: /\.js$/,
@@ -150,7 +150,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), result);
   });
 
-  it('should not mutate inputs', function () {
+  test('should not mutate inputs', () => {
     const a = {
       output: {
         filename: 'bundle.js'
@@ -168,7 +168,7 @@ function mergeTests(merge) {
     assert.deepEqual(a, aClone);
   });
 
-  it('should not allow overriding with an empty array', function () {
+  test('should not allow overriding with an empty array', () => {
     const a = {
       entry: ['foo']
     };
@@ -179,7 +179,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), a);
   });
 
-  it('should not allow overriding with an empty object', function () {
+  test('should not allow overriding with an empty object', () => {
     const a = {
       entry: {
         a: 'foo'
@@ -192,7 +192,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b), a);
   });
 
-  it('should merge functions that return arrays', function () {
+  test('should merge functions that return arrays', () => {
     const a = {
       postcss() {
         return ['a'];
@@ -208,7 +208,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b).postcss(), expected);
   });
 
-  it('should merge functions that return objects', function () {
+  test('should merge functions that return objects', () => {
     const a = {
       postcss() {
         return {
@@ -231,7 +231,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b).postcss(), expected);
   });
 
-  it('should merge functions that take arguments', function () {
+  test('should merge functions that take arguments', () => {
     const a = {
       postcss(arg) {
         return [arg];
@@ -247,7 +247,7 @@ function mergeTests(merge) {
     assert.deepEqual(merge(a, b).postcss('a'), expected);
   });
 
-  it('should not mutate inputs with mismatched keys', function () {
+  test('should not mutate inputs with mismatched keys', () => {
     const a = {
       entry: {}
     };
