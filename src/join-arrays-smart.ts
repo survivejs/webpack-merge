@@ -1,8 +1,14 @@
 import { differenceWith, isEqual, mergeWith, unionWith } from "lodash";
+import { CustomizeRule, ICustomizeRules, ILoader, IRule, Key } from "./types";
 
 const isArray = Array.isArray;
 
-function uniteRules(rules, key, newRule, rule) {
+function uniteRules(
+  rules: ICustomizeRules,
+  key: Key,
+  newRule: IRule,
+  rule: IRule
+) {
   if (
     String(rule.test) !== String(newRule.test) ||
     ((newRule.enforce || rule.enforce) && rule.enforce !== newRule.enforce) ||
@@ -61,13 +67,13 @@ function uniteRules(rules, key, newRule, rule) {
     (rule.use || rule.loaders || rule.loader) &&
     (newRule.use || newRule.loaders)
   ) {
-    const expandEntry = loader =>
+    const expandEntry = (loader: ILoader | string) =>
       typeof loader === "string" ? { loader } : loader;
     // this is only here to avoid breaking existing tests
-    const unwrapEntry = entry =>
+    const unwrapEntry = (entry: ILoader) =>
       !entry.options && !entry.query ? entry.loader : entry;
 
-    let entries;
+    let entries: ILoader[];
     if (rule.loader) {
       const optionsKey = rule.options ? "options" : rule.query && "query";
       entries = [{ loader: rule.loader }];
@@ -92,15 +98,16 @@ function uniteRules(rules, key, newRule, rule) {
     const resolvedKey = `${key}.${loadersKey}`;
 
     switch (rules[resolvedKey]) {
-      case "prepend":
+      case CustomizeRule.Prepend:
         rule[loadersKey] = [
           ...differenceWith(newEntries, entries, uniteEntries),
           ...entries
         ].map(unwrapEntry);
         break;
-      case "replace":
+      case CustomizeRule.Replace:
         rule[loadersKey] = newRule.use || newRule.loaders;
         break;
+      case CustomizeRule.Append:
       default:
         rule[loadersKey] = combineEntries(newEntries, entries).map(unwrapEntry);
     }
@@ -122,7 +129,7 @@ function uniteRules(rules, key, newRule, rule) {
  * Arrays need to be sorted for equality checking
  * but clone them first so as not to disrupt the sort order in tests
  */
-function isSameValue(a, b) {
+function isSameValue(a: any, b: any) {
   const [propA, propB] = [a, b].map(
     value => (isArray(value) ? [...value].sort() : value)
   );
@@ -130,16 +137,16 @@ function isSameValue(a, b) {
   return isEqual(propA, propB);
 }
 
-function areEqualEntries(newEntry, entry) {
+function areEqualEntries(newEntry: ILoader, entry: ILoader) {
   const loaderNameRe = /^([^?]+)/gi;
 
-  const [loaderName] = entry.loader.match(loaderNameRe);
-  const [newLoaderName] = newEntry.loader.match(loaderNameRe);
-
-  return loaderName === newLoaderName;
+  return isEqual(
+    entry.loader.match(loaderNameRe),
+    newEntry.loader.match(loaderNameRe)
+  );
 }
 
-function uniteEntries(newEntry, entry) {
+function uniteEntries(newEntry: ILoader, entry: ILoader) {
   if (areEqualEntries(newEntry, entry)) {
     // Replace query values with newer ones
     mergeWith(entry, newEntry);
@@ -156,7 +163,7 @@ those are pre-requisites). Any remaining existing entries are added at the end.
 
 Since webpack processes right-to-left, we're working backwards through the arrays
 */
-function combineEntries(newEntries, existingEntries) {
+function combineEntries(newEntries: ILoader[], existingEntries: ILoader[]) {
   const resultSet = [];
 
   // We're iterating through newEntries, this keeps track of where we are in the existingEntries
@@ -167,7 +174,6 @@ function combineEntries(newEntries, existingEntries) {
     const indexInExistingEntries = findLastIndexUsingComparinator(
       existingEntries,
       currentEntry,
-      areEqualEntries,
       existingEntriesIteratorIndex
     );
     const hasEquivalentEntryInExistingEntries = indexInExistingEntries !== -1;
@@ -186,12 +192,7 @@ function combineEntries(newEntries, existingEntries) {
         // new entries so that if there's a conflict between existing entries and new entries,
         // new entries order wins
         const hasMatchingEntryInNewEntries =
-          findLastIndexUsingComparinator(
-            newEntries,
-            existingEntry,
-            areEqualEntries,
-            i
-          ) !== -1;
+          findLastIndexUsingComparinator(newEntries, existingEntry, i) !== -1;
 
         if (!hasMatchingEntryInNewEntries) {
           resultSet.unshift(existingEntry);
@@ -209,7 +210,7 @@ function combineEntries(newEntries, existingEntries) {
         findLastIndexUsingComparinator(
           resultSet,
           currentEntry,
-          areEqualEntries
+          resultSet.length - 1
         ) !== -1;
 
       if (!alreadyHasMatchingEntryInResultSet) {
@@ -229,7 +230,7 @@ function combineEntries(newEntries, existingEntries) {
       findLastIndexUsingComparinator(
         resultSet,
         existingEntry,
-        areEqualEntries
+        resultSet.length - 1
       ) !== -1;
 
     if (!alreadyHasMatchingEntryInResultSet) {
@@ -241,12 +242,10 @@ function combineEntries(newEntries, existingEntries) {
 }
 
 function findLastIndexUsingComparinator(
-  entries,
-  entryToFind,
-  comparinator,
-  startingIndex
+  entries: ILoader[],
+  entryToFind: ILoader,
+  startingIndex: number
 ) {
-  startingIndex = startingIndex || entries.length - 1;
   for (let i = startingIndex; i >= 0; i -= 1) {
     if (areEqualEntries(entryToFind, entries[i])) {
       return i;
