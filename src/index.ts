@@ -4,8 +4,9 @@ import {
 import joinArrays from './join-arrays';
 import { uniteRules } from './join-arrays-smart';
 import unique from './unique';
+import { Configuration } from './types'
 
-function merge(...sources) {
+function merge(...sources: Configuration[]) {
   // This supports
   // merge([<object>] | ...<object>)
   // merge({ customizeArray: <fn>, customizeObject: <fn>})([<object>] | ...<object>)

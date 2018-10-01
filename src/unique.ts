@@ -1,7 +1,7 @@
 import { differenceWith } from 'lodash';
 
-function mergeUnique(key, uniques, getter = a => a) {
-  return (a, b, k) => (
+function mergeUnique(key: string, uniques: object[], getter = (a: {}) => a) {
+  return (a: [], b: [], k: string) => (
     k === key && [
       ...a,
       ...differenceWith(

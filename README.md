@@ -81,7 +81,7 @@ customizeObject({ object1: {} }, { object2: {} }, bar1);
 customizeObject({ object1: {} }, { object2: {} }, bar2);
 ```
 
-### **`merge.unique(<field>, <fields>, field => field)`**
+### **`merge.unique(<field: string>, <fields: [string]>, field => field)`**
 
 ```javascript
 const output = merge({
