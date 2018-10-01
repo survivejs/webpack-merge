@@ -6,33 +6,34 @@
   "scripts": {
     "build": "babel src -d lib",
     "watch": "npm-watch",
+    "lint": "tslint --format stylish",
     "test": "mocha tests/test-*",
     "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
-    "test:lint": "eslint src/ tests/ --cache",
-    "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
+    "tsc": "tsc",
+    "precommit": "lint-staged",
+    "prepublishOnly": "tsc -d",
+    "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
   "dependencies": {
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-lodash": "^3.3.2",
-    "babel-preset-es2015": "^6.24.1",
-    "copy-webpack-plugin": "^4.4.1",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-react": "^6.10.3",
-    "git-prepush-hook": "^1.0.2",
-    "istanbul": "^0.4.5",
-    "mocha": "^3.5.3",
-    "npm-watch": "^0.1.9",
-    "webpack": "^1.15.0"
+    "@types/jest": "^23.3.2",
+    "copy-webpack-plugin": "^4.5.2",
+    "husky": "^1.1.0",
+    "jest": "^23.6.0",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3",
+    "ts-jest": "^23.10.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "tslint-plugin-prettier": "^2.0.0",
+    "typescript": "^3.1.1",
+    "webpack": "^4.20.2"
   },
   "repository": {
     "type": "git",
@@ -47,28 +48,20 @@
     "merge"
   ],
   "license": "MIT",
-  "pre-push": [
-    "test:lint",
-    "build",
-    "test"
-  ],
-  "watch": {
-    "build": {
-      "patterns": [
-        "src/**/*.js"
-      ]
-    },
-    "test": {
-      "patterns": [
-        "src/**/*.js",
-        "tests/**/*.js"
-      ]
-    },
-    "test:lint": {
-      "patterns": [
-        "src/**/*.js",
-        "tests/**/*.js"
-      ]
+  "lint-staged": {
+    "*.{ts}": [
+      "tslint --fix --format stylish",
+      "git add"
+    ],
+    "*.{ts,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "package.json": "check-yarn-lock"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint && npm run build && npm run test"
     }
   }
 }
