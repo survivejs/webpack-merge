@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
+    "@types/lodash": "^4.14.116",
     "copy-webpack-plugin": "^4.5.2",
     "husky": "^1.1.0",
     "jest": "^23.6.0",
