@@ -1,10 +1,8 @@
-import {
-  differenceWith, mergeWith, unionWith, values
-} from 'lodash';
-import joinArrays from './join-arrays';
-import { uniteRules } from './join-arrays-smart';
-import unique from './unique';
-import { Configuration } from './types'
+import { differenceWith, mergeWith, unionWith, values } from "lodash";
+import joinArrays from "./join-arrays";
+import { uniteRules } from "./join-arrays-smart";
+import { Configuration } from "./types";
+import unique from "./unique";
 
 function merge(...sources: Configuration[]) {
   // This supports
@@ -34,7 +32,7 @@ function merge(...sources: Configuration[]) {
 
 const mergeSmart = merge({
   customizeArray: (a, b, key) => {
-    if (isRule(key.split('.').slice(-1)[0])) {
+    if (isRule(key.split(".").slice(-1)[0])) {
       return unionWith(a, b, uniteRules.bind(null, {}, key));
     }
 
@@ -46,43 +44,47 @@ const mergeMultiple = (...sources) => values(merge(sources));
 
 // rules: { <field>: <'append'|'prepend'|'replace'> }
 // All default to append but you can override here
-const mergeStrategy = (rules = {}) => merge({
-  customizeArray: customizeArray(rules),
-  customizeObject: customizeObject(rules)
-});
-const mergeSmartStrategy = (rules = {}) => merge({
-  customizeArray: (a, b, key) => {
-    const topKey = key.split('.').slice(-1)[0];
+const mergeStrategy = (rules = {}) =>
+  merge({
+    customizeArray: customizeArray(rules),
+    customizeObject: customizeObject(rules)
+  });
+const mergeSmartStrategy = (rules = {}) =>
+  merge({
+    customizeArray: (a, b, key) => {
+      const topKey = key.split(".").slice(-1)[0];
 
-    if (isRule(topKey)) {
-      switch (rules[key]) {
-        case 'prepend':
-          return [
-            ...differenceWith(b, a, (newRule, seenRule) => (
-              uniteRules(rules, key, newRule, seenRule, 'prepend'))
-            ),
-            ...a
-          ];
-        case 'replace':
-          return b;
-        default: // append
-          return unionWith(a, b, uniteRules.bind(null, rules, key));
+      if (isRule(topKey)) {
+        switch (rules[key]) {
+          case "prepend":
+            return [
+              ...differenceWith(b, a, (newRule, seenRule) =>
+                uniteRules(rules, key, newRule, seenRule, "prepend")
+              ),
+              ...a
+            ];
+          case "replace":
+            return b;
+          default:
+            // append
+            return unionWith(a, b, uniteRules.bind(null, rules, key));
+        }
       }
-    }
 
-    return customizeArray(rules)(a, b, key);
-  },
-  customizeObject: customizeObject(rules)
-});
+      return customizeArray(rules)(a, b, key);
+    },
+    customizeObject: customizeObject(rules)
+  });
 
 function customizeArray(rules) {
   return (a, b, key) => {
     switch (rules[key]) {
-      case 'prepend':
+      case "prepend":
         return [...b, ...a];
-      case 'replace':
+      case "replace":
         return b;
-      default: // append
+      default:
+        // append
         return false;
     }
   };
@@ -91,18 +93,19 @@ function customizeArray(rules) {
 function customizeObject(rules) {
   return (a, b, key) => {
     switch (rules[key]) {
-      case 'prepend':
+      case "prepend":
         return mergeWith({}, b, a, joinArrays());
-      case 'replace':
+      case "replace":
         return b;
-      default: // append
+      default:
+        // append
         return false;
     }
   };
 }
 
 function isRule(key) {
-  return ['preLoaders', 'loaders', 'postLoaders', 'rules'].indexOf(key) >= 0;
+  return ["preLoaders", "loaders", "postLoaders", "rules"].indexOf(key) >= 0;
 }
 
 module.exports = merge;

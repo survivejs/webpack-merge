@@ -1,34 +1,46 @@
-import {
-  isEqual, mergeWith, differenceWith, unionWith
-} from 'lodash';
+import { differenceWith, isEqual, mergeWith, unionWith } from "lodash";
 
 const isArray = Array.isArray;
 
 function uniteRules(rules, key, newRule, rule) {
-  if (String(rule.test) !== String(newRule.test)
-      || ((newRule.enforce || rule.enforce) && rule.enforce !== newRule.enforce)
-      || (newRule.include && !isSameValue(rule.include, newRule.include))
-      || (newRule.exclude && !isSameValue(rule.exclude, newRule.exclude))) {
+  if (
+    String(rule.test) !== String(newRule.test) ||
+    ((newRule.enforce || rule.enforce) && rule.enforce !== newRule.enforce) ||
+    (newRule.include && !isSameValue(rule.include, newRule.include)) ||
+    (newRule.exclude && !isSameValue(rule.exclude, newRule.exclude))
+  ) {
     return false;
-  } else if (!rule.test && !rule.include && !rule.exclude
-      && (rule.loader && rule.loader.split('?')[0]) !== (newRule.loader && newRule.loader.split('?')[0])) {
+  } else if (
+    !rule.test &&
+    !rule.include &&
+    !rule.exclude &&
+    (rule.loader && rule.loader.split("?")[0]) !==
+      (newRule.loader && newRule.loader.split("?")[0])
+  ) {
     // Don't merge the rule if there isn't any identifying fields and the loaders don't match
     return false;
-  } else if ((rule.include || rule.exclude) && (!newRule.include && !newRule.exclude)) {
+  } else if (
+    (rule.include || rule.exclude) &&
+    (!newRule.include && !newRule.exclude)
+  ) {
     // Don't merge child without include/exclude to parent that has either
     return false;
   }
 
   // apply the same logic for oneOf
   if (rule.oneOf && newRule.oneOf) {
-    rule.oneOf = unionWith(rule.oneOf, newRule.oneOf, uniteRules.bind(null, {}, 'oneOf'));
+    rule.oneOf = unionWith(
+      rule.oneOf,
+      newRule.oneOf,
+      uniteRules.bind(null, {}, "oneOf")
+    );
 
     return true;
   }
 
   // newRule.loader should always override use, loaders and oneOf
   if (newRule.loader) {
-    const optionsKey = newRule.options ? 'options' : newRule.query && 'query';
+    const optionsKey = newRule.options ? "options" : newRule.query && "query";
 
     delete rule.use;
     delete rule.loaders;
@@ -45,18 +57,19 @@ function uniteRules(rules, key, newRule, rule) {
     delete rule.loader;
 
     rule.oneOf = newRule.oneOf;
-  } else if ((rule.use || rule.loaders || rule.loader) && (newRule.use || newRule.loaders)) {
-    const expandEntry = loader => (
-      typeof loader === 'string' ? { loader } : loader
-    );
+  } else if (
+    (rule.use || rule.loaders || rule.loader) &&
+    (newRule.use || newRule.loaders)
+  ) {
+    const expandEntry = loader =>
+      typeof loader === "string" ? { loader } : loader;
     // this is only here to avoid breaking existing tests
-    const unwrapEntry = entry => (
-      !entry.options && !entry.query ? entry.loader : entry
-    );
+    const unwrapEntry = entry =>
+      !entry.options && !entry.query ? entry.loader : entry;
 
     let entries;
     if (rule.loader) {
-      const optionsKey = rule.options ? 'options' : rule.query && 'query';
+      const optionsKey = rule.options ? "options" : rule.query && "query";
       entries = [{ loader: rule.loader }];
 
       if (optionsKey) {
@@ -71,19 +84,21 @@ function uniteRules(rules, key, newRule, rule) {
     } else {
       entries = [].concat(rule.use || rule.loaders).map(expandEntry);
     }
-    const newEntries = [].concat(newRule.use || newRule.loaders).map(expandEntry);
+    const newEntries = []
+      .concat(newRule.use || newRule.loaders)
+      .map(expandEntry);
 
-    const loadersKey = rule.use || newRule.use ? 'use' : 'loaders';
+    const loadersKey = rule.use || newRule.use ? "use" : "loaders";
     const resolvedKey = `${key}.${loadersKey}`;
 
     switch (rules[resolvedKey]) {
-      case 'prepend':
+      case "prepend":
         rule[loadersKey] = [
           ...differenceWith(newEntries, entries, uniteEntries),
           ...entries
         ].map(unwrapEntry);
         break;
-      case 'replace':
+      case "replace":
         rule[loadersKey] = newRule.use || newRule.loaders;
         break;
       default:
@@ -108,15 +123,15 @@ function uniteRules(rules, key, newRule, rule) {
  * but clone them first so as not to disrupt the sort order in tests
  */
 function isSameValue(a, b) {
-  const [propA, propB] = [a, b].map(value => (
-    isArray(value) ? [...value].sort() : value
-  ));
+  const [propA, propB] = [a, b].map(
+    value => (isArray(value) ? [...value].sort() : value)
+  );
 
   return isEqual(propA, propB);
 }
 
 function areEqualEntries(newEntry, entry) {
-  const loaderNameRe = /^([^?]+)/ig;
+  const loaderNameRe = /^([^?]+)/gi;
 
   const [loaderName] = entry.loader.match(loaderNameRe);
   const [newLoaderName] = newEntry.loader.match(loaderNameRe);
@@ -149,25 +164,34 @@ function combineEntries(newEntries, existingEntries) {
 
   for (let i = newEntries.length - 1; i >= 0; i -= 1) {
     const currentEntry = newEntries[i];
-    const indexInExistingEntries =
-      findLastIndexUsingComparinator(
-        existingEntries,
-        currentEntry,
-        areEqualEntries,
-        existingEntriesIteratorIndex);
+    const indexInExistingEntries = findLastIndexUsingComparinator(
+      existingEntries,
+      currentEntry,
+      areEqualEntries,
+      existingEntriesIteratorIndex
+    );
     const hasEquivalentEntryInExistingEntries = indexInExistingEntries !== -1;
 
     if (hasEquivalentEntryInExistingEntries) {
       // If the same entry exists in existing entries, we should add all of the entries that
       // come before to maintain order
-      for (let j = existingEntriesIteratorIndex; j > indexInExistingEntries; j -= 1) {
+      for (
+        let j = existingEntriesIteratorIndex;
+        j > indexInExistingEntries;
+        j -= 1
+      ) {
         const existingEntry = existingEntries[j];
 
         // If this entry also exists in new entries, we'll add as part of iterating through
         // new entries so that if there's a conflict between existing entries and new entries,
         // new entries order wins
         const hasMatchingEntryInNewEntries =
-          findLastIndexUsingComparinator(newEntries, existingEntry, areEqualEntries, i) !== -1;
+          findLastIndexUsingComparinator(
+            newEntries,
+            existingEntry,
+            areEqualEntries,
+            i
+          ) !== -1;
 
         if (!hasMatchingEntryInNewEntries) {
           resultSet.unshift(existingEntry);
@@ -182,22 +206,31 @@ function combineEntries(newEntries, existingEntries) {
       existingEntriesIteratorIndex -= 1;
     } else {
       const alreadyHasMatchingEntryInResultSet =
-        findLastIndexUsingComparinator(resultSet, currentEntry, areEqualEntries) !== -1;
+        findLastIndexUsingComparinator(
+          resultSet,
+          currentEntry,
+          areEqualEntries
+        ) !== -1;
 
       if (!alreadyHasMatchingEntryInResultSet) {
         resultSet.unshift(currentEntry);
       }
     }
-
   }
 
   // Add remaining existing entries
-  for (existingEntriesIteratorIndex; existingEntriesIteratorIndex >= 0;
-    existingEntriesIteratorIndex -= 1) {
-
+  for (
+    existingEntriesIteratorIndex;
+    existingEntriesIteratorIndex >= 0;
+    existingEntriesIteratorIndex -= 1
+  ) {
     const existingEntry = existingEntries[existingEntriesIteratorIndex];
     const alreadyHasMatchingEntryInResultSet =
-      findLastIndexUsingComparinator(resultSet, existingEntry, areEqualEntries) !== -1;
+      findLastIndexUsingComparinator(
+        resultSet,
+        existingEntry,
+        areEqualEntries
+      ) !== -1;
 
     if (!alreadyHasMatchingEntryInResultSet) {
       resultSet.unshift(existingEntry);
@@ -207,7 +240,12 @@ function combineEntries(newEntries, existingEntries) {
   return resultSet;
 }
 
-function findLastIndexUsingComparinator(entries, entryToFind, comparinator, startingIndex) {
+function findLastIndexUsingComparinator(
+  entries,
+  entryToFind,
+  comparinator,
+  startingIndex
+) {
   startingIndex = startingIndex || entries.length - 1;
   for (let i = startingIndex; i >= 0; i -= 1) {
     if (areEqualEntries(entryToFind, entries[i])) {
@@ -217,7 +255,4 @@ function findLastIndexUsingComparinator(entries, entryToFind, comparinator, star
   return -1;
 }
 
-export {
-  uniteRules,
-  uniteEntries
-};
+export { uniteRules, uniteEntries };
