@@ -8,9 +8,9 @@ export default function joinArrays({
   customizeObject,
   key
 }: {
-  customizeArray: CustomizeArray;
-  customizeObject: CustomizeObject;
-  key: Key;
+  customizeArray?: CustomizeArray;
+  customizeObject?: CustomizeObject;
+  key?: Key;
 }) {
   return function _joinArrays(a: any, b: any, k: Key): any {
     const newKey = key ? `${key}.${k}` : k;

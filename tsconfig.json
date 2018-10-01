@@ -9,7 +9,10 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
   },
   "include": [
     "src/**/*.ts"

@@ -5,7 +5,8 @@ import {
   ArrayRule,
   Configuration,
   CustomizeRule,
-  ICustomizeRules
+  ICustomizeRules,
+  Key
 } from "./types";
 import unique from "./unique";
 
