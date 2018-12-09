@@ -114,7 +114,7 @@ Given you may want to configure merging behavior per field, there's a strategy v
 var output = merge.strategy(
   {
     entry: 'prepend', // or 'replace', defaults to 'append'
-    'module.loaders': 'prepend'
+    'module.rules': 'prepend'
   }
 )(object1, object2, object3, ...);
 ```
@@ -127,7 +127,7 @@ The same idea works with smart merging too (described below in greater detail).
 var output = merge.smartStrategy(
   {
     entry: 'prepend', // or 'replace'
-    'module.loaders': 'prepend'
+    'module.rules': 'prepend'
   }
 )(object1, object2, object3, ...);
 ```
