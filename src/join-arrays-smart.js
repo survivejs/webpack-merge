@@ -1,5 +1,5 @@
 import {
-  isEqual, mergeWith, differenceWith
+  isEqual, mergeWith, differenceWith, unionWith
 } from 'lodash';
 
 const isArray = Array.isArray;
@@ -19,17 +19,32 @@ function uniteRules(rules, key, newRule, rule) {
     return false;
   }
 
-  // newRule.loader should always override
+  // apply the same logic for oneOf
+  if (rule.oneOf && newRule.oneOf) {
+    rule.oneOf = unionWith(rule.oneOf, newRule.oneOf, uniteRules.bind(null, {}, 'oneOf'));
+
+    return true;
+  }
+
+  // newRule.loader should always override use, loaders and oneOf
   if (newRule.loader) {
     const optionsKey = newRule.options ? 'options' : newRule.query && 'query';
 
     delete rule.use;
     delete rule.loaders;
+    delete rule.oneOf;
+
     rule.loader = newRule.loader;
 
     if (optionsKey) {
       rule[optionsKey] = newRule[optionsKey];
     }
+  } else if (newRule.oneOf) {
+    delete rule.use;
+    delete rule.loaders;
+    delete rule.loader;
+
+    rule.oneOf = newRule.oneOf;
   } else if ((rule.use || rule.loaders || rule.loader) && (newRule.use || newRule.loaders)) {
     const expandEntry = loader => (
       typeof loader === 'string' ? { loader } : loader
