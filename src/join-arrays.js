@@ -1,5 +1,5 @@
 import {
-  clone, cloneDeep, isFunction, isPlainObject, mergeWith
+  cloneDeep, isFunction, isPlainObject, mergeWith
 } from 'lodash';
 
 const isArray = Array.isArray;
