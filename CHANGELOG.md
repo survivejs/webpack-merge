@@ -1,3 +1,9 @@
+4.2.0 / 2019-01-04
+==================
+
+  * Feature - Support `oneOf` at `merge.smart`. #111
+  * Fix - If there's only single array to merge, clone it. #106
+
 4.1.4 / 2018-08-01
 ==================
 
