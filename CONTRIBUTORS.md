@@ -19,3 +19,4 @@
 * [Amy Lynn](https://github.com/Amy-Lynn) - Smart merge should maintain existing loader order. #79, #101
 * [Daniel Ruf](https://github.com/DanielRuf) - Remove bitHound from the README as it closed down. #102
 * [Adrien Harnay](https://github.com/adrienharnay) - Update README to comply with webpack API. #108
+* [Paweł Lula](https://github.com/desfero) - Support `oneOf` at `merge.smart`. #111
