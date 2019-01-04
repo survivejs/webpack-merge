@@ -1,5 +1,5 @@
 import {
-  cloneDeep, isFunction, isPlainObject, mergeWith
+  clone, cloneDeep, isFunction, isPlainObject, mergeWith
 } from 'lodash';
 
 const isArray = Array.isArray;
@@ -33,6 +33,10 @@ export default function joinArrays({
 
     if (isPlainObject(b)) {
       return cloneDeep(b);
+    }
+
+    if (isArray(b)) {
+      return [...b];
     }
 
     return b;
