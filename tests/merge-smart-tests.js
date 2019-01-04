@@ -927,6 +927,64 @@ function mergeSmartTest(merge, loadersKey) {
 
     assert.deepEqual(merge(common, extractText), result);
   });
+
+  it('should merge oneOf rules for ' + loadersKey, function () {
+    const a = {
+      [loadersKey]: [{
+        oneOf: [
+          {
+            test: /\.js$/,
+            loader: 'a'
+          }
+        ]
+      }]
+    };
+
+    const result = {
+      [loadersKey]: [{
+        oneOf: [
+          {
+            test: /\.js$/,
+            loader: 'b'
+          },
+          {
+            test: /\.css$/,
+            loader: 'b'
+          }
+        ]
+      }]
+    };
+
+    assert.deepEqual(merge(a, result), result);
+  });
+
+  it('should overwrite with oneOf for ' + loadersKey, function () {
+    const a = {
+      [loadersKey]: [
+        {
+          test: /\.js$/,
+          loader: 'a'
+        }
+      ]
+    };
+    const b = {
+      [loadersKey]: [{
+        test: /\.js$/,
+        oneOf: [
+          {
+            resourceQuery: /inline/, // foo.css?inline
+            use: 'url-loader'
+          },
+          {
+            resourceQuery: /external/, // foo.css?external
+            use: 'file-loader'
+          }
+        ]
+      }]
+    };
+
+    assert.deepEqual(merge(a, b), b);
+  });
 }
 
 module.exports = mergeSmartTests;
