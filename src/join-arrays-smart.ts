@@ -130,8 +130,8 @@ function uniteRules(
  * but clone them first so as not to disrupt the sort order in tests
  */
 function isSameValue(a: any, b: any) {
-  const [propA, propB] = [a, b].map(
-    value => (isArray(value) ? [...value].sort() : value)
+  const [propA, propB] = [a, b].map(value =>
+    isArray(value) ? [...value].sort() : value
   );
 
   return isEqual(propA, propB);

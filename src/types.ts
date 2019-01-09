@@ -1,13 +1,7 @@
-export type CustomizeArray = (a: any, b: any, key: Key) => any;
-export type CustomizeObject = (a: any, b: any, key: Key) => any;
-
 export type Key = string;
 
-interface IConfigurationUnit {
-  customizeArray: CustomizeArray;
-  customizeObject: CustomizeObject;
-}
-export type Configuration = IConfigurationUnit[] | IConfigurationUnit;
+export type CustomizeArray = (a: any, b: any, key: Key) => any;
+export type CustomizeObject = (a: any, b: any, key: Key) => any;
 
 export enum ArrayRule {
   PreLoaders = "preLoaders",
@@ -37,6 +31,7 @@ export interface IRule {
   loader?: string;
   include: any;
   exclude: any;
+  oneOf?: any;
   use?: ILoader | ILoader[] | string | string[];
   loaders?: any; // TODO: What's the correct type?
   options?: {};
