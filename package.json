@@ -4,14 +4,11 @@
   "author": "Juho Vepsalainen <bebraw@gmail.com>",
   "version": "4.2.1",
   "scripts": {
-    "build": "babel src -d lib",
-    "watch": "npm-watch",
+    "build": "tsc",
+    "watch": "tsc --watch",
     "lint": "tslint --format stylish --project .",
-    "test": "mocha tests/test-*",
-    "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
-    "tsc": "tsc",
+    "test": "jest --config",
     "precommit": "lint-staged",
-    "prepublishOnly": "tsc -d",
     "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
   },
   "main": "lib/index.js",
