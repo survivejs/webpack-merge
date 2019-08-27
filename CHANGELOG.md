@@ -1,3 +1,10 @@
+4.2.2 / 2019-08-27
+=================
+
+  * Fix - Update minimum version of lodash to 4.17.15 in order to avoid `npm audit warning`. #116
+  * Docs - Improve `merge.unique` documentation. #103
+  * Docs - Add clear note about precedence. #115
+
 4.2.1 / 2019-01-04
 ==================
 
