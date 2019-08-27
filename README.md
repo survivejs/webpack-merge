@@ -21,6 +21,15 @@ var output = merge(object1, object2, object3, ...);
 // You can pass an array of objects directly.
 // This works with all available functions.
 var output = merge([object1, object2, object3]);
+
+// Please note that where keys match,
+// the objects to the right take precedence:
+var output = merge(
+  { fruit: "apple", color: "red" },
+  { fruit: "strawberries" }
+);
+console.log(output);
+// { color: "red", fruit: "strawberries"}
 ```
 
 ### **`merge({ customizeArray, customizeObject })(...configuration | [...configuration])`**
