@@ -16,7 +16,7 @@
     "lib"
   ],
   "dependencies": {
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
