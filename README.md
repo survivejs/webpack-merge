@@ -92,6 +92,10 @@ customizeObject({ object1: {} }, { object2: {} }, bar2);
 
 ### **`merge.unique(<field>, <fields>, field => field)`**
 
+The first <field> is the config property to look through for duplicates.
+
+<fields> represents the values that should be unique when you run the field => field function on each duplicate.
+
 ```javascript
 const output = merge({
   customizeArray: merge.unique(
