@@ -201,6 +201,28 @@ function commonTests(merge) {
     assert.ok(merged.plugins[0].apply);
     assert.equal(merged.plugins[1].constructor.name, "DefinePlugin");
   });
+
+  it("should retain resourceQuery (#128)", () => {
+    const a = {
+      rules: [
+        {
+          test: /\.js$/,
+          oneOf: [
+            {
+              resourceQuery: /inline/, // foo.css?inline
+              use: "url-loader",
+            },
+            {
+              resourceQuery: /external/, // foo.css?external
+              use: "file-loader",
+            },
+          ],
+        },
+      ],
+    };
+
+    assert.deepEqual(stringify(merge(a, a)), stringify(a));
+  });
 }
 
 function mergeSmartTest(merge, loadersKey) {
@@ -1019,28 +1041,6 @@ function mergeSmartTest(merge, loadersKey) {
     };
 
     assert.deepEqual(merge(a, b), b);
-  });
-
-  it("should retain resourceQuery (#128)", () => {
-    const a = {
-      rules: [
-        {
-          test: /\.js$/,
-          oneOf: [
-            {
-              resourceQuery: /inline/, // foo.css?inline
-              use: "url-loader",
-            },
-            {
-              resourceQuery: /external/, // foo.css?external
-              use: "file-loader",
-            },
-          ],
-        },
-      ],
-    };
-
-    assert.deepEqual(stringify(merge(a, a)), stringify(a));
   });
 }
 
