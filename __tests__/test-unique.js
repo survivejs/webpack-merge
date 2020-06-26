@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 const assert = require("assert");
 const webpack = require("webpack");
 const merge = require("..");

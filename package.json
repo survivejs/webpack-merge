@@ -7,10 +7,10 @@
     "build": "babel src -d lib",
     "format": "prettier . --write --ignore-path .gitignore",
     "watch": "npm-watch",
-    "test": "mocha tests/test-*",
-    "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\"",
-    "lint": "eslint src/ tests/ --cache --fix"
+    "lint": "eslint src/ __tests__/ --cache --fix"
   },
   "main": "lib/index.js",
   "files": [
@@ -28,6 +28,7 @@
     "eslint-config-prettier": "^6.11.0",
     "husky": "^4.2.5",
     "istanbul": "^0.4.5",
+    "jest": "^26.1.0",
     "mocha": "^3.5.3",
     "npm-watch": "^0.6.0",
     "prettier": "^2.0.5",
@@ -60,13 +61,13 @@
     "test": {
       "patterns": [
         "src/**/*.js",
-        "tests/**/*.js"
+        "__tests__/**/*.js"
       ]
     },
     "lint": {
       "patterns": [
         "src/**/*.js",
-        "tests/**/*.js"
+        "__tests__/**/*.js"
       ]
     }
   }

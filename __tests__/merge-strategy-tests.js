@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 const assert = require("assert");
 
 function mergeStrategyTests(merge) {

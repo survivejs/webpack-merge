@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 const assert = require("assert");
 
 function multipleTests(merge) {
