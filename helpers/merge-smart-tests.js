@@ -221,7 +221,9 @@ function commonTests(merge) {
       ],
     };
 
-    assert.deepEqual(stringify(merge(a, a)), stringify(a));
+    // TODO: If inlined, the test passes (mutability leak)
+    const expectResult = stringify(a);
+    assert.deepEqual(stringify(merge(a, a)), expectResult);
   });
 }
 
