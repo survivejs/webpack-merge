@@ -191,14 +191,14 @@ function commonTests(merge) {
       ],
     };
     const b = {
-      plugins: [new webpack.optimize.UglifyJsPlugin()],
+      plugins: [new webpack.DefinePlugin()],
     };
     const merged = merge(a, b);
 
     assert.equal(merged.plugins.length, 2);
     // CopyWebpackPlugin is actually a function that gets applied above
     assert.ok(merged.plugins[0].apply);
-    assert.equal(merged.plugins[1].constructor.name, "UglifyJsPlugin");
+    assert.equal(merged.plugins[1].constructor.name, "DefinePlugin");
   });
 }
 
