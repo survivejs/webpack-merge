@@ -1,4 +1,4 @@
-[![build status](https://secure.travis-ci.org/survivejs/webpack-merge.svg)](http://travis-ci.org/survivejs/webpack-merge) [![codecov](https://codecov.io/gh/survivejs/webpack-merge/branch/master/graph/badge.svg)](https://codecov.io/gh/survivejs/webpack-merge)
+[![Financial Contributors on Open Collective](https://opencollective.com/webpack-merge/all/badge.svg?label=financial+contributors)](https://opencollective.com/webpack-merge) [![build status](https://secure.travis-ci.org/survivejs/webpack-merge.svg)](http://travis-ci.org/survivejs/webpack-merge) [![codecov](https://codecov.io/gh/survivejs/webpack-merge/branch/master/graph/badge.svg)](https://codecov.io/gh/survivejs/webpack-merge)
 
 # webpack-merge - Merge designed for Webpack
 
@@ -463,6 +463,36 @@ module.exports = merge.multiple(baseConfig, production)
 1. `npm run watch`
 
 Before contributing, please open an issue where to discuss.
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/survivejs/webpack-merge/graphs/contributors"><img src="https://opencollective.com/webpack-merge/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/webpack-merge/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/webpack-merge"><img src="https://opencollective.com/webpack-merge/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/webpack-merge/contribute)]
+
+<a href="https://opencollective.com/webpack-merge/organization/0/website"><img src="https://opencollective.com/webpack-merge/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/1/website"><img src="https://opencollective.com/webpack-merge/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/2/website"><img src="https://opencollective.com/webpack-merge/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/3/website"><img src="https://opencollective.com/webpack-merge/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/4/website"><img src="https://opencollective.com/webpack-merge/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/5/website"><img src="https://opencollective.com/webpack-merge/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/6/website"><img src="https://opencollective.com/webpack-merge/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/7/website"><img src="https://opencollective.com/webpack-merge/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/8/website"><img src="https://opencollective.com/webpack-merge/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/webpack-merge/organization/9/website"><img src="https://opencollective.com/webpack-merge/organization/9/avatar.svg"></a>
 
 ## License
 
