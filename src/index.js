@@ -1,6 +1,5 @@
-import { differenceWith, mergeWith, unionWith, values } from "lodash";
+import { mergeWith, values } from "lodash";
 import joinArrays from "./join-arrays";
-import { uniteRules } from "./join-arrays-smart";
 import unique from "./unique";
 
 function merge(...sources) {
@@ -29,16 +28,6 @@ function merge(...sources) {
   return mergeWith({}, ...sources, joinArrays());
 }
 
-const mergeSmart = merge({
-  customizeArray: (a, b, key) => {
-    if (isRule(key.split(".").slice(-1)[0])) {
-      return unionWith(a, b, uniteRules.bind(null, {}, key));
-    }
-
-    return null;
-  },
-});
-
 const mergeMultiple = (...sources) => values(merge(sources));
 
 // rules: { <field>: <'append'|'prepend'|'replace'> }
@@ -46,32 +35,6 @@ const mergeMultiple = (...sources) => values(merge(sources));
 const mergeStrategy = (rules = {}) =>
   merge({
     customizeArray: customizeArray(rules),
-    customizeObject: customizeObject(rules),
-  });
-const mergeSmartStrategy = (rules = {}) =>
-  merge({
-    customizeArray: (a, b, key) => {
-      const topKey = key.split(".").slice(-1)[0];
-
-      if (isRule(topKey)) {
-        switch (rules[key]) {
-          case "prepend":
-            return [
-              ...differenceWith(b, a, (newRule, seenRule) =>
-                uniteRules(rules, key, newRule, seenRule, "prepend")
-              ),
-              ...a,
-            ];
-          case "replace":
-            return b;
-          default:
-            // append
-            return unionWith(a, b, uniteRules.bind(null, rules, key));
-        }
-      }
-
-      return customizeArray(rules)(a, b, key);
-    },
     customizeObject: customizeObject(rules),
   });
 
@@ -103,13 +66,7 @@ function customizeObject(rules) {
   };
 }
 
-function isRule(key) {
-  return ["preLoaders", "loaders", "postLoaders", "rules"].indexOf(key) >= 0;
-}
-
 module.exports = merge;
 module.exports.multiple = mergeMultiple;
-module.exports.smart = mergeSmart;
 module.exports.strategy = mergeStrategy;
-module.exports.smartStrategy = mergeSmartStrategy;
 module.exports.unique = unique;
