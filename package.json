@@ -46,6 +46,9 @@
     "webpack",
     "merge"
   ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "license": "MIT",
   "husky": {
     "hooks": {
