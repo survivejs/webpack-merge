@@ -1,8 +1,8 @@
-const assert = require("assert");
-const webpack = require("webpack");
-const webpackMerge = require("..");
-const mergeTests = require("./merge-tests");
-const loadersKeys = require("./loaders-keys");
+import assert from "assert";
+import webpack from "webpack";
+import webpackMerge from "..";
+import mergeTests from "../helpers/merge-tests";
+import loadersKeys from "../helpers/loaders-keys";
 
 describe("Merge", function () {
   const merge = webpackMerge;
@@ -396,4 +396,4 @@ function customizeMergeTests(merge) {
   });
 }
 
-module.exports = normalMergeTests;
+export default normalMergeTests;

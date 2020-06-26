@@ -1,11 +1,11 @@
-const assert = require("assert");
-const webpack = require("webpack");
-const merge = require("..");
+import assert from "assert";
+import webpack from "webpack";
+import webpackMerge from "..";
 
 describe("Unique", function () {
   it("should allow unique definitions", function () {
-    const output = merge({
-      customizeArray: merge.unique(
+    const output = webpackMerge({
+      customizeArray: webpackMerge.unique(
         "plugins",
         ["HotModuleReplacementPlugin"],
         (plugin) => plugin.constructor && plugin.constructor.name

@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 function multipleTests(merge) {
   it("should override objects", function () {
@@ -170,4 +170,4 @@ function multipleTests(merge) {
   });
 }
 
-module.exports = multipleTests;
+export default multipleTests;

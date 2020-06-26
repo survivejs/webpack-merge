@@ -1,6 +1,6 @@
-const webpackMerge = require("..");
-const mergeTests = require("./merge-tests");
-const mergeSmartTests = require("./merge-smart-tests");
+import webpackMerge from "..";
+import mergeTests from "../helpers/merge-tests";
+import mergeSmartTests from "../helpers/merge-smart-tests";
 
 describe("Smart merge", function () {
   const merge = webpackMerge.smart;

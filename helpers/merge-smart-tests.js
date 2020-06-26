@@ -1,7 +1,7 @@
-const assert = require("assert");
-const webpack = require("webpack");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const loadersKeys = require("./loaders-keys");
+import assert from "assert";
+import webpack from "webpack";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import loadersKeys from "./loaders-keys";
 
 function mergeSmartTests(merge) {
   commonTests(merge);
@@ -1019,4 +1019,4 @@ function mergeSmartTest(merge, loadersKey) {
   });
 }
 
-module.exports = mergeSmartTests;
+export default mergeSmartTests;

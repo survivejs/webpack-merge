@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 function mergeTests(merge) {
   it("should return the same config", function () {
@@ -269,4 +269,4 @@ function mergeTests(merge) {
   });
 }
 
-module.exports = mergeTests;
+export default mergeTests;

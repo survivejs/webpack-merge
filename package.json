@@ -10,7 +10,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\"",
-    "lint": "eslint src/ __tests__/ --cache --fix"
+    "lint": "eslint helpers/ src/ __tests__/ --cache --fix"
   },
   "main": "lib/index.js",
   "files": [
@@ -60,12 +60,14 @@
     },
     "test": {
       "patterns": [
+        "helpers/**/*.js",
         "src/**/*.js",
         "__tests__/**/*.js"
       ]
     },
     "lint": {
       "patterns": [
+        "helpers/**/*.js",
         "src/**/*.js",
         "__tests__/**/*.js"
       ]

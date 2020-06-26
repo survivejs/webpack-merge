@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 
 function mergeStrategyTests(merge) {
   it("should allow setting to array append", function () {
@@ -241,4 +241,4 @@ function mergeStrategyTests(merge) {
   });
 }
 
-module.exports = mergeStrategyTests;
+export default mergeStrategyTests;

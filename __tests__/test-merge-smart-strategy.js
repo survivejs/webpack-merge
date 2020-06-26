@@ -1,8 +1,8 @@
-const assert = require("assert");
-const webpackMerge = require("..");
-const mergeTests = require("./merge-tests");
-const mergeSmartTests = require("./merge-smart-tests");
-const mergeStrategyTests = require("./merge-strategy-tests");
+import assert from "assert";
+import webpackMerge from "..";
+import mergeTests from "../helpers/merge-tests";
+import mergeSmartTests from "../helpers/merge-smart-tests";
+import mergeStrategyTests from "../helpers/merge-strategy-tests";
 
 describe("Smart merge strategy", function () {
   const merge = webpackMerge.smartStrategy;
