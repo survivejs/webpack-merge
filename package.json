@@ -26,7 +26,7 @@
     "copy-webpack-plugin": "^4.4.1",
     "eslint": "^4.18.2",
     "eslint-config-prettier": "^6.11.0",
-    "git-prepush-hook": "^1.0.2",
+    "husky": "^4.2.5",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.3",
     "npm-watch": "^0.1.9",
@@ -46,11 +46,11 @@
     "merge"
   ],
   "license": "MIT",
-  "pre-push": [
-    "lint",
-    "build",
-    "test"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run build && npm run test"
+    }
+  },
   "watch": {
     "build": {
       "patterns": [
