@@ -221,7 +221,8 @@ function commonTests(merge) {
       ],
     };
 
-    // TODO: If inlined, the test passes (mutability leak)
+    // TODO: Expected result has to be first because there's an
+    // unintended mutation within the code.
     const expectResult = stringify(a);
     assert.deepEqual(stringify(merge(a, a)), expectResult);
   });
