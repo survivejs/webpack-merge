@@ -5,6 +5,7 @@
   "version": "4.2.2",
   "scripts": {
     "build": "babel src -d lib",
+    "format": "prettier . --write --ignore-path .gitignore",
     "watch": "npm-watch",
     "test": "mocha tests/test-*",
     "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
@@ -32,6 +33,7 @@
     "istanbul": "^0.4.5",
     "mocha": "^3.5.3",
     "npm-watch": "^0.1.9",
+    "prettier": "^2.0.5",
     "webpack": "^1.15.0"
   },
   "repository": {

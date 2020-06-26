@@ -1,11 +1,11 @@
 /* eslint-env mocha */
-const assert = require('assert');
-const webpackMerge = require('..');
-const mergeTests = require('./merge-tests');
-const mergeSmartTests = require('./merge-smart-tests');
-const mergeStrategyTests = require('./merge-strategy-tests');
+const assert = require("assert");
+const webpackMerge = require("..");
+const mergeTests = require("./merge-tests");
+const mergeSmartTests = require("./merge-smart-tests");
+const mergeStrategyTests = require("./merge-strategy-tests");
 
-describe('Smart merge strategy', function () {
+describe("Smart merge strategy", function () {
   const merge = webpackMerge.smartStrategy;
 
   mergeTests(merge());
@@ -15,164 +15,176 @@ describe('Smart merge strategy', function () {
 });
 
 function mergeStrategySpecificTests(merge) {
-  it('should work with nested arrays and prepend', function () {
+  it("should work with nested arrays and prepend", function () {
     const a = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['babel'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["babel"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const b = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const result = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot', 'babel'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot", "babel"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
 
-    assert.deepEqual(merge({
-      'module.loaders.loaders': 'prepend'
-    })(a, b), result);
+    assert.deepEqual(
+      merge({
+        "module.loaders.loaders": "prepend",
+      })(a, b),
+      result
+    );
   });
 
-  it('should work with nested arrays and replace', function () {
+  it("should work with nested arrays and replace", function () {
     const a = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['babel'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["babel"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const b = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const result = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
 
-    assert.deepEqual(merge({
-      'module.loaders.loaders': 'replace'
-    })(a, b), result);
+    assert.deepEqual(
+      merge({
+        "module.loaders.loaders": "replace",
+      })(a, b),
+      result
+    );
   });
 
-  it('should work with nested arrays and replace with rules', function () {
+  it("should work with nested arrays and replace with rules", function () {
     const a = {
       module: {
         rules: [
           {
             test: /.jsx?$/,
-            loaders: ['babel'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["babel"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const b = {
       module: {
         rules: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const result = {
       module: {
         rules: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
 
-    assert.deepEqual(merge({
-      'module.rules.loaders': 'replace'
-    })(a, b), result);
+    assert.deepEqual(
+      merge({
+        "module.rules.loaders": "replace",
+      })(a, b),
+      result
+    );
   });
 
-  it('should work with use and same types (#63)', function () {
+  it("should work with use and same types (#63)", function () {
     const a = {
       module: {
         rules: [
           {
             test: /\.js$/,
-            use: 'babel'
-          }
-        ]
-      }
+            use: "babel",
+          },
+        ],
+      },
     };
     const b = {
       module: {
         rules: [
           {
             test: /\.js$/,
-            use: 'coffee'
-          }
-        ]
-      }
+            use: "coffee",
+          },
+        ],
+      },
     };
     const result = {
       module: {
         rules: [
           {
             test: /\.js$/,
-            use: 'coffee'
-          }
-        ]
-      }
+            use: "coffee",
+          },
+        ],
+      },
     };
 
-    assert.deepEqual(merge({
-      'module.rules.use': 'replace'
-    })(a, b), result);
+    assert.deepEqual(
+      merge({
+        "module.rules.use": "replace",
+      })(a, b),
+      result
+    );
   });
 
-  it('should work with two level nesting (#64)', function () {
+  it("should work with two level nesting (#64)", function () {
     const common = {
       module: {
         rules: [
@@ -181,15 +193,15 @@ function mergeStrategySpecificTests(merge) {
             exclude: /(node_modules|lib)/,
             use: [
               {
-                loader: 'babel-loader',
+                loader: "babel-loader",
                 options: {
-                  cacheDirectory: true
-                }
-              }
-            ]
-          }
-        ]
-      }
+                  cacheDirectory: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
     };
     const prod = {
       module: {
@@ -199,22 +211,22 @@ function mergeStrategySpecificTests(merge) {
             exclude: /(node_modules|lib)/,
             use: [
               {
-                loader: 'string-replace-loader',
+                loader: "string-replace-loader",
                 options: {
                   multiple: [
                     {
                       search: /["']ngInject["'];*/,
-                      replace: '',
-                      flags: 'g'
-                    }
-                  ]
-                }
+                      replace: "",
+                      flags: "g",
+                    },
+                  ],
+                },
               },
-              'ng-annotate-loader'
-            ]
-          }
-        ]
-      }
+              "ng-annotate-loader",
+            ],
+          },
+        ],
+      },
     };
     const expected = {
       module: {
@@ -224,72 +236,78 @@ function mergeStrategySpecificTests(merge) {
             exclude: /(node_modules|lib)/,
             use: [
               {
-                loader: 'string-replace-loader',
+                loader: "string-replace-loader",
                 options: {
                   multiple: [
                     {
                       search: /["']ngInject["'];*/,
-                      replace: '',
-                      flags: 'g'
-                    }
-                  ]
-                }
+                      replace: "",
+                      flags: "g",
+                    },
+                  ],
+                },
               },
-              'ng-annotate-loader',
+              "ng-annotate-loader",
               {
-                loader: 'babel-loader',
+                loader: "babel-loader",
                 options: {
-                  cacheDirectory: true
-                }
-              }
-            ]
-          }
-        ]
-      }
+                  cacheDirectory: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
     };
 
-    assert.deepEqual(merge({
-      'module.rules.use': 'prepend'
-    })(common, prod), expected);
+    assert.deepEqual(
+      merge({
+        "module.rules.use": "prepend",
+      })(common, prod),
+      expected
+    );
   });
 
-  it('should work with nested arrays and replace', function () {
+  it("should work with nested arrays and replace", function () {
     const a = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['babel'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["babel"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const b = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
     const result = {
       module: {
         loaders: [
           {
             test: /.jsx?$/,
-            loaders: ['react-hot'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            loaders: ["react-hot"],
+            exclude: /node_modules/,
+          },
+        ],
+      },
     };
 
-    assert.deepEqual(merge({
-      'module.loaders': 'replace'
-    })(a, b), result);
+    assert.deepEqual(
+      merge({
+        "module.loaders": "replace",
+      })(a, b),
+      result
+    );
   });
 }

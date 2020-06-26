@@ -1,13 +1,11 @@
-import {
-  cloneDeep, isFunction, isPlainObject, mergeWith
-} from 'lodash';
+import { cloneDeep, isFunction, isPlainObject, mergeWith } from "lodash";
 
 const isArray = Array.isArray;
 
 export default function joinArrays({
   customizeArray,
   customizeObject,
-  key
+  key,
 } = {}) {
   return function _joinArrays(a, b, k) {
     const newKey = key ? `${key}.${k}` : k;
@@ -24,11 +22,19 @@ export default function joinArrays({
     if (isPlainObject(a) && isPlainObject(b)) {
       const customResult = customizeObject && customizeObject(a, b, newKey);
 
-      return customResult || mergeWith({}, a, b, joinArrays({
-        customizeArray,
-        customizeObject,
-        key: newKey
-      }));
+      return (
+        customResult ||
+        mergeWith(
+          {},
+          a,
+          b,
+          joinArrays({
+            customizeArray,
+            customizeObject,
+            key: newKey,
+          })
+        )
+      );
     }
 
     if (isPlainObject(b)) {
