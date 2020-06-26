@@ -8,8 +8,8 @@
     "watch": "npm-watch",
     "test": "mocha tests/test-*",
     "test:coverage": "istanbul cover node_modules/.bin/_mocha tests/test-*",
-    "test:lint": "eslint src/ tests/ --cache",
-    "preversion": "npm run test:lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\""
+    "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\"",
+    "lint": "eslint src/ tests/ --cache"
   },
   "main": "lib/index.js",
   "files": [
@@ -48,7 +48,7 @@
   ],
   "license": "MIT",
   "pre-push": [
-    "test:lint",
+    "lint",
     "build",
     "test"
   ],
@@ -64,7 +64,7 @@
         "tests/**/*.js"
       ]
     },
-    "test:lint": {
+    "lint": {
       "patterns": [
         "src/**/*.js",
         "tests/**/*.js"
