@@ -6,7 +6,6 @@
   "scripts": {
     "build": "babel src -d lib",
     "format": "prettier . --write --ignore-path .gitignore",
-    "watch": "npm-watch",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\"",
@@ -32,7 +31,6 @@
     "istanbul": "^0.4.5",
     "javascript-stringify": "^2.0.1",
     "jest": "^26.1.0",
-    "npm-watch": "^0.6.0",
     "prettier": "^2.0.5",
     "webpack": "^4.43.0"
   },
@@ -52,27 +50,6 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint && npm run build && npm run test"
-    }
-  },
-  "watch": {
-    "build": {
-      "patterns": [
-        "src/**/*.js"
-      ]
-    },
-    "test": {
-      "patterns": [
-        "helpers/**/*.js",
-        "src/**/*.js",
-        "__tests__/**/*.js"
-      ]
-    },
-    "lint": {
-      "patterns": [
-        "helpers/**/*.js",
-        "src/**/*.js",
-        "__tests__/**/*.js"
-      ]
     }
   }
 }

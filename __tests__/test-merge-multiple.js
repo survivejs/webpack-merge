@@ -1,4 +1,4 @@
-import webpackMerge from "..";
+import webpackMerge from "../src";
 import mergeMultipleTests from "../helpers/merge-multiple-tests";
 
 describe("Multiple merge", function () {

@@ -1,5 +1,5 @@
 import assert from "assert";
-import webpackMerge from "..";
+import webpackMerge from "../src";
 import normalMergeTests from "./test-merge";
 import mergeTests from "../helpers/merge-tests";
 import mergeStrategyTests from "../helpers/merge-strategy-tests";
