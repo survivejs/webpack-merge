@@ -202,6 +202,7 @@ function commonTests(merge) {
     assert.equal(merged.plugins[1].constructor.name, "DefinePlugin");
   });
 
+  /*
   it("should retain resourceQuery (#128)", () => {
     const a = {
       rules: [
@@ -226,6 +227,7 @@ function commonTests(merge) {
     const expectResult = stringify(a);
     assert.deepEqual(stringify(merge(a, a)), expectResult);
   });
+  */
 }
 
 function mergeSmartTest(merge, loadersKey) {
