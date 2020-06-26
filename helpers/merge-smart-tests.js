@@ -1,5 +1,6 @@
 import assert from "assert";
 import webpack from "webpack";
+import { stringify } from "javascript-stringify";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import loadersKeys from "./loaders-keys";
 
@@ -1018,6 +1019,28 @@ function mergeSmartTest(merge, loadersKey) {
     };
 
     assert.deepEqual(merge(a, b), b);
+  });
+
+  it("should retain resourceQuery (#128)", () => {
+    const a = {
+      rules: [
+        {
+          test: /\.js$/,
+          oneOf: [
+            {
+              resourceQuery: /inline/, // foo.css?inline
+              use: "url-loader",
+            },
+            {
+              resourceQuery: /external/, // foo.css?external
+              use: "file-loader",
+            },
+          ],
+        },
+      ],
+    };
+
+    assert.deepEqual(stringify(merge(a, a)), stringify(a));
   });
 }
 
