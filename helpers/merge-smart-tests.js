@@ -186,7 +186,9 @@ function commonTests(merge) {
 
   it("should not lose CopyWebpackPlugin (#56)", function () {
     const a = {
-      plugins: [new CopyWebpackPlugin()],
+      plugins: [
+        new CopyWebpackPlugin({ patterns: [{ from: "tmp", to: "tmp" }] }),
+      ],
     };
     const b = {
       plugins: [new webpack.optimize.UglifyJsPlugin()],
