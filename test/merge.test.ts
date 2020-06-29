@@ -268,7 +268,7 @@ function customizeMergeTests(merge) {
       entry: ["b"],
     };
     const result = merge({
-      customizeArray(a, b, key) {
+      customizeArray(a, _, key) {
         receivedKey = key;
 
         return a;
@@ -314,7 +314,7 @@ function customizeMergeTests(merge) {
       },
     };
     const result = merge({
-      customizeObject(a, b, key) {
+      customizeObject(a, _, key) {
         receivedKey = key;
 
         return a;
@@ -348,7 +348,7 @@ function customizeMergeTests(merge) {
     };
 
     merge({
-      customizeArray(a, b, key) {
+      customizeArray(_, __, key) {
         receivedKey = key;
       },
     })(config1, config2);
