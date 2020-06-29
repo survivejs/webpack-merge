@@ -17,7 +17,7 @@ function merge(
   // merge([<object>] | ...<object>)
   // merge({ customizeArray: <fn>, customizeObject: <fn>})([<object>] | ...<object>)
   // where fn = (a, b, key)
-  if (sources.length === 1) {
+  if (sources.length === 0) {
     if (Array.isArray(firstSource)) {
       return mergeWith(
         {},
@@ -52,7 +52,7 @@ function merge(
     return sources[0];
   }
 
-  return mergeWith({}, ...sources, joinArrays());
+  return mergeWith({}, [firstSource].concat(sources), joinArrays());
 }
 
 const mergeMultiple = (...sources: Configuration[]): Configuration[] =>
