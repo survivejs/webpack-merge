@@ -52,7 +52,7 @@ function merge(
     return sources[0];
   }
 
-  return mergeWith({}, [firstSource].concat(sources), joinArrays());
+  return mergeWith({}, ...[firstSource].concat(sources), joinArrays());
 }
 
 const mergeMultiple = (...sources: Configuration[]): Configuration[] =>
