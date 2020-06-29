@@ -49,7 +49,7 @@ function merge(
       };
     }
 
-    return sources[0];
+    return firstSource;
   }
 
   return mergeWith({}, ...[firstSource].concat(sources), joinArrays());
