@@ -1,16 +1,14 @@
 import assert from "assert";
-import webpackMerge from "../src";
-import normalMergeTests from "./test-merge";
+import { mergeStrategy } from "../src";
+import normalMergeTests from "./merge.test";
 import mergeTests from "../helpers/merge-tests";
 import mergeStrategyTests from "../helpers/merge-strategy-tests";
 
 describe("Merge strategy", function () {
-  const merge = webpackMerge.strategy;
-
-  normalMergeTests(merge());
-  mergeTests(merge());
-  mergeStrategyTests(merge);
-  mergeStrategySpecificTests(merge);
+  normalMergeTests(mergeStrategy());
+  mergeTests(mergeStrategy());
+  mergeStrategyTests(mergeStrategy);
+  mergeStrategySpecificTests(mergeStrategy);
 });
 
 function mergeStrategySpecificTests(merge) {

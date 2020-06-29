@@ -4,33 +4,28 @@
   "author": "Juho Vepsalainen <bebraw@gmail.com>",
   "version": "4.2.2",
   "scripts": {
-    "build": "babel src -d lib",
+    "build": "tsdx build",
     "format": "prettier . --write --ignore-path .gitignore",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "preversion": "npm run lint && npm run build && npm test && git commit --allow-empty -am \"Update lib\"",
-    "lint": "eslint helpers/ src/ __tests__/ --cache --fix"
+    "start": "tsdx watch",
+    "test": "tsdx test",
+    "prepare": "tsdx build",
+    "lint": "tsdx lint src helpers"
   },
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "files": [
-    "lib"
+    "dist"
   ],
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "lodash-es": "^4.17.15"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
-    "@babel/core": "^7.10.3",
-    "@babel/preset-env": "^7.10.3",
-    "babel-jest": "^26.1.0",
-    "babel-plugin-lodash": "^3.3.4",
-    "copy-webpack-plugin": "^6.0.2",
-    "eslint": "^7.3.1",
-    "eslint-config-prettier": "^6.11.0",
+    "@types/lodash": "^4.14.157",
+    "@types/webpack": "^4.41.18",
     "husky": "^4.2.5",
-    "javascript-stringify": "^2.0.1",
-    "jest": "^26.1.0",
-    "prettier": "^2.0.5",
+    "tsdx": "^0.13.2",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.5",
     "webpack": "^4.43.0"
   },
   "repository": {
