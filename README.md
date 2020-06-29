@@ -13,16 +13,17 @@ This behavior is particularly useful in configuring webpack although it has uses
 `merge` is the core, and the most important idea, of the API. Often this is all you need unless you want further customization.
 
 ```javascript
+import { merge } from 'webpack-merge';
+
 // Default API
-var output = merge(object1, object2, object3, ...);
+const output = merge(object1, object2, object3, ...);
 
 // You can pass an array of objects directly.
 // This works with all available functions.
-var output = merge([object1, object2, object3]);
+const output = merge([object1, object2, object3]);
 
-// Please note that where keys match,
-// the objects to the right take precedence:
-var output = merge(
+// Keys matching to the right take precedence:
+const output = merge(
   { fruit: "apple", color: "red" },
   { fruit: "strawberries" }
 );
@@ -36,7 +37,7 @@ console.log(output);
 
 ```javascript
 // Customizing array/object behavior
-var output = merge(
+const output = merge(
   {
     customizeArray(a, b, key) {
       if (key === 'extensions') {
@@ -62,7 +63,7 @@ var output = merge(
 For example, if the previous code was invoked with only `object1` and `object2`
 with `object1` as:
 
-```
+```javascript
 {
     foo1: ['object1'],
     foo2: ['object1'],
@@ -73,7 +74,7 @@ with `object1` as:
 
 and `object2` as:
 
-```
+```javascript
 {
     foo1: ['object2'],
     foo2: ['object2'],
@@ -84,27 +85,29 @@ and `object2` as:
 
 then `customizeArray` will be invoked for each property of `Array` type, i.e:
 
-```
-customizeArray(['object1'], ['object2'], 'foo1');
-customizeArray(['object1'], ['object2'], 'foo2');
+```javascript
+customizeArray(["object1"], ["object2"], "foo1");
+customizeArray(["object1"], ["object2"], "foo2");
 ```
 
 and `customizeObject` will be invoked for each property of `Object` type, i.e:
 
-```
+```javascript
 customizeObject({ object1: {} }, { object2: {} }, bar1);
 customizeObject({ object1: {} }, { object2: {} }, bar2);
 ```
 
-### **`merge.unique(<field>, <fields>, field => field)`**
+### **`unique(<field>, <fields>, field => field)`**
 
-The first <field> is the config property to look through for duplicates.
+The first `<field>` is the config property to look through for duplicates.
 
-<fields> represents the values that should be unique when you run the field => field function on each duplicate.
+`<fields>` represents the values that should be unique when you run the field => field function on each duplicate.
 
 ```javascript
+import { merge, unique } from "webpack-merge";
+
 const output = merge({
-  customizeArray: merge.unique(
+  customizeArray: unique(
     "plugins",
     ["HotModuleReplacementPlugin"],
     (plugin) => plugin.constructor && plugin.constructor.name
@@ -123,13 +126,15 @@ const output = merge({
 
 ## Merging with Strategies
 
-### **`merge.strategy({ <field>: '<prepend|append|replace>''})(...configuration | [...configuration])`**
+### **`mergeStrategy({ <field>: '<prepend|append|replace>''})(...configuration | [...configuration])`**
 
 Given you may want to configure merging behavior per field, there's a strategy variant:
 
 ```javascript
+import { mergeStrategy } from 'webpack-merge';
+
 // Merging with a specific merge strategy
-var output = merge.strategy(
+const output = mergeStrategy(
   {
     entry: 'prepend', // or 'replace', defaults to 'append'
     'module.rules': 'prepend'
@@ -140,12 +145,12 @@ var output = merge.strategy(
 **webpack.config.js**
 
 ```javascript
-var path = require('path');
-var merge = require('webpack-merge');
+import path from 'path';
+import { merge } from 'webpack-merge';
 
-var TARGET = process.env.npm_lifecycle_event;
+const TARGET = process.env.npm_lifecycle_event;
 
-var common = {
+const common = {
   entry: path.join(__dirname, 'app'),
   ...
   module: {
@@ -185,13 +190,15 @@ if(TARGET === 'build') {
 
 ## Multiple Merging
 
-### **`merge.multiple(...configuration | [...configuration])`**
+### **`mergeMultiple(...configuration | [...configuration])`**
 
 Sometimes you may need to support multiple targets, _webpack-merge_ will accept an object where each key represents the target configuration. The output becomes an _array_ of configurations where matching keys are merged and non-matching keys are added.
 
 ```javascript
-var path = require("path");
-var baseConfig = {
+import path from "path";
+import { mergeMultiple } from "webpack-merge";
+
+const baseConfig = {
   server: {
     target: "node",
     output: {
@@ -208,7 +215,7 @@ var baseConfig = {
 };
 
 // specialized configuration
-var production = {
+const production = {
   client: {
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -217,7 +224,7 @@ var production = {
   },
 };
 
-module.exports = merge.multiple(baseConfig, production);
+export default mergeMultiple(baseConfig, production);
 ```
 
 > Check out [SurviveJS - Webpack](http://survivejs.com/) to dig deeper into the topic.
@@ -225,8 +232,7 @@ module.exports = merge.multiple(baseConfig, production);
 ## Development
 
 1. `npm i`
-1. `npm run build`
-1. `npm run watch`
+1. `npm t -- --watch`
 
 Before contributing, please open an issue where to discuss.
 
