@@ -8,8 +8,7 @@
     "format": "prettier . --write --ignore-path .gitignore",
     "start": "tsdx watch",
     "test": "tsdx test",
-    "prepare": "tsdx build",
-    "lint": "tsdx lint src helpers"
+    "prepare": "tsdx build"
   },
   "main": "dist/index.js",
   "files": [
@@ -46,7 +45,7 @@
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run build && npm run test"
+      "pre-commit": "npm run test"
     }
   }
 }
