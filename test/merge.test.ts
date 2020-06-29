@@ -1,12 +1,10 @@
 import assert from "assert";
 import webpack from "webpack";
-import webpackMerge from "../src";
+import { merge } from "../src";
 import mergeTests from "../helpers/merge-tests";
 import loadersKeys from "../helpers/loaders-keys";
 
 describe("Merge", function () {
-  const merge = webpackMerge;
-
   normalMergeTests(merge);
   mergeTests(merge);
   customizeMergeTests(merge);

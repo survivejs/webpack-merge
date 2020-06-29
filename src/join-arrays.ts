@@ -1,4 +1,5 @@
 import { cloneDeep, isFunction, isPlainObject, mergeWith } from "lodash";
+import { Customize, Key } from "./types";
 
 const isArray = Array.isArray;
 
@@ -6,12 +7,16 @@ export default function joinArrays({
   customizeArray,
   customizeObject,
   key,
+}: {
+  customizeArray?: Customize;
+  customizeObject?: Customize;
+  key?: Key;
 } = {}) {
-  return function _joinArrays(a, b, k) {
+  return function _joinArrays(a: any, b: any, k: Key): any {
     const newKey = key ? `${key}.${k}` : k;
 
     if (isFunction(a) && isFunction(b)) {
-      return (...args) => _joinArrays(a(...args), b(...args), k);
+      return (...args: any[]) => _joinArrays(a(...args), b(...args), k);
     }
     if (isArray(a) && isArray(b)) {
       const customResult = customizeArray && customizeArray(a, b, newKey);
