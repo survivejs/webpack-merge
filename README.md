@@ -31,13 +31,14 @@ console.log(output);
 // { color: "red", fruit: "strawberries"}
 ```
 
-### **`merge({ customizeArray, customizeObject })(...configuration | [...configuration])`**
+### **`mergeWithCustomize({ customizeArray, customizeObject })(...configuration | [...configuration])`**
 
-`merge` behavior can be customized per field through a curried customization API.
+`merge` behavior can be customized per field as below:
 
 ```javascript
-// Customizing array/object behavior
-const output = merge(
+import { mergeWithCustomize } from 'webpack-merge';
+
+const output = mergeWithCustomize(
   {
     customizeArray(a, b, key) {
       if (key === 'extensions') {
@@ -104,9 +105,9 @@ The first `<field>` is the config property to look through for duplicates.
 `<fields>` represents the values that should be unique when you run the field => field function on each duplicate.
 
 ```javascript
-import { merge, unique } from "webpack-merge";
+import { mergeWithCustomize, unique } from "webpack-merge";
 
-const output = merge({
+const output = mergeWithCustomize({
   customizeArray: unique(
     "plugins",
     ["HotModuleReplacementPlugin"],
@@ -186,45 +187,6 @@ if(TARGET === 'build') {
 }
 
 ...
-```
-
-## Multiple Merging
-
-### **`mergeMultiple(...configuration | [...configuration])`**
-
-Sometimes you may need to support multiple targets, _webpack-merge_ will accept an object where each key represents the target configuration. The output becomes an _array_ of configurations where matching keys are merged and non-matching keys are added.
-
-```javascript
-import path from "path";
-import { mergeMultiple } from "webpack-merge";
-
-const baseConfig = {
-  server: {
-    target: "node",
-    output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: "lib.node.js",
-    },
-  },
-  client: {
-    output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: "lib.js",
-    },
-  },
-};
-
-// specialized configuration
-const production = {
-  client: {
-    output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: "[name].[hash].js",
-    },
-  },
-};
-
-export default mergeMultiple(baseConfig, production);
 ```
 
 > Check out [SurviveJS - Webpack](http://survivejs.com/) to dig deeper into the topic.

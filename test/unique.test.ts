@@ -1,10 +1,10 @@
 import assert from "assert";
 import webpack from "webpack";
-import { merge, unique } from "../src";
+import { mergeWithCustomize, unique } from "../src";
 
 describe("Unique", function () {
   it("should allow unique definitions", function () {
-    const output = merge({
+    const output = mergeWithCustomize({
       customizeArray: unique(
         "plugins",
         ["HotModuleReplacementPlugin"],
