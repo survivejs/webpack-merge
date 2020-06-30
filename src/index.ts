@@ -1,4 +1,4 @@
-import { mergeWith, values } from "lodash";
+import { mergeWith } from "lodash";
 import { Configuration } from "webpack";
 import joinArrays from "./join-arrays";
 import unique from "./unique";
@@ -10,58 +10,16 @@ import {
 } from "./types";
 
 function merge(
-  firstSource: Configuration | Configuration[] | ICustomizeOptions,
-  ...sources: Configuration[]
-) {
-  // This supports
-  // merge([<object>] | ...<object>)
-  // merge({ customizeArray: <fn>, customizeObject: <fn>})([<object>] | ...<object>)
-  // where fn = (a, b, key)
-  if (sources.length === 0) {
-    if (Array.isArray(firstSource)) {
-      return mergeWith(
-        {},
-        ...firstSource,
-        joinArrays(firstSource as ICustomizeOptions)
-      );
-    }
-
-    if (
-      (firstSource as ICustomizeOptions).customizeArray ||
-      (firstSource as ICustomizeOptions).customizeObject
-    ) {
-      return function mergeWithOptions() {
-        const structures = arguments;
-
-        if (Array.isArray(structures[0])) {
-          return mergeWith(
-            {},
-            ...structures[0],
-            joinArrays(firstSource as ICustomizeOptions)
-          );
-        }
-
-        return mergeWith(
-          {},
-          ...structures,
-          joinArrays(firstSource as ICustomizeOptions)
-        );
-      };
-    }
-
-    return firstSource;
-  }
-
-  return mergeWith({}, ...[firstSource].concat(sources), joinArrays());
+  firstConfiguration: Configuration | Configuration[],
+  ...configurations: Configuration[]
+): Configuration {
+  return mergeWithCustomize({})(firstConfiguration, ...configurations);
 }
-
-const mergeMultiple = (...sources: Configuration[]): Configuration[] =>
-  values(merge(sources));
 
 // rules: { <field>: <'append'|'prepend'|'replace'> }
 // All default to append but you can override here
 const mergeStrategy = (rules = {}) =>
-  merge({
+  mergeWithCustomize({
     customizeArray: customizeArray(rules),
     customizeObject: customizeObject(rules),
   });
@@ -79,6 +37,27 @@ function customizeArray(rules: ICustomizeRules) {
   };
 }
 
+function mergeWithCustomize(options: ICustomizeOptions) {
+  return function mergeWithOptions(
+    firstConfiguration: Configuration | Configuration[],
+    ...configurations: Configuration[]
+  ): Configuration {
+    if (configurations.length === 0) {
+      if (Array.isArray(firstConfiguration)) {
+        return mergeWith({}, ...firstConfiguration, joinArrays(options));
+      }
+
+      return firstConfiguration;
+    }
+
+    return mergeWith(
+      {},
+      ...[firstConfiguration].concat(configurations),
+      joinArrays(options)
+    );
+  };
+}
+
 function customizeObject(rules: ICustomizeRules) {
   return (a: any, b: any, key: Key) => {
     switch (rules[key]) {
@@ -92,4 +71,4 @@ function customizeObject(rules: ICustomizeRules) {
   };
 }
 
-export { merge, mergeMultiple, mergeStrategy, unique };
+export { merge, mergeStrategy, mergeWithCustomize, unique };

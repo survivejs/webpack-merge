@@ -1,4 +1,5 @@
 import assert from "assert";
+import webpack from "webpack";
 
 function mergeTests(merge) {
   it("should return the same config", function () {
@@ -266,6 +267,43 @@ function mergeTests(merge) {
     config.entry.main = "src/index.js";
 
     assert.deepEqual(a, aClone);
+  });
+
+  it("should not mutate plugins #106", function () {
+    const config1 = {
+      entry: {
+        page1: "src/page1",
+        page2: "src/page2",
+      },
+      output: {
+        path: "dist",
+        publicPath: "/",
+      },
+    };
+    const config2 = {
+      entry: {
+        page3: "src/page3",
+        page4: "src/page4",
+      },
+      output: {
+        path: "dist",
+        publicPath: "/",
+      },
+    };
+    const enhance = {
+      plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
+    };
+
+    const result1 = merge(config1, enhance);
+    const result2 = merge(config2, enhance);
+
+    assert.equal(result1.plugins.length, 1);
+    assert.equal(result2.plugins.length, 1);
+
+    result1.plugins.push(new webpack.HotModuleReplacementPlugin());
+
+    assert.equal(result1.plugins.length, 2);
+    assert.equal(result2.plugins.length, 1);
   });
 }
 
