@@ -1,15 +1,17 @@
-import { differenceWith } from "lodash";
-
 function mergeUnique(
   key: string,
   uniques: string[],
-  getter = (a: string) => a
+  getter: (a: object) => string
 ) {
   return (a: [], b: [], k: string) =>
     k === key && [
       ...a,
-      ...differenceWith(b, a, (item) => uniques.indexOf(getter(item)) >= 0),
+      ...difference(b, a, (item) => uniques.indexOf(getter(item)) >= 0),
     ];
+}
+
+function difference(a: object[], b: object[], cb: (v: object) => boolean) {
+  return a.filter((v, i) => cb(v) !== cb(b[i]));
 }
 
 export default mergeUnique;
