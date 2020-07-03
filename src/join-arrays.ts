@@ -1,4 +1,4 @@
-import { cloneDeep, isFunction, isPlainObject, mergeWith } from "lodash";
+import { cloneDeep, isPlainObject, mergeWith } from "lodash";
 import { Customize, Key } from "./types";
 
 const isArray = Array.isArray;
@@ -52,4 +52,11 @@ export default function joinArrays({
 
     return b;
   };
+}
+
+// https://stackoverflow.com/a/7356528/228885
+function isFunction(functionToCheck) {
+  return (
+    functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
+  );
 }
