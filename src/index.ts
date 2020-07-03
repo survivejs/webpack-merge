@@ -17,30 +17,6 @@ function merge(
   return mergeWithCustomize({})(firstConfiguration, ...configurations);
 }
 
-// rules: { <field>: <'append'|'prepend'|'replace'> }
-// All default to append but you can override here
-const mergeStrategy = (rules = {}) =>
-  mergeWithCustomize({
-    customizeArray: customizeArray(rules),
-    customizeObject: customizeObject(rules),
-  });
-
-function customizeArray(rules: ICustomizeRules) {
-  return (a: any, b: any, key: Key) => {
-    const match = Object.keys(rules).find((rule) => wildcard(rule, key)) || "";
-
-    switch (rules[match]) {
-      case CustomizeRule.Prepend:
-        return [...b, ...a];
-      case CustomizeRule.Replace:
-        return b;
-      case CustomizeRule.Append:
-      default:
-        return [...a, ...b];
-    }
-  };
-}
-
 function mergeWithCustomize(options: ICustomizeOptions) {
   return function mergeWithOptions(
     firstConfiguration: Configuration | Configuration[],
@@ -71,6 +47,22 @@ function mergeWithCustomize(options: ICustomizeOptions) {
   };
 }
 
+function customizeArray(rules: ICustomizeRules) {
+  return (a: any, b: any, key: Key) => {
+    const match = Object.keys(rules).find((rule) => wildcard(rule, key)) || "";
+
+    switch (rules[match]) {
+      case CustomizeRule.Prepend:
+        return [...b, ...a];
+      case CustomizeRule.Replace:
+        return b;
+      case CustomizeRule.Append:
+      default:
+        return [...a, ...b];
+    }
+  };
+}
+
 function customizeObject(rules: ICustomizeRules) {
   return (a: any, b: any, key: Key) => {
     switch (rules[key]) {
@@ -84,4 +76,4 @@ function customizeObject(rules: ICustomizeRules) {
   };
 }
 
-export { merge, mergeStrategy, mergeWithCustomize, unique };
+export { merge, mergeWithCustomize, unique, customizeArray, customizeObject };
