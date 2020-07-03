@@ -31,6 +31,8 @@ console.log(output);
 // { color: "red", fruit: "strawberries"}
 ```
 
+> Note that `Promise`s are not supported! If you want to return a configuration wrapped within a `Promise`, `merge` inside one. Example: `Promise.resolve(merge({ ... }, { ... }))`.
+
 ### **`mergeWithCustomize({ customizeArray, customizeObject })(...configuration | [...configuration])`**
 
 `merge` behavior can be customized per field as below:

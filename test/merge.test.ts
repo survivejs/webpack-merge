@@ -15,6 +15,28 @@ function normalMergeTests(merge) {
 }
 
 function normalMergeTest(merge, loadersKey) {
+  it("should error on promise", function () {
+    const a = {
+      module: {},
+    };
+
+    assert.throws(() => merge(Promise.resolve(a), Promise.resolve(a)), {
+      name: "TypeError",
+      message: "Promises are not supported",
+    });
+  });
+
+  it("should error on promises inside an array", function () {
+    const a = {
+      module: {},
+    };
+
+    assert.throws(() => merge([Promise.resolve(a), Promise.resolve(a)]), {
+      name: "TypeError",
+      message: "Promises are not supported",
+    });
+  });
+
   it("should append recursive structures with " + loadersKey, function () {
     const a = {
       module: {},

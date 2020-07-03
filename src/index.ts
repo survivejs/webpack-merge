@@ -42,8 +42,18 @@ function mergeWithCustomize(options: ICustomizeOptions) {
     firstConfiguration: Configuration | Configuration[],
     ...configurations: Configuration[]
   ): Configuration {
+    // @ts-ignore
+    if (firstConfiguration.then) {
+      throw new TypeError("Promises are not supported");
+    }
+
     if (configurations.length === 0) {
       if (Array.isArray(firstConfiguration)) {
+        // @ts-ignore
+        if (firstConfiguration[0].then) {
+          throw new TypeError("Promises are not supported");
+        }
+
         return mergeWith(firstConfiguration, joinArrays(options));
       }
 
