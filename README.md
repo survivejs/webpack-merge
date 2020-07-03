@@ -140,55 +140,39 @@ import { mergeStrategy } from 'webpack-merge';
 const output = mergeStrategy(
   {
     entry: 'prepend', // or 'replace', defaults to 'append'
-    'module.rules': 'prepend'
   }
 )(object1, object2, object3, ...);
 ```
 
-**webpack.config.js**
+The fields also support wildcard for partial matches. That can be useful with specific entries:
 
-```javascript
-import path from 'path';
-import { merge } from 'webpack-merge';
-
-const TARGET = process.env.npm_lifecycle_event;
-
-const common = {
-  entry: path.join(__dirname, 'app'),
-  ...
-  module: {
-    loaders: [
-      {
-        test: /\.css$/,
-        loaders: ['style', 'css'],
-      },
-    ],
+```js
+const a = {
+  entry: {
+    main: ["./src\\config\\main.ts"],
+    polyfills: ["./src\\config\\polyfills.ts"],
+    styles: ["./src\\assets\\styles\\styles.sass"],
+  },
+};
+const b = {
+  entry: {
+    main: ["./src\\config\\main.playground.ts"],
+  },
+};
+const result = {
+  entry: {
+    main: ["./src\\config\\main.playground.ts"],
+    polyfills: ["./src\\config\\polyfills.ts"],
+    styles: ["./src\\assets\\styles\\styles.sass"],
   },
 };
 
-if(TARGET === 'start') {
-  module.exports = merge(common, {
-    module: {
-      // loaders will get concatenated!
-      loaders: [
-        {
-          test: /\.jsx?$/,
-          loader: 'babel?stage=1',
-          include: path.join(ROOT_PATH, 'app'),
-        },
-      ],
-    },
-    ...
-  });
-}
-
-if(TARGET === 'build') {
-  module.exports = merge(common, {
-    ...
-  });
-}
-
-...
+assert.deepEqual(
+  merge({
+    "entry.*": "replace",
+  })(a, b),
+  result
+);
 ```
 
 > Check out [SurviveJS - Webpack](http://survivejs.com/) to dig deeper into the topic.
