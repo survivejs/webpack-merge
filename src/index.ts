@@ -32,7 +32,7 @@ function customizeArray(rules: ICustomizeRules) {
       case CustomizeRule.Replace:
         return b;
       case CustomizeRule.Append:
-        return false;
+        return [...a, ...b];
     }
   };
 }
@@ -66,7 +66,7 @@ function customizeObject(rules: ICustomizeRules) {
       case CustomizeRule.Replace:
         return b;
       case CustomizeRule.Append:
-        return false;
+        return mergeWith({}, a, b, joinArrays());
     }
   };
 }
