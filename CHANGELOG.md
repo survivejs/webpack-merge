@@ -12,6 +12,8 @@
 - Fix - Make `unique` merge from right to left to match behavior elsewhere. #119
 - Fix - Make sure `unique` doesn't lose non-unique items to merge. #125
 
+Special thanks to Google and Addy Osmani for supporting the work financially as it allowed me to complete the work required by the new major release.
+
 # 4.2.2 / 2019-08-27
 
 - Fix - Update minimum version of lodash to 4.17.15 in order to avoid `npm audit warning`. #116
