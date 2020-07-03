@@ -1,5 +1,6 @@
 import cloneDeep from "clone-deep";
 import { Customize, Key } from "./types";
+import mergeWith from "./merge-with";
 
 const isArray = Array.isArray;
 
@@ -30,8 +31,7 @@ export default function joinArrays({
       return (
         customResult ||
         mergeWith(
-          a,
-          b,
+          [a, b],
           joinArrays({
             customizeArray,
             customizeObject,
@@ -62,18 +62,4 @@ function isFunction(functionToCheck) {
 
 function isPlainObject(a) {
   return typeof a === "object";
-}
-
-function mergeWith(a, b, customizer) {
-  const ret = {};
-
-  Object.keys(a)
-    .concat(Object.keys(b))
-    .forEach((k) => {
-      const v = customizer(a[k], b[k], k);
-
-      ret[k] = typeof v === "undefined" ? a[k] : v;
-    });
-
-  return ret;
 }
