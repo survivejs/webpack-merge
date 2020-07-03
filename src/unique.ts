@@ -5,15 +5,15 @@ function mergeUnique(
 ) {
   return (a: [], b: [], k: string) =>
     k === key && [
-      ...a,
-      ...difference(b, a, (item) => uniques.indexOf(getter(item))),
+      ...difference(a, b, (item) => uniques.indexOf(getter(item))),
+      ...b,
     ];
 }
 
 function difference(a: object[], b: object[], cb: (v: object) => number) {
-  return a.filter((v, i) => {
+  const ret = a.filter((v, i) => {
     const foundA = cb(v);
-    const foundB = cb(b[i]);
+    const foundB = cb(b[i] || {});
 
     if (foundA >= 0 && foundB >= 0) {
       return foundA !== foundB;
@@ -21,6 +21,8 @@ function difference(a: object[], b: object[], cb: (v: object) => number) {
 
     return true;
   });
+
+  return ret;
 }
 
 export default mergeUnique;

@@ -25,6 +25,40 @@ describe("Unique", function () {
     assert.deepEqual(output, expected);
   });
 
+  it("should pick the last plugin (#119)", function () {
+    const output = mergeWithCustomize({
+      customizeArray: unique(
+        "plugins",
+        ["DefinePlugin"],
+        (plugin) => plugin.constructor && plugin.constructor.name
+      ),
+    })(
+      {
+        plugins: [
+          new webpack.DefinePlugin({
+            a: "a",
+          }),
+        ],
+      },
+      {
+        plugins: [
+          new webpack.DefinePlugin({
+            b: "b",
+          }),
+        ],
+      }
+    );
+    const expected = {
+      plugins: [
+        new webpack.DefinePlugin({
+          b: "b",
+        }),
+      ],
+    };
+
+    assert.deepEqual(output, expected);
+  });
+
   it("should not lose any plugins", function () {
     const output = mergeWithCustomize({
       customizeArray: unique(
@@ -43,10 +77,12 @@ describe("Unique", function () {
         plugins: [new webpack.HotModuleReplacementPlugin()],
       }
     );
+    // The HMR plugin is picked from the last one due to
+    // default ordering!
     const expected = {
       plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({}),
+        new webpack.HotModuleReplacementPlugin(),
       ],
     };
 
