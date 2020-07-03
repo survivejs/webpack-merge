@@ -15,12 +15,9 @@
     "dist"
   ],
   "dependencies": {
-    "clone-deep": "^4.0.1",
-    "lodash": "^4.17.15",
-    "lodash-es": "^4.17.15"
+    "clone-deep": "^4.0.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.157",
     "@types/webpack": "^4.41.18",
     "husky": "^4.2.5",
     "tsdx": "^0.13.2",
