@@ -15,7 +15,8 @@
     "dist"
   ],
   "dependencies": {
-    "clone-deep": "^4.0.1"
+    "clone-deep": "^4.0.1",
+    "wildcard": "^2.0.0"
   },
   "devDependencies": {
     "@types/webpack": "^4.41.18",

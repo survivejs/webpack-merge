@@ -59,4 +59,33 @@ function mergeStrategySpecificTests(merge) {
       result
     );
   });
+
+  it("should work with array wildcards", function () {
+    const a = {
+      entry: {
+        main: ["./src\\config\\main.ts"],
+        polyfills: ["./src\\config\\polyfills.ts"],
+        styles: ["./src\\assets\\styles\\styles.sass"],
+      },
+    };
+    const b = {
+      entry: {
+        main: ["./src\\config\\main.playground.ts"],
+      },
+    };
+    const result = {
+      entry: {
+        main: ["./src\\config\\main.playground.ts"],
+        polyfills: ["./src\\config\\polyfills.ts"],
+        styles: ["./src\\assets\\styles\\styles.sass"],
+      },
+    };
+
+    assert.deepEqual(
+      merge({
+        "entry.*": "replace",
+      })(a, b),
+      result
+    );
+  });
 }
