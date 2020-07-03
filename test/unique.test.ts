@@ -24,4 +24,32 @@ describe("Unique", function () {
 
     assert.deepEqual(output, expected);
   });
+
+  it("should not lose any plugins", function () {
+    const output = mergeWithCustomize({
+      customizeArray: unique(
+        "plugins",
+        ["HotModuleReplacementPlugin"],
+        (plugin) => plugin.constructor && plugin.constructor.name
+      ),
+    })(
+      {
+        plugins: [
+          new webpack.HotModuleReplacementPlugin(),
+          new webpack.DefinePlugin({}),
+        ],
+      },
+      {
+        plugins: [new webpack.HotModuleReplacementPlugin()],
+      }
+    );
+    const expected = {
+      plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({}),
+      ],
+    };
+
+    assert.deepEqual(output, expected);
+  });
 });
