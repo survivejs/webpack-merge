@@ -1,14 +1,16 @@
 import assert from "assert";
-import { mergeStrategy } from "../src";
-import normalMergeTests from "./merge.test";
-import mergeTests from "../helpers/merge-tests";
-import mergeStrategyTests from "../helpers/merge-strategy-tests";
+import { mergeWithCustomize, customizeArray, customizeObject } from "../src";
+import customizeTests from "../helpers/customize-tests";
 
 describe("Merge strategy", function () {
-  normalMergeTests(mergeStrategy());
-  mergeTests(mergeStrategy());
-  mergeStrategyTests(mergeStrategy);
-  mergeStrategySpecificTests(mergeStrategy);
+  const merge = (rules) =>
+    mergeWithCustomize({
+      customizeArray: customizeArray(rules),
+      customizeObject: customizeObject(rules),
+    });
+
+  customizeTests(merge);
+  mergeStrategySpecificTests(merge);
 });
 
 function mergeStrategySpecificTests(merge) {

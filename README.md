@@ -127,52 +127,21 @@ const output = mergeWithCustomize({
 // Output contains only single HotModuleReplacementPlugin now.
 ```
 
-## Merging with Strategies
+### **`customizeArray`** and **`customizeObject`**
 
-### **`mergeStrategy({ <field>: '<prepend|append|replace>''})(...configuration | [...configuration])`**
-
-Given you may want to configure merging behavior per field, there's a strategy variant:
+`customizeArray` and `customizeObject` provide small strategies to for `mergeWithCustomize`. They support `append`, `prepend`, `replace`, and wildcards for field names.
 
 ```javascript
-import { mergeStrategy } from 'webpack-merge';
+import { mergeWithCustomize, customizeArray, customizeObject } from 'webpack-merge';
 
-// Merging with a specific merge strategy
-const output = mergeStrategy(
-  {
-    entry: 'prepend', // or 'replace', defaults to 'append'
-  }
-)(object1, object2, object3, ...);
-```
-
-The fields also support wildcard for partial matches. That can be useful with specific entries:
-
-```js
-const a = {
-  entry: {
-    main: ["./src\\config\\main.ts"],
-    polyfills: ["./src\\config\\polyfills.ts"],
-    styles: ["./src\\assets\\styles\\styles.sass"],
-  },
-};
-const b = {
-  entry: {
-    main: ["./src\\config\\main.playground.ts"],
-  },
-};
-const result = {
-  entry: {
-    main: ["./src\\config\\main.playground.ts"],
-    polyfills: ["./src\\config\\polyfills.ts"],
-    styles: ["./src\\assets\\styles\\styles.sass"],
-  },
-};
-
-assert.deepEqual(
-  merge({
-    "entry.*": "replace",
-  })(a, b),
-  result
-);
+const output = mergeWithCustomize({
+  customizeArray: customizeArray({
+    'entry.*': 'prepend'
+  }),
+  customizeObject: customizeObject({
+    entry: 'prepend'
+  })
+})(object1, object2, object3, ...);
 ```
 
 > Check out [SurviveJS - Webpack](http://survivejs.com/) to dig deeper into the topic.
