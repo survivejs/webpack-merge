@@ -1,4 +1,4 @@
-import { cloneDeep, isPlainObject, mergeWith } from "lodash";
+import { cloneDeep, mergeWith } from "lodash";
 import { Customize, Key } from "./types";
 
 const isArray = Array.isArray;
@@ -59,4 +59,8 @@ function isFunction(functionToCheck) {
   return (
     functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
   );
+}
+
+function isPlainObject(a) {
+  return typeof a === "object";
 }
