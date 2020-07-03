@@ -6,12 +6,21 @@ function mergeUnique(
   return (a: [], b: [], k: string) =>
     k === key && [
       ...a,
-      ...difference(b, a, (item) => uniques.indexOf(getter(item)) >= 0),
+      ...difference(b, a, (item) => uniques.indexOf(getter(item))),
     ];
 }
 
-function difference(a: object[], b: object[], cb: (v: object) => boolean) {
-  return a.filter((v, i) => cb(v) !== cb(b[i]));
+function difference(a: object[], b: object[], cb: (v: object) => number) {
+  return a.filter((v, i) => {
+    const foundA = cb(v);
+    const foundB = cb(b[i]);
+
+    if (foundA >= 0 && foundB >= 0) {
+      return foundA !== foundB;
+    }
+
+    return true;
+  });
 }
 
 export default mergeUnique;

@@ -52,4 +52,33 @@ describe("Unique", function () {
 
     assert.deepEqual(output, expected);
   });
+
+  it("should check only against named plugins (#125)", function () {
+    const output = mergeWithCustomize({
+      customizeArray: unique(
+        "plugins",
+        ["DefinePlugin"],
+        (plugin) => plugin.constructor && plugin.constructor.name
+      ),
+    })(
+      {
+        plugins: [
+          new webpack.HotModuleReplacementPlugin(),
+          new webpack.DefinePlugin({}),
+        ],
+      },
+      {
+        plugins: [new webpack.HotModuleReplacementPlugin()],
+      }
+    );
+    const expected = {
+      plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({}),
+        new webpack.HotModuleReplacementPlugin(),
+      ],
+    };
+
+    assert.deepEqual(output, expected);
+  });
 });
