@@ -1,4 +1,5 @@
-import { cloneDeep, mergeWith } from "lodash";
+import cloneDeep from "clone-deep";
+import { mergeWith } from "lodash";
 import { Customize, Key } from "./types";
 
 const isArray = Array.isArray;
