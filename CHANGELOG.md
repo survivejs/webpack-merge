@@ -1,3 +1,17 @@
+# 5.0.0 / 2020-07-03
+
+- Feature - Support TypeScript out of the box. #84 #86 #95 #110 #112
+- Deprecation - `merge.smart` has been dropped as it's tricky to support all the corner cases. Instead, it's better to use the provided utilities to put together a `merge` that fits your case.
+- Deprecation - `mergeStrategy` has been dropped in favor of using `mergeWithCustomize` with `customizeArray` and `customizeObject`.
+- Deprecation - `merge.multiple` has been dropped as the functionality was too specific and it's better to implement in the user space if needed.
+- Breaking - `merge` has been moved as a regular import (i.e. `import { merge } from 'webpack-merge'`).
+- Breaking - Merge customization has been moved behind `mergeWithCustomize`.
+- Feature - `customizeArray` supports wildcards now. Example: `'entry.*': 'prepend'`. #45 #99
+- Feature - Throw an error in case a `Promise` is being merged. It's better to wrap configuration within a `Promise` and merge inside it. #81
+- Fix - Drop lodash in favor of simpler dependencies. #134
+- Fix - Make `unique` merge from right to left to match behavior elsewhere. #119
+- Fix - Make sure `unique` doesn't lose non-unique items to merge. #125
+
 # 4.2.2 / 2019-08-27
 
 - Fix - Update minimum version of lodash to 4.17.15 in order to avoid `npm audit warning`. #116
