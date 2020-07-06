@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.5 / 2020-07-06
+
+- Tech - Optimize build size (UMD isn't needed)
+
 ## 5.0.4 / 2020-07-06
 
 - Documentation - Use CommonJS imports at the examples. #137
