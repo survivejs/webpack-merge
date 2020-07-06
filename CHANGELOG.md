@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.6 / 2020-07-06
+
+- Fix - Add tslib to dependencies
+
 ## 5.0.5 / 2020-07-06
 
 - Tech - Optimize build size (UMD isn't needed)
