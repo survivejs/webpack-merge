@@ -2,6 +2,10 @@
 
 ## 5.0.6 / 2020-07-06
 
+- Fix - Drop tslib dependency by setting `"importHelpers": false,`
+
+## 5.0.6 / 2020-07-06
+
 - Fix - Add tslib to dependencies
 
 ## 5.0.5 / 2020-07-06
