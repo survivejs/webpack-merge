@@ -1,4 +1,4 @@
-# 5.0.0-beta-1 / 2020-07-03
+# 5.0.2 / 2020-07-06
 
 - Feature - Support TypeScript out of the box. #84 #86 #95 #110 #112
 - Deprecation - `merge.smart` has been dropped as it's tricky to support all the corner cases. Instead, it's better to use the provided utilities to put together a `merge` that fits your case.
