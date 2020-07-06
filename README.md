@@ -2,13 +2,11 @@
 
 # webpack-merge - Merge designed for Webpack
 
-**webpack-merge** provides a `merge` function that concatenates arrays and merges objects creating a new object. If functions are encountered, it will execute them, run the results through the algorithm, and then wrap the returned values within a function again.
+_webpack-merge_ provides a `merge` function that concatenates arrays and merges objects creating a new object. If functions are encountered, it will execute them, run the results through the algorithm, and then wrap the returned values within a function again.
 
-This behavior is particularly useful in configuring webpack although it has uses beyond it. Whenever you need to merge configuration objects, **webpack-merge** can come in handy.
+This behavior is particularly useful in configuring webpack although it has uses beyond it. Whenever you need to merge configuration objects, _webpack-merge_ can come in handy.
 
-## Standard Merging
-
-### **`merge(...configuration | [...configuration])`**
+## **`merge(...configuration | [...configuration])`**
 
 `merge` is the core, and the most important idea, of the API. Often this is all you need unless you want further customization.
 
@@ -31,11 +29,38 @@ console.log(output);
 // { color: "red", fruit: "strawberries"}
 ```
 
-> Note that `Promise`s are not supported! If you want to return a configuration wrapped within a `Promise`, `merge` inside one. Example: `Promise.resolve(merge({ ... }, { ... }))`.
+### Limitations
 
-### **`mergeWithCustomize({ customizeArray, customizeObject })(...configuration | [...configuration])`**
+Note that `Promise`s are not supported! If you want to return a configuration wrapped within a `Promise`, `merge` inside one. Example: `Promise.resolve(merge({ ... }, { ... }))`.
 
-`merge` behavior can be customized per field as below:
+The same goes for configuration level functions as in the example below:
+
+**webpack.config.js**
+
+```javascript
+const commonConfig = { ... };
+
+const productionConfig = { ... };
+
+const developmentConfig = { ... };
+
+module.exports = env => {
+  switch(env) {
+    case 'development':
+      return merge(commonConfig, developmentConfig);
+    case 'production':
+      return merge(commonConfig, productionConfig);
+    default:
+      throw new Error('No matching configuration was found!');
+  }
+}
+```
+
+You can choose the configuration you want by using `webpack --env development` assuming you are using _webpack-cli_.
+
+## **`mergeWithCustomize({ customizeArray, customizeObject })(...configuration | [...configuration])`**
+
+In case you need more flexibility, `merge` behavior can be customized per field as below:
 
 ```javascript
 import { mergeWithCustomize } from 'webpack-merge';
@@ -100,7 +125,26 @@ customizeObject({ object1: {} }, { object2: {} }, bar1);
 customizeObject({ object1: {} }, { object2: {} }, bar2);
 ```
 
-### **`unique(<field>, <fields>, field => field)`**
+## **`customizeArray`** and **`customizeObject`**
+
+`customizeArray` and `customizeObject` provide small strategies to for `mergeWithCustomize`. They support `append`, `prepend`, `replace`, and wildcards for field names.
+
+```javascript
+import { mergeWithCustomize, customizeArray, customizeObject } from 'webpack-merge';
+
+const output = mergeWithCustomize({
+  customizeArray: customizeArray({
+    'entry.*': 'prepend'
+  }),
+  customizeObject: customizeObject({
+    entry: 'prepend'
+  })
+})(object1, object2, object3, ...);
+```
+
+## **`unique(<field>, <fields>, field => field)`**
+
+`unique` is a strategy used for forcing uniqueness within configuration. It's most useful with plugins when you want to make sure there's only one in place.
 
 The first `<field>` is the config property to look through for duplicates.
 
@@ -124,34 +168,22 @@ const output = mergeWithCustomize({
   }
 );
 
-// Output contains only single HotModuleReplacementPlugin now.
+// Output contains only single HotModuleReplacementPlugin now and it's
+// going to be the last plugin instance.
 ```
-
-### **`customizeArray`** and **`customizeObject`**
-
-`customizeArray` and `customizeObject` provide small strategies to for `mergeWithCustomize`. They support `append`, `prepend`, `replace`, and wildcards for field names.
-
-```javascript
-import { mergeWithCustomize, customizeArray, customizeObject } from 'webpack-merge';
-
-const output = mergeWithCustomize({
-  customizeArray: customizeArray({
-    'entry.*': 'prepend'
-  }),
-  customizeObject: customizeObject({
-    entry: 'prepend'
-  })
-})(object1, object2, object3, ...);
-```
-
-> Check out [SurviveJS - Webpack](http://survivejs.com/) to dig deeper into the topic.
 
 ## Development
 
 1. `npm i`
 1. `npm t -- --watch`
 
-Before contributing, please open an issue where to discuss.
+Before contributing, please [open an issue](https://github.com/survivejs/webpack-merge/issues/new) where to discuss.
+
+## Further Information and Support
+
+Check out [SurviveJS - Webpack](http://survivejs.com/) to dig deeper into webpack. The free book uses _webpack-merge_ extensively and shows you how to compose your configuration to keep it maintainable.
+
+I am also available as a consultant in case you require specific assistance. I can contribute particularly in terms of improving maintainability of the setup while speeding it up and pointing out better practices. In addition to improving developer productivity, the work has impact on the end users of the product in terms of reduced application size and loading times.
 
 ## Contributors
 
