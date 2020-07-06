@@ -11,7 +11,7 @@ This behavior is particularly useful in configuring webpack although it has uses
 `merge` is the core, and the most important idea, of the API. Often this is all you need unless you want further customization.
 
 ```javascript
-import { merge } from 'webpack-merge';
+const { merge } = require('webpack-merge');
 
 // Default API
 const output = merge(object1, object2, object3, ...);
@@ -63,7 +63,7 @@ You can choose the configuration you want by using `webpack --env development` a
 In case you need more flexibility, `merge` behavior can be customized per field as below:
 
 ```javascript
-import { mergeWithCustomize } from 'webpack-merge';
+const { mergeWithCustomize } = require('webpack-merge');
 
 const output = mergeWithCustomize(
   {
@@ -130,7 +130,7 @@ customizeObject({ object1: {} }, { object2: {} }, bar2);
 `customizeArray` and `customizeObject` provide small strategies to for `mergeWithCustomize`. They support `append`, `prepend`, `replace`, and wildcards for field names.
 
 ```javascript
-import { mergeWithCustomize, customizeArray, customizeObject } from 'webpack-merge';
+const { mergeWithCustomize, customizeArray, customizeObject } = require('webpack-merge');
 
 const output = mergeWithCustomize({
   customizeArray: customizeArray({
@@ -151,7 +151,7 @@ The first `<field>` is the config property to look through for duplicates.
 `<fields>` represents the values that should be unique when you run the field => field function on each duplicate.
 
 ```javascript
-import { mergeWithCustomize, unique } from "webpack-merge";
+const { mergeWithCustomize, unique } = require("webpack-merge");
 
 const output = mergeWithCustomize({
   customizeArray: unique(
