@@ -1,10 +1,10 @@
 # Changelog
 
-## 5.0.7 / 2020-07-07
+## 5.0.8 / 2020-07-07
 
 - Fix - Support Node 10 #138
 
-## 5.0.6 / 2020-07-06
+## 5.0.7 / 2020-07-06
 
 - Fix - Drop tslib dependency by setting `"importHelpers": false,`
 
