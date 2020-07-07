@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.7 / 2020-07-07
+
+- Fix - Support Node 10 #138
+
 ## 5.0.6 / 2020-07-06
 
 - Fix - Drop tslib dependency by setting `"importHelpers": false,`
@@ -24,6 +28,7 @@
 - Deprecation - `merge.multiple` has been dropped as the functionality was too specific and it's better to implement in the user space if needed.
 - Breaking - `merge` has been moved as a regular import (i.e. `import { merge } from 'webpack-merge'`).
 - Breaking - Merge customization has been moved behind `mergeWithCustomize`.
+- Breaking - Bump supported Node version to 12
 - Feature - `customizeArray` supports wildcards now. Example: `'entry.*': 'prepend'`. #45 #99
 - Feature - Throw an error in case a `Promise` is being merged. It's better to wrap configuration within a `Promise` and merge inside it. #81
 - Fix - Drop lodash in favor of simpler dependencies. #134
