@@ -43,7 +43,10 @@
     "node": ">=10.0.0"
   },
   "jest": {
-    "collectCoverage": true
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "dist/*.js"
+    ]
   },
   "license": "MIT",
   "husky": {
