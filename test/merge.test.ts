@@ -1,5 +1,5 @@
 import assert from "assert";
-import { merge } from "../src";
+import { merge } from "../";
 import mergeTests from "../helpers/merge-tests";
 import loadersKeys from "../helpers/loaders-keys";
 

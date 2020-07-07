@@ -1,5 +1,5 @@
 import assert from "assert";
-import { mergeWithCustomize, customizeArray, customizeObject } from "../src";
+import { mergeWithCustomize, customizeArray, customizeObject } from "../";
 import customizeTests from "../helpers/customize-tests";
 
 describe("Merge strategy", function () {

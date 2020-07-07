@@ -174,8 +174,10 @@ const output = mergeWithCustomize({
 
 ## Development
 
+1. `nvm use`
 1. `npm i`
-1. `npm t -- --watch`
+1. `npm run build -- --watch` in one terminal
+1. `npm t -- --watch` in another one
 
 Before contributing, please [open an issue](https://github.com/survivejs/webpack-merge/issues/new) where to discuss.
 

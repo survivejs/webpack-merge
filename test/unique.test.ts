@@ -1,6 +1,6 @@
 import assert from "assert";
 import webpack from "webpack";
-import { mergeWithCustomize, unique } from "../src";
+import { mergeWithCustomize, unique } from "../";
 
 describe("Unique", function () {
   it("should allow unique definitions", function () {
