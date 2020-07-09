@@ -22,6 +22,11 @@ function mergeWithCustomize(options: ICustomizeOptions) {
     firstConfiguration: Configuration | Configuration[],
     ...configurations: Configuration[]
   ): Configuration {
+    // No configuration at all
+    if (!firstConfiguration) {
+      return {};
+    }
+
     // @ts-ignore
     if (firstConfiguration.then) {
       throw new TypeError("Promises are not supported");
@@ -29,6 +34,11 @@ function mergeWithCustomize(options: ICustomizeOptions) {
 
     if (configurations.length === 0) {
       if (Array.isArray(firstConfiguration)) {
+        // Empty array
+        if (firstConfiguration.length === 0) {
+          return {};
+        }
+
         // @ts-ignore
         if (firstConfiguration[0].then) {
           throw new TypeError("Promises are not supported");

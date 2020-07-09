@@ -15,6 +15,14 @@ function normalMergeTests(merge) {
 }
 
 function normalMergeTest(merge, loadersKey) {
+  it("should work with an empty configuration", function () {
+    assert.deepEqual(merge(), {});
+  });
+
+  it("should work with an empty array", function () {
+    assert.deepEqual(merge([]), {});
+  });
+
   it("should error on promise", function () {
     const a = {
       module: {},

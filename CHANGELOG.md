@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.9 / 2020-07-09
+
+- Fix - Don't crash on `merge()` and `merge([])`. Now `{}` is returned in these corner cases.
+
 ## 5.0.8 / 2020-07-07
 
 - Fix - Support Node 10 #138
