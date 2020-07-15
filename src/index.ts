@@ -10,21 +10,21 @@ import {
   Key,
 } from "./types";
 
-function merge(
-  firstConfiguration: Configuration | Configuration[],
-  ...configurations: Configuration[]
-): Configuration {
+function merge<C extends {} = Configuration>(
+  firstConfiguration: C | C[],
+  ...configurations: C[]
+): C {
   return mergeWithCustomize({})(firstConfiguration, ...configurations);
 }
 
 function mergeWithCustomize(options: ICustomizeOptions) {
-  return function mergeWithOptions(
-    firstConfiguration: Configuration | Configuration[],
-    ...configurations: Configuration[]
-  ): Configuration {
+  return function mergeWithOptions<C extends {} = Configuration>(
+    firstConfiguration: C | C[],
+    ...configurations: C[]
+  ): C {
     // No configuration at all
     if (!firstConfiguration) {
-      return {};
+      return {} as C;
     }
 
     // @ts-ignore
@@ -36,7 +36,7 @@ function mergeWithCustomize(options: ICustomizeOptions) {
       if (Array.isArray(firstConfiguration)) {
         // Empty array
         if (firstConfiguration.length === 0) {
-          return {};
+          return {} as C;
         }
 
         // @ts-ignore
@@ -44,7 +44,7 @@ function mergeWithCustomize(options: ICustomizeOptions) {
           throw new TypeError("Promises are not supported");
         }
 
-        return mergeWith(firstConfiguration, joinArrays(options));
+        return mergeWith(firstConfiguration, joinArrays(options)) as C;
       }
 
       return firstConfiguration;
@@ -53,7 +53,7 @@ function mergeWithCustomize(options: ICustomizeOptions) {
     return mergeWith(
       [firstConfiguration].concat(configurations),
       joinArrays(options)
-    );
+    ) as C;
   };
 }
 

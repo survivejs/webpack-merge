@@ -1,3 +1,4 @@
+import { Configuration } from "webpack";
 import assert from "assert";
 import { merge } from "../";
 import mergeTests from "../helpers/merge-tests";
@@ -6,6 +7,14 @@ import loadersKeys from "../helpers/loaders-keys";
 describe("Merge", function () {
   normalMergeTests(merge);
   mergeTests(merge);
+
+  it("should work with a custom configuration object", function () {
+    const config = { devServer: { open: true } };
+
+    // This is the spot where you can pass a customized configuration.
+    // In most use cases it's likely not needed.
+    assert.deepEqual(merge<Configuration>(config), config);
+  });
 });
 
 function normalMergeTests(merge) {
