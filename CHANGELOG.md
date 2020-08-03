@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.0 / 2020-08-03
+
+- Feature - Expose `merge` as `default` for backwards-compatibility with TypeScript. Now `import merge from "webpack-merge";` works there. In CommonJS, the default alias is exposed through `default` property due to technical constraints.
+
 ## 5.0.9 / 2020-07-09
 
 - Fix - Don't crash on `merge()` and `merge([])`. Now `{}` is returned in these corner cases.

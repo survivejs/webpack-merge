@@ -86,4 +86,12 @@ function customizeObject(rules: ICustomizeRules) {
   };
 }
 
-export { merge, mergeWithCustomize, unique, customizeArray, customizeObject };
+export {
+  // This will show up as .default in CommonJS but for TS it's backwards-compatible
+  merge as default,
+  merge,
+  mergeWithCustomize,
+  unique,
+  customizeArray,
+  customizeObject,
+};

@@ -1,11 +1,15 @@
 import assert from "assert";
-import { merge } from "../";
+import merge, { merge as defaultMerge } from "../";
 import mergeTests from "../helpers/merge-tests";
 import loadersKeys from "../helpers/loaders-keys";
 
 describe("Merge", function () {
   normalMergeTests(merge);
   mergeTests(merge);
+
+  it("should export default merge", function () {
+    assert.equal(merge, defaultMerge);
+  });
 });
 
 function normalMergeTests(merge) {
