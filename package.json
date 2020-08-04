@@ -20,12 +20,12 @@
     "wildcard": "^2.0.0"
   },
   "devDependencies": {
-    "@types/webpack": "^4.41.19",
+    "@types/webpack": "^4.41.21",
     "husky": "^4.2.5",
     "tsdx": "^0.13.2",
     "tslib": "^2.0.0",
-    "typescript": "^3.9.6",
-    "webpack": "^4.43.0"
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.1"
   },
   "repository": {
     "type": "git",
