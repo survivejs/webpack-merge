@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.1 / 2020-08-04
+
+- Fix - Drop `<reference types="webpack-dev-server" />` from **index.d.ts** #143
+
 ## 5.1.0 / 2020-08-03
 
 - Feature - Expose `merge` as `default` for backwards-compatibility with TypeScript. Now `import merge from "webpack-merge";` works there. In CommonJS, the default alias is exposed through `default` property due to technical constraints.
