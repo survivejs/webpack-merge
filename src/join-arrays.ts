@@ -61,5 +61,9 @@ function isFunction(functionToCheck) {
 }
 
 function isPlainObject(a) {
+  if (a === null) {
+    return false;
+  }
+
   return typeof a === "object";
 }

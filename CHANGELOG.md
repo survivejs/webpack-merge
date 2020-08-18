@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.2 / 2020-08-18
+
+- Fix - Allow overriding an object field with `null` #144
+
 ## 5.1.1 / 2020-08-04
 
 - Fix - Drop `<reference types="webpack-dev-server" />` from **index.d.ts** #143

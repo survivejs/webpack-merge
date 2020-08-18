@@ -27,6 +27,20 @@ function normalMergeTest(merge, loadersKey) {
     assert.deepEqual(merge([]), {});
   });
 
+  it.only("should override with null (#144)", function () {
+    const result = { devServer: null };
+
+    assert.deepEqual(
+      merge(
+        {
+          devServer: { base: true },
+        },
+        result
+      ),
+      result
+    );
+  });
+
   it("should error on promise", function () {
     const a = {
       module: {},
