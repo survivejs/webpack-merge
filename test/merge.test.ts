@@ -41,6 +41,32 @@ function normalMergeTest(merge, loadersKey) {
     );
   });
 
+  it("should allow merging optimization config to itself (#145)", function () {
+    const config = {
+      optimization: {
+        runtimeChunk: {
+          name: "runtime",
+        },
+
+        splitChunks: {
+          minChunks: 2,
+          minSize: 30000,
+
+          cacheGroups: {
+            clientApplication: {
+              name: "clientApplication",
+              test: /applications\/client/,
+              chunks: "all",
+              enforce: true,
+            },
+          },
+        },
+      },
+    };
+
+    assert.deepEqual(merge(config, config), config);
+  });
+
   it("should error on promise", function () {
     const a = {
       module: {},

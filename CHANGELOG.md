@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.3 / 2020-08-30
+
+- Fix - Allow merging a `RegExp` to itself #145
+
 ## 5.1.2 / 2020-08-18
 
 - Fix - Allow overriding an object field with `null` #144

@@ -19,10 +19,15 @@ export default function joinArrays({
     if (isFunction(a) && isFunction(b)) {
       return (...args: any[]) => _joinArrays(a(...args), b(...args), k);
     }
+
     if (isArray(a) && isArray(b)) {
       const customResult = customizeArray && customizeArray(a, b, newKey);
 
       return customResult || [...a, ...b];
+    }
+
+    if (isRegex(b)) {
+      return b;
     }
 
     if (isPlainObject(a) && isPlainObject(b)) {
@@ -51,6 +56,10 @@ export default function joinArrays({
 
     return b;
   };
+}
+
+function isRegex(o) {
+  return o instanceof RegExp;
 }
 
 // https://stackoverflow.com/a/7356528/228885
