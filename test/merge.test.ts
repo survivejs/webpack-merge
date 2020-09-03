@@ -1,5 +1,5 @@
 import assert from "assert";
-import merge, { merge as defaultMerge } from "../";
+import merge, { merge as defaultMerge } from "../resolve";
 import mergeTests from "../helpers/merge-tests";
 import loadersKeys from "../helpers/loaders-keys";
 

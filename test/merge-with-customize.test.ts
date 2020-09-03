@@ -1,6 +1,6 @@
 import assert from "assert";
 import webpack from "webpack";
-import { mergeWithCustomize } from "../";
+import { mergeWithCustomize } from "../resolve";
 
 describe("Merge", function () {
   customizeMergeTests(mergeWithCustomize);
