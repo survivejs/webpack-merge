@@ -66,6 +66,8 @@ function customizeArray(rules: ICustomizeRules) {
         return [...b, ...a];
       case CustomizeRule.Replace:
         return b;
+      case CustomizeRule.Merge:
+        return [merge(a[0], b[0])];
       case CustomizeRule.Append:
       default:
         return [...a, ...b];

@@ -239,6 +239,62 @@ function mergeStrategyTests(merge) {
       expected
     );
   });
+
+  it("should merge functions returning objects with merge", function () {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [{ loader: "style-loader" }, { loader: "sass-loader" }],
+          },
+        ],
+      },
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true,
+                },
+              },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+
+    assert.deepEqual(
+      merge({
+        "module.rules.*": "merge",
+      })(a, b),
+      expected
+    );
+  });
 }
 
 export default mergeStrategyTests;
