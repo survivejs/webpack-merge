@@ -1,6 +1,7 @@
 import cloneDeep from "clone-deep";
-import { Customize, Key } from "./types";
 import mergeWith from "./merge-with";
+
+export type Customize = (a: any, b: any, key: string) => any;
 
 const isArray = Array.isArray;
 
@@ -11,9 +12,9 @@ export default function joinArrays({
 }: {
   customizeArray?: Customize;
   customizeObject?: Customize;
-  key?: Key;
+  key?: string;
 } = {}) {
-  return function _joinArrays(a: any, b: any, k: Key): any {
+  return function _joinArrays(a: any, b: any, k: string): any {
     const newKey = key ? `${key}.${k}` : k;
 
     if (isFunction(a) && isFunction(b)) {

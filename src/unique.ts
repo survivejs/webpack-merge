@@ -4,7 +4,8 @@ function mergeUnique(
   getter: (a: object) => string
 ) {
   return (a: [], b: [], k: string) =>
-    k === key && [
+    k === key &&
+    Array.isArray(uniques) && [
       ...difference(a, b, (item) => uniques.indexOf(getter(item))),
       ...b,
     ];
