@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.4 / 2020-09-09
+
+- Fix - Expose `CustomizeRule` for TypeScript users #147
+
 ## 5.1.3 / 2020-08-30
 
 - Fix - Allow merging a `RegExp` to itself #145

@@ -94,4 +94,5 @@ export {
   unique,
   customizeArray,
   customizeObject,
+  CustomizeRule,
 };
