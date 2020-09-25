@@ -15,7 +15,7 @@ function customizeMergeTests(merge) {
       entry: ["b"],
     };
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       merge({
         customizeArray(a) {
           return a;
@@ -41,8 +41,8 @@ function customizeMergeTests(merge) {
       },
     })(first, second);
 
-    assert.equal(receivedKey, "entry");
-    assert.deepEqual(result, first);
+    assert.strictEqual(receivedKey, "entry");
+    assert.deepStrictEqual(result, first);
   });
 
   it("should allow overriding object behavior", function () {
@@ -57,7 +57,7 @@ function customizeMergeTests(merge) {
       },
     };
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       merge({
         customizeObject(a) {
           return a;
@@ -87,8 +87,8 @@ function customizeMergeTests(merge) {
       },
     })(first, second);
 
-    assert.equal(receivedKey, "entry");
-    assert.deepEqual(result, first);
+    assert.strictEqual(receivedKey, "entry");
+    assert.deepStrictEqual(result, first);
   });
 
   it("should customize plugins", function () {
@@ -119,6 +119,6 @@ function customizeMergeTests(merge) {
       },
     })(config1, config2);
 
-    assert.equal(receivedKey, "plugins");
+    assert.strictEqual(receivedKey, "plugins");
   });
 }

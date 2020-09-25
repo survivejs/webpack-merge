@@ -58,7 +58,7 @@ function mergeStrategySpecificTests(merge) {
       },
     };
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       merge({
         "module.loaders": "prepend",
       })(a, b),
@@ -87,7 +87,7 @@ function mergeStrategySpecificTests(merge) {
       },
     };
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       merge({
         "entry.*": "replace",
       })(a, b),
