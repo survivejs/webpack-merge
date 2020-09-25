@@ -3,12 +3,7 @@ import wildcard from "wildcard";
 import mergeWith from "./merge-with";
 import joinArrays from "./join-arrays";
 import unique from "./unique";
-import {
-  CustomizeRule,
-  ICustomizeRules,
-  ICustomizeOptions,
-  Key,
-} from "./types";
+import { CustomizeRule, ICustomizeOptions, Key } from "./types";
 
 function merge(
   firstConfiguration: Configuration | Configuration[],
@@ -57,11 +52,16 @@ function mergeWithCustomize(options: ICustomizeOptions) {
   };
 }
 
-function customizeArray(rules: ICustomizeRules) {
+function customizeArray(rules: { [s: string]: CustomizeRule }) {
   return (a: any, b: any, key: Key) => {
-    const match = Object.keys(rules).find((rule) => wildcard(rule, key)) || "";
+    const matchedRule =
+      Object.keys(rules).find(rule => wildcard(rule, key)) || "";
+    const matchedValue = rules[matchedRule];
 
-    switch (rules[match]) {
+    // TODO: If there's no matchedRule, parse + evaluate
+    console.log("matched rule", matchedRule);
+
+    switch (matchedValue) {
       case CustomizeRule.Prepend:
         return [...b, ...a];
       case CustomizeRule.Replace:
@@ -73,7 +73,7 @@ function customizeArray(rules: ICustomizeRules) {
   };
 }
 
-function customizeObject(rules: ICustomizeRules) {
+function customizeObject(rules: { [s: string]: CustomizeRule }) {
   return (a: any, b: any, key: Key) => {
     switch (rules[key]) {
       case CustomizeRule.Prepend:
@@ -94,5 +94,5 @@ export {
   unique,
   customizeArray,
   customizeObject,
-  CustomizeRule,
+  CustomizeRule
 };

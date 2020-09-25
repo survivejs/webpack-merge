@@ -1,13 +1,14 @@
 import cloneDeep from "clone-deep";
 import { Customize, Key } from "./types";
 import mergeWith from "./merge-with";
+import { isRegex, isFunction, isPlainObject } from "./utils";
 
 const isArray = Array.isArray;
 
 export default function joinArrays({
   customizeArray,
   customizeObject,
-  key,
+  key
 }: {
   customizeArray?: Customize;
   customizeObject?: Customize;
@@ -40,7 +41,7 @@ export default function joinArrays({
           joinArrays({
             customizeArray,
             customizeObject,
-            key: newKey,
+            key: newKey
           })
         )
       );
@@ -56,23 +57,4 @@ export default function joinArrays({
 
     return b;
   };
-}
-
-function isRegex(o) {
-  return o instanceof RegExp;
-}
-
-// https://stackoverflow.com/a/7356528/228885
-function isFunction(functionToCheck) {
-  return (
-    functionToCheck && {}.toString.call(functionToCheck) === "[object Function]"
-  );
-}
-
-function isPlainObject(a) {
-  if (a === null) {
-    return false;
-  }
-
-  return typeof a === "object";
 }
