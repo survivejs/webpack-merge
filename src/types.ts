@@ -7,11 +7,8 @@ export interface ICustomizeOptions {
   customizeObject?: Customize;
 }
 
-export interface ICustomizeRules {
-  [s: string]: CustomizeRule;
-}
 export enum CustomizeRule {
   Append = "append",
   Prepend = "prepend",
-  Replace = "replace",
+  Replace = "replace"
 }
