@@ -8,6 +8,7 @@ export interface ICustomizeOptions {
 }
 
 export enum CustomizeRule {
+  Match = "match",
   Append = "append",
   Prepend = "prepend",
   Replace = "replace"
