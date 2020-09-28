@@ -16,8 +16,197 @@ describe("Merge strategy", function() {
 
   customizeTests(merge);
   mergeStrategySpecificTests(merge);
+  mergeNested();
+});
 
-  it.only("should merge #149", function() {
+function mergeNested() {
+  it("should replace with dot notation", function() {
+    const base = {
+      entry: "demo",
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "css-loader"
+          }
+        ]
+      }
+    };
+    const development = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          }
+        ]
+      }
+    };
+    const result = {
+      entry: "demo",
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          }
+        ]
+      }
+    };
+
+    assert.deepStrictEqual(
+      mergeWithCustomize({
+        customizeArray: customizeArray({
+          "module.rules": CustomizeRule.Replace
+        })
+      })(base, development),
+      result
+    );
+  });
+
+  it("should replace with array notation", function() {
+    const base = {
+      entry: "demo",
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "css-loader"
+          }
+        ]
+      }
+    };
+    const development = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          }
+        ]
+      }
+    };
+    const result = {
+      entry: "demo",
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          }
+        ]
+      }
+    };
+
+    assert.deepStrictEqual(
+      mergeWithCustomize({
+        customizeArray: customizeArray({
+          // Since this doesn't have a property selector, this is the same as
+          // "module.rules".
+          "module.rules[test]": CustomizeRule.Replace
+        })
+      })(base, development),
+      result
+    );
+  });
+
+  it("should append with array notation", function() {
+    const base = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "css-loader"
+          }
+        ]
+      }
+    };
+    const development = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "css-loader"
+          },
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          }
+        ]
+      }
+    };
+
+    assert.deepStrictEqual(
+      mergeWithCustomize({
+        customizeArray: customizeArray({
+          // Since this doesn't have a property selector, this is the same as
+          // "module.rules".
+          "module.rules[test]": CustomizeRule.Append
+        })
+      })(base, development),
+      result
+    );
+  });
+
+  it("should prepend with array notation", function() {
+    const base = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "css-loader"
+          }
+        ]
+      }
+    };
+    const development = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loader: "style-loader"
+          },
+          {
+            test: /\.scss$/,
+            loader: "css-loader"
+          }
+        ]
+      }
+    };
+
+    assert.deepStrictEqual(
+      mergeWithCustomize({
+        customizeArray: customizeArray({
+          // Since this doesn't have a property selector, this is the same as
+          // "module.rules".
+          "module.rules[test]": CustomizeRule.Prepend
+        })
+      })(base, development),
+      result
+    );
+  });
+
+  it("should merge #149", function() {
     const base = {
       module: {
         rules: [
@@ -82,7 +271,7 @@ describe("Merge strategy", function() {
       result
     );
   });
-});
+}
 
 function mergeStrategySpecificTests(merge) {
   it("should work with nested arrays and prepend", function() {

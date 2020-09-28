@@ -58,8 +58,45 @@ function customizeArray(rules: { [s: string]: CustomizeRule }) {
       Object.keys(rules).find(rule => wildcard(rule, key)) || "";
     const matchedValue = rules[matchedRule];
 
-    // TODO: If there's no matchedRule, parse + evaluate
-    console.log("matched rule", matchedRule);
+    // Array case ([<field>])
+    if (!matchedRule) {
+      const matchingRules = Object.keys(rules).filter(rule =>
+        rule.startsWith(key)
+      );
+
+      if (matchingRules.length > 0) {
+        // TODO: What if multiple rules match?
+        const firstRule = matchingRules[0].split(key).filter(Boolean);
+
+        if (firstRule.length > 0) {
+          // https://stackoverflow.com/questions/1493027/javascript-return-string-between-square-brackets
+          const arrayMatch = firstRule[0].replace(/(^.*\[|\].*$)/g, "");
+          const matchingValue = rules[matchingRules[0]];
+
+          // TODO: If there are properties after array match, merge within
+          console.log("array match", arrayMatch);
+
+          switch (matchingValue) {
+            case CustomizeRule.Prepend:
+              // TODO: Prepend within match
+              return [...b, ...a];
+            case CustomizeRule.Replace:
+              // TODO: Replace within match
+              return b;
+            case CustomizeRule.Append:
+            default:
+              // TODO: Append within match
+              return [...a, ...b];
+          }
+        }
+
+        return [];
+      }
+
+      console.warn("customizeArray - No matching rules");
+
+      return [];
+    }
 
     switch (matchedValue) {
       case CustomizeRule.Prepend:
