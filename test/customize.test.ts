@@ -20,14 +20,14 @@ describe("Merge strategy", function() {
 });
 
 function mergeNested() {
-  it("should replace with dot notation", function() {
+  it("should replace with nested notation", function() {
     const base = {
       entry: "demo",
       module: {
         rules: [
           {
             test: /\.scss$/,
-            loader: "css-loader"
+            loaders: ["css-loader"]
           }
         ]
       }
@@ -37,7 +37,7 @@ function mergeNested() {
         rules: [
           {
             test: /\.scss$/,
-            loader: "style-loader"
+            loaders: ["style-loader"]
           }
         ]
       }
@@ -48,7 +48,7 @@ function mergeNested() {
         rules: [
           {
             test: /\.scss$/,
-            loader: "style-loader"
+            loaders: ["style-loader"]
           }
         ]
       }
@@ -57,21 +57,25 @@ function mergeNested() {
     assert.deepStrictEqual(
       mergeWithCustomize({
         customizeArray: customizeArray({
-          "module.rules": CustomizeRule.Replace
+          module: {
+            rules: {
+              test: CustomizeRule.Match,
+              loaders: CustomizeRule.Replace
+            }
+          }
         })
       })(base, development),
       result
     );
   });
 
-  it("should replace with array notation", function() {
+  it("should append with nested notation", function() {
     const base = {
-      entry: "demo",
       module: {
         rules: [
           {
             test: /\.scss$/,
-            loader: "css-loader"
+            loaders: ["css-loader"]
           }
         ]
       }
@@ -81,18 +85,17 @@ function mergeNested() {
         rules: [
           {
             test: /\.scss$/,
-            loader: "style-loader"
+            loaders: ["style-loader"]
           }
         ]
       }
     };
     const result = {
-      entry: "demo",
       module: {
         rules: [
           {
             test: /\.scss$/,
-            loader: "style-loader"
+            loaders: ["css-loader", "style-loader"]
           }
         ]
       }
@@ -101,22 +104,25 @@ function mergeNested() {
     assert.deepStrictEqual(
       mergeWithCustomize({
         customizeArray: customizeArray({
-          // Since this doesn't have a property selector, this is the same as
-          // "module.rules".
-          "module.rules[test]": CustomizeRule.Replace
+          module: {
+            rules: {
+              test: CustomizeRule.Match,
+              loaders: CustomizeRule.Append
+            }
+          }
         })
       })(base, development),
       result
     );
   });
 
-  it("should append with array notation", function() {
+  it("should prepend with nested notation", function() {
     const base = {
       module: {
         rules: [
           {
             test: /\.scss$/,
-            loader: "css-loader"
+            loaders: ["css-loader"]
           }
         ]
       }
@@ -126,7 +132,7 @@ function mergeNested() {
         rules: [
           {
             test: /\.scss$/,
-            loader: "style-loader"
+            loaders: ["style-loader"]
           }
         ]
       }
@@ -136,11 +142,7 @@ function mergeNested() {
         rules: [
           {
             test: /\.scss$/,
-            loader: "css-loader"
-          },
-          {
-            test: /\.scss$/,
-            loader: "style-loader"
+            loaders: ["style-loader", "css-loader"]
           }
         ]
       }
@@ -149,57 +151,12 @@ function mergeNested() {
     assert.deepStrictEqual(
       mergeWithCustomize({
         customizeArray: customizeArray({
-          // Since this doesn't have a property selector, this is the same as
-          // "module.rules".
-          "module.rules[test]": CustomizeRule.Append
-        })
-      })(base, development),
-      result
-    );
-  });
-
-  it("should prepend with array notation", function() {
-    const base = {
-      module: {
-        rules: [
-          {
-            test: /\.scss$/,
-            loader: "css-loader"
+          module: {
+            rules: {
+              test: CustomizeRule.Match,
+              loaders: CustomizeRule.Prepend
+            }
           }
-        ]
-      }
-    };
-    const development = {
-      module: {
-        rules: [
-          {
-            test: /\.scss$/,
-            loader: "style-loader"
-          }
-        ]
-      }
-    };
-    const result = {
-      module: {
-        rules: [
-          {
-            test: /\.scss$/,
-            loader: "style-loader"
-          },
-          {
-            test: /\.scss$/,
-            loader: "css-loader"
-          }
-        ]
-      }
-    };
-
-    assert.deepStrictEqual(
-      mergeWithCustomize({
-        customizeArray: customizeArray({
-          // Since this doesn't have a property selector, this is the same as
-          // "module.rules".
-          "module.rules[test]": CustomizeRule.Prepend
         })
       })(base, development),
       result
@@ -265,7 +222,15 @@ function mergeNested() {
     assert.deepStrictEqual(
       mergeWithCustomize({
         customizeArray: customizeArray({
-          "module.rules[test].loaders": CustomizeRule.Replace
+          module: {
+            rules: {
+              test: CustomizeRule.Match,
+              loaders: {
+                loader: CustomizeRule.Match,
+                options: CustomizeRule.Replace
+              }
+            }
+          }
         })
       })(base, development),
       result
