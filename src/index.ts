@@ -111,6 +111,7 @@ function mergeWithRules({
         rulesToMatch.every(rule => ao[rule].toString() === o[rule].toString())
       );
 
+      // TODO: Extract as a function to apply
       Object.entries(ao).forEach(([k, v]) => {
         switch (currentRule[k]) {
           case CustomizeRule.Match:
@@ -129,10 +130,12 @@ function mergeWithRules({
             ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
             break;
           default:
-            const rules = { [k]: operations[k] };
+            const rules = operations[k];
             const b = bMatches.map(o => o[k]).flat();
 
-            // TODO: Figure out the recursion step and what to pass here
+            // console.log({ rules, k, v, b });
+
+            // TODO: Map through v and apply rules per each
             ret[k] = mergeWithRules({ rules, key: k, a: v, b });
             break;
         }
