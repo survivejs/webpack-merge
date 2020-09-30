@@ -59,23 +59,76 @@ function customizeArray(rules: Rules) {
   return (a: any, b: any, key: Key) => {
     const matchedRule =
       Object.keys(rules).find(rule => wildcard(rule, key)) || "";
-    const matchedValue = rules[matchedRule];
 
-    if (isPlainObject(matchedValue)) {
-      // TODO
-      return [];
+    if (matchedRule) {
+      switch (rules[matchedRule]) {
+        case CustomizeRule.Prepend:
+          return [...b, ...a];
+        case CustomizeRule.Replace:
+          return b;
+        case CustomizeRule.Append:
+        default:
+          return [...a, ...b];
+      }
     }
 
-    switch (matchedValue) {
-      case CustomizeRule.Prepend:
-        return [...b, ...a];
-      case CustomizeRule.Replace:
-        return b;
-      case CustomizeRule.Append:
-      default:
-        return [...a, ...b];
+    let currentRule: CustomizeRule | Rules = rules;
+    key.split(".").forEach(k => {
+      currentRule = currentRule[k];
+    });
+
+    if (isPlainObject(currentRule)) {
+      // TODO: Concat anything from b that didn't match?
+      return a.map(ao => {
+        const ret = {};
+
+        const rulesToMatch: string[] = [];
+        const operations = {};
+        Object.entries(currentRule).forEach(([k, v]) => {
+          if (v === CustomizeRule.Match) {
+            rulesToMatch.push(k);
+          } else {
+            operations[k] = v;
+          }
+        });
+
+        const bMatches = b.filter(o =>
+          rulesToMatch.every(rule => ao[rule].toString() === o[rule].toString())
+        );
+
+        Object.entries(ao).forEach(([k, v]) => {
+          switch (currentRule[k]) {
+            case CustomizeRule.Match:
+              ret[k] = v;
+              break;
+            case CustomizeRule.Append:
+              ret[k] =
+                bMatches.length > 0
+                  ? (v as Array<any>).concat(last(bMatches)[k])
+                  : v;
+              break;
+            case CustomizeRule.Prepend:
+              ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
+              break;
+            case CustomizeRule.Replace:
+              ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
+              break;
+            default:
+              console.log("no match");
+              break;
+          }
+        });
+
+        return ret;
+      });
     }
+
+    return [];
   };
+}
+
+function last(arr) {
+  return arr[arr.length - 1];
 }
 
 function customizeObject(rules: { [s: string]: CustomizeRule }) {

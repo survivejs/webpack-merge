@@ -28,6 +28,10 @@ function mergeNested() {
           {
             test: /\.scss$/,
             loaders: ["css-loader"]
+          },
+          {
+            test: /\.css$/,
+            loaders: ["style-loader"]
           }
         ]
       }
@@ -38,6 +42,10 @@ function mergeNested() {
           {
             test: /\.scss$/,
             loaders: ["style-loader"]
+          },
+          {
+            test: /\.less$/,
+            loaders: ["css-loader"]
           }
         ]
       }
@@ -49,7 +57,16 @@ function mergeNested() {
           {
             test: /\.scss$/,
             loaders: ["style-loader"]
+          },
+          {
+            test: /\.css$/,
+            loaders: ["style-loader"]
           }
+          // TODO: Is it ok that this gets lost?
+          /*{
+            test: /\.less$/,
+            loaders: ["css-loader"]
+          }*/
         ]
       }
     };
