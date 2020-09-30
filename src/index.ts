@@ -72,59 +72,77 @@ function customizeArray(rules: Rules) {
       }
     }
 
-    let currentRule: CustomizeRule | Rules = rules;
-    key.split(".").forEach(k => {
-      currentRule = currentRule[k];
-    });
-
-    if (isPlainObject(currentRule)) {
-      // TODO: Concat anything from b that didn't match?
-      return a.map(ao => {
-        const ret = {};
-
-        const rulesToMatch: string[] = [];
-        const operations = {};
-        Object.entries(currentRule).forEach(([k, v]) => {
-          if (v === CustomizeRule.Match) {
-            rulesToMatch.push(k);
-          } else {
-            operations[k] = v;
-          }
-        });
-
-        const bMatches = b.filter(o =>
-          rulesToMatch.every(rule => ao[rule].toString() === o[rule].toString())
-        );
-
-        Object.entries(ao).forEach(([k, v]) => {
-          switch (currentRule[k]) {
-            case CustomizeRule.Match:
-              ret[k] = v;
-              break;
-            case CustomizeRule.Append:
-              ret[k] =
-                bMatches.length > 0
-                  ? (v as Array<any>).concat(last(bMatches)[k])
-                  : v;
-              break;
-            case CustomizeRule.Prepend:
-              ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
-              break;
-            case CustomizeRule.Replace:
-              ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
-              break;
-            default:
-              console.log("no match");
-              break;
-          }
-        });
-
-        return ret;
-      });
-    }
-
-    return [];
+    return mergeWithRules({ rules, key, a, b });
   };
+}
+
+function mergeWithRules({
+  rules,
+  key,
+  a,
+  b
+}: {
+  rules: Rules;
+  key: Key;
+  a: any;
+  b: any;
+}) {
+  let currentRule: CustomizeRule | Rules = rules;
+  key.split(".").forEach(k => {
+    currentRule = currentRule[k];
+  });
+
+  if (isPlainObject(currentRule)) {
+    // TODO: Concat anything from b that didn't match?
+    return a.map(ao => {
+      const ret = {};
+
+      const rulesToMatch: string[] = [];
+      const operations = {};
+      Object.entries(currentRule).forEach(([k, v]) => {
+        if (v === CustomizeRule.Match) {
+          rulesToMatch.push(k);
+        } else {
+          operations[k] = v;
+        }
+      });
+
+      const bMatches = b.filter(o =>
+        rulesToMatch.every(rule => ao[rule].toString() === o[rule].toString())
+      );
+
+      Object.entries(ao).forEach(([k, v]) => {
+        switch (currentRule[k]) {
+          case CustomizeRule.Match:
+            ret[k] = v;
+            break;
+          case CustomizeRule.Append:
+            ret[k] =
+              bMatches.length > 0
+                ? (v as Array<any>).concat(last(bMatches)[k])
+                : v;
+            break;
+          case CustomizeRule.Prepend:
+            ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
+            break;
+          case CustomizeRule.Replace:
+            ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
+            break;
+          default:
+            const rules = { [k]: operations[k] };
+            const b = bMatches.map(o => o[k]).flat();
+
+            // TODO: Figure out the recursion step and what to pass here
+            ret[k] = mergeWithRules({ rules, key: k, a: v, b });
+            break;
+        }
+      });
+
+      return ret;
+    });
+  }
+
+  return [];
 }
 
 function last(arr) {

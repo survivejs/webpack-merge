@@ -298,7 +298,7 @@ function mergeStrategySpecificTests(merge) {
 
     assert.deepStrictEqual(
       merge({
-        "module.loaders": "prepend"
+        "module.loaders": CustomizeRule.Prepend
       })(a, b),
       result
     );
@@ -327,7 +327,7 @@ function mergeStrategySpecificTests(merge) {
 
     assert.deepStrictEqual(
       merge({
-        "entry.*": "replace"
+        "entry.*": CustomizeRule.Replace
       })(a, b),
       result
     );
