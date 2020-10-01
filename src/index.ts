@@ -161,7 +161,11 @@ function mergeWithRule({
           break;
         default:
           const currentRule = operations[k];
-          const b = bMatches.map(o => o[k]).flat();
+
+          // Use .flat(); starting from Node 12
+          const b = bMatches
+            .map(o => o[k])
+            .reduce((acc, val) => [...acc, ...val], []);
 
           ret[k] = mergeWithRule({ currentRule, a: v, b });
           break;
