@@ -142,6 +142,77 @@ const output = mergeWithCustomize({
 })(object1, object2, object3, ...);
 ```
 
+## Expanded syntax for `customizeArray`
+
+To support advanced merging needs (i.e. merging within loaders), `customizeArray` includes additional syntax that allows you to match fields and apply strategies to match. Consider the full example below:
+
+```javascript
+const a = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [{ loader: "style-loader" }, { loader: "sass-loader" }]
+      }
+    ]
+  }
+};
+const b = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader",
+            options: {
+              modules: true
+            }
+          }
+        ]
+      }
+    ]
+  }
+};
+const result = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader",
+            options: {
+              modules: true
+            }
+          },
+          { loader: "sass-loader" }
+        ]
+      }
+    ]
+  }
+};
+
+assert.deepStrictEqual(
+  mergeWithCustomize({
+    customizeArray: customizeArray({
+      module: {
+        rules: {
+          test: "match",
+          use: {
+            loader: "match",
+            options: "replace"
+          }
+        }
+      }
+    })
+  })(a, b),
+  result
+);
+```
+
+The way it works is that you should annotate fields to match using `match` (or `CustomizeRule.Match` if you are using TypeScript) matching your configuration structure and then use specific strategies to define how particular fields should be transformed.
+
 ## **`unique(<field>, <fields>, field => field)`**
 
 `unique` is a strategy used for forcing uniqueness within configuration. It's most useful with plugins when you want to make sure there's only one in place.
@@ -157,14 +228,14 @@ const output = mergeWithCustomize({
   customizeArray: unique(
     "plugins",
     ["HotModuleReplacementPlugin"],
-    (plugin) => plugin.constructor && plugin.constructor.name
-  ),
+    plugin => plugin.constructor && plugin.constructor.name
+  )
 })(
   {
-    plugins: [new webpack.HotModuleReplacementPlugin()],
+    plugins: [new webpack.HotModuleReplacementPlugin()]
   },
   {
-    plugins: [new webpack.HotModuleReplacementPlugin()],
+    plugins: [new webpack.HotModuleReplacementPlugin()]
   }
 );
 
