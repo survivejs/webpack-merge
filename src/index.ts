@@ -93,69 +93,81 @@ function mergeWithRules({
   });
 
   if (isPlainObject(currentRule)) {
-    const bAllMatches: any[] = [];
-    const ret = a.map(ao => {
-      const ret = {};
-
-      const rulesToMatch: string[] = [];
-      const operations = {};
-      Object.entries(currentRule).forEach(([k, v]) => {
-        if (v === CustomizeRule.Match) {
-          rulesToMatch.push(k);
-        } else {
-          operations[k] = v;
-        }
-      });
-
-      const bMatches = b.filter(o => {
-        const matches = rulesToMatch.every(
-          rule => ao[rule].toString() === o[rule].toString()
-        );
-
-        if (matches) {
-          bAllMatches.push(o);
-        }
-
-        return matches;
-      });
-
-      // TODO: Extract as a function to apply
-      Object.entries(ao).forEach(([k, v]) => {
-        switch (currentRule[k]) {
-          case CustomizeRule.Match:
-            ret[k] = v;
-            break;
-          case CustomizeRule.Append:
-            ret[k] =
-              bMatches.length > 0
-                ? (v as Array<any>).concat(last(bMatches)[k])
-                : v;
-            break;
-          case CustomizeRule.Prepend:
-            ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
-            break;
-          case CustomizeRule.Replace:
-            ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
-            break;
-          default:
-            const rules = operations[k];
-            const b = bMatches.map(o => o[k]).flat();
-
-            // console.log({ rules, k, v, b });
-
-            // TODO: Map through v and apply rules per each
-            ret[k] = mergeWithRules({ rules, key: k, a: v, b });
-            break;
-        }
-      });
-
-      return ret;
-    });
-
-    return ret.concat(b.filter(o => !bAllMatches.includes(o)));
+    return mergeWithRule({ currentRule, a, b });
   }
 
   return [];
+}
+
+function mergeWithRule({
+  currentRule,
+  a,
+  b
+}: {
+  currentRule: CustomizeRule | Rules;
+  a: any;
+  b: any;
+}) {
+  const bAllMatches: any[] = [];
+  const ret = a.map(ao => {
+    const ret = {};
+
+    const rulesToMatch: string[] = [];
+    const operations = {};
+    Object.entries(currentRule).forEach(([k, v]) => {
+      if (v === CustomizeRule.Match) {
+        rulesToMatch.push(k);
+      } else {
+        operations[k] = v;
+      }
+    });
+
+    const bMatches = b.filter(o => {
+      const matches = rulesToMatch.every(
+        rule => ao[rule].toString() === o[rule].toString()
+      );
+
+      if (matches) {
+        bAllMatches.push(o);
+      }
+
+      return matches;
+    });
+
+    // TODO: Extract as a function to apply
+    Object.entries(ao).forEach(([k, v]) => {
+      switch (currentRule[k]) {
+        case CustomizeRule.Match:
+          ret[k] = v;
+          break;
+        case CustomizeRule.Append:
+          ret[k] =
+            bMatches.length > 0
+              ? (v as Array<any>).concat(last(bMatches)[k])
+              : v;
+          break;
+        case CustomizeRule.Prepend:
+          ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
+          break;
+        case CustomizeRule.Replace:
+          ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
+          break;
+        default:
+          const currentRule = operations[k];
+          const b = bMatches.map(o => o[k]).flat();
+
+          // console.log({ rules, v, b });
+
+          // TODO: Map through v and apply rules per each
+          ret[k] = mergeWithRule({ currentRule, a: v, b });
+          break;
+      }
+    });
+
+    return ret;
+  });
+
+  return ret.concat(b.filter(o => !bAllMatches.includes(o)));
 }
 
 function last(arr) {
