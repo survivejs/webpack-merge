@@ -134,11 +134,14 @@ function mergeWithRule({
       return matches;
     });
 
-    // TODO: Extract as a function to apply
+    // TODO: What if each replace rule doesn't exist in a? Should those
+    // be created anyway?
     Object.entries(ao).forEach(([k, v]) => {
       switch (currentRule[k]) {
         case CustomizeRule.Match:
           ret[k] = v;
+
+          // TODO: Check siblings, if any is to be replaced, replace now?
           break;
         case CustomizeRule.Append:
           ret[k] =
@@ -156,7 +159,7 @@ function mergeWithRule({
           const currentRule = operations[k];
           const b = bMatches.map(o => o[k]).flat();
 
-          // console.log({ rules, v, b });
+          console.log({ currentRule, v, b });
 
           // TODO: Map through v and apply rules per each
           ret[k] = mergeWithRule({ currentRule, a: v, b });
