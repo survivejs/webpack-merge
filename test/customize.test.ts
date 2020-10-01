@@ -61,12 +61,11 @@ function mergeNested() {
           {
             test: /\.css$/,
             loaders: ["style-loader"]
-          }
-          // TODO: Is it ok that this gets lost?
-          /*{
+          },
+          {
             test: /\.less$/,
             loaders: ["css-loader"]
-          }*/
+          }
         ]
       }
     };

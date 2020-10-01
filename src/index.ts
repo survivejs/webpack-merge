@@ -93,8 +93,8 @@ function mergeWithRules({
   });
 
   if (isPlainObject(currentRule)) {
-    // TODO: Concat anything from b that didn't match?
-    return a.map(ao => {
+    const bAllMatches: any[] = [];
+    const ret = a.map(ao => {
       const ret = {};
 
       const rulesToMatch: string[] = [];
@@ -107,9 +107,17 @@ function mergeWithRules({
         }
       });
 
-      const bMatches = b.filter(o =>
-        rulesToMatch.every(rule => ao[rule].toString() === o[rule].toString())
-      );
+      const bMatches = b.filter(o => {
+        const matches = rulesToMatch.every(
+          rule => ao[rule].toString() === o[rule].toString()
+        );
+
+        if (matches) {
+          bAllMatches.push(o);
+        }
+
+        return matches;
+      });
 
       // TODO: Extract as a function to apply
       Object.entries(ao).forEach(([k, v]) => {
@@ -143,6 +151,8 @@ function mergeWithRules({
 
       return ret;
     });
+
+    return ret.concat(b.filter(o => !bAllMatches.includes(o)));
   }
 
   return [];
