@@ -179,6 +179,71 @@ function mergeNested() {
     );
   });
 
+  it("should merge #146", function() {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [{ loader: "style-loader" }, { loader: "sass-loader" }]
+          }
+        ]
+      }
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true
+                }
+              },
+              { loader: "sass-loader" }
+            ]
+          }
+        ]
+      }
+    };
+
+    assert.deepStrictEqual(
+      mergeWithCustomize({
+        customizeArray: customizeArray({
+          module: {
+            rules: {
+              test: CustomizeRule.Match,
+              use: {
+                loader: CustomizeRule.Match,
+                options: CustomizeRule.Replace
+              }
+            }
+          }
+        })
+      })(a, b),
+      result
+    );
+  });
+
   it("should merge #149", function() {
     const base = {
       module: {
