@@ -99,6 +99,8 @@ function mergeWithRules({
   return [];
 }
 
+const isArray = Array.isArray;
+
 function mergeWithRule({
   currentRule,
   a,
@@ -108,10 +110,17 @@ function mergeWithRule({
   a: any;
   b: any;
 }) {
+  if (!isArray(a)) {
+    return a;
+  }
+
   const bAllMatches: any[] = [];
   const ret = a.map(ao => {
-    const ret = {};
+    if (!isPlainObject(currentRule)) {
+      return ao;
+    }
 
+    const ret = {};
     const rulesToMatch: string[] = [];
     const operations = {};
     Object.entries(currentRule).forEach(([k, v]) => {
@@ -124,7 +133,7 @@ function mergeWithRule({
 
     const bMatches = b.filter(o => {
       const matches = rulesToMatch.every(
-        rule => ao[rule].toString() === o[rule].toString()
+        rule => ao[rule]?.toString() === o[rule]?.toString()
       );
 
       if (matches) {
@@ -165,7 +174,11 @@ function mergeWithRule({
           // Use .flat(); starting from Node 12
           const b = bMatches
             .map(o => o[k])
-            .reduce((acc, val) => [...acc, ...val], []);
+            .reduce(
+              (acc, val) =>
+                isArray(acc) && isArray(val) ? [...acc, ...val] : acc,
+              []
+            );
 
           ret[k] = mergeWithRule({ currentRule, a: v, b });
           break;
