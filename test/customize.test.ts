@@ -317,6 +317,131 @@ function mergeNested() {
       result
     );
   });
+
+  it("should merge with a parser loader", function() {
+    const defaultConfig = {
+      module: {
+        rules: [
+          {
+            parser: {
+              system: false
+            }
+          },
+          {
+            test: /\.(js|ts)x?$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: "babel-loader"
+              }
+            ]
+          },
+          {
+            test: /\.css$/i,
+            include: [/node_modules/, /src/],
+            use: [
+              {
+                loader: "style-loader"
+              },
+              {
+                loader: "css-loader",
+                options: {
+                  modules: false
+                }
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const localConfig = {
+      module: {
+        rules: [
+          {
+            test: /\.html$/i,
+            use: [{ loader: "html-loader" }]
+          },
+          {
+            test: /\.css$/i,
+            use: [
+              {
+                loader: "style-loader"
+              },
+              {
+                loader: "css-loader",
+                options: {
+                  importLoaders: 1
+                }
+              },
+              {
+                loader: "postcss-loader"
+              }
+            ]
+          }
+        ]
+      }
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            parser: {
+              system: false
+            }
+          },
+          {
+            test: /\.(js|ts)x?$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: "babel-loader"
+              }
+            ]
+          },
+          {
+            test: /\.css$/i,
+            include: [/node_modules/, /src/],
+            use: [
+              {
+                loader: "style-loader",
+                options: undefined
+              },
+              {
+                loader: "css-loader",
+                options: {
+                  importLoaders: 1
+                }
+              },
+              {
+                loader: "postcss-loader"
+              }
+            ]
+          },
+          {
+            test: /\.html$/i,
+            use: [{ loader: "html-loader" }]
+          }
+        ]
+      }
+    };
+
+    assert.deepStrictEqual(
+      mergeWithCustomize({
+        customizeArray: customizeArray({
+          module: {
+            rules: {
+              test: CustomizeRule.Match,
+              use: {
+                loader: CustomizeRule.Match,
+                options: CustomizeRule.Replace
+              }
+            }
+          }
+        })
+      })(defaultConfig, localConfig),
+      result
+    );
+  });
 }
 
 function mergeStrategySpecificTests(merge) {
