@@ -142,9 +142,9 @@ const output = mergeWithCustomize({
 })(object1, object2, object3, ...);
 ```
 
-## Expanded syntax for `customizeArray`
+## **`mergeWithRules`**
 
-To support advanced merging needs (i.e. merging within loaders), `customizeArray` includes additional syntax that allows you to match fields and apply strategies to match. Consider the full example below:
+To support advanced merging needs (i.e. merging within loaders), `mergeWithRules` includes additional syntax that allows you to match fields and apply strategies to match. Consider the full example below:
 
 ```javascript
 const a = {
@@ -194,18 +194,16 @@ const result = {
 };
 
 assert.deepStrictEqual(
-  mergeWithCustomize({
-    customizeArray: customizeArray({
-      module: {
-        rules: {
-          test: "match",
-          use: {
-            loader: "match",
-            options: "replace"
-          }
+  mergeWithRules({
+    module: {
+      rules: {
+        test: "match",
+        use: {
+          loader: "match",
+          options: "replace"
         }
       }
-    })
+    }
   })(a, b),
   result
 );
