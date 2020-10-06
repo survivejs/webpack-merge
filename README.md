@@ -142,6 +142,36 @@ const output = mergeWithCustomize({
 })(object1, object2, object3, ...);
 ```
 
+## **`unique(<field>, <fields>, field => field)`**
+
+`unique` is a strategy used for forcing uniqueness within configuration. It's most useful with plugins when you want to make sure there's only one in place.
+
+The first `<field>` is the config property to look through for duplicates.
+
+`<fields>` represents the values that should be unique when you run the field => field function on each duplicate.
+
+```javascript
+const { mergeWithCustomize, unique } = require("webpack-merge");
+
+const output = mergeWithCustomize({
+  customizeArray: unique(
+    "plugins",
+    ["HotModuleReplacementPlugin"],
+    plugin => plugin.constructor && plugin.constructor.name
+  )
+})(
+  {
+    plugins: [new webpack.HotModuleReplacementPlugin()]
+  },
+  {
+    plugins: [new webpack.HotModuleReplacementPlugin()]
+  }
+);
+
+// Output contains only single HotModuleReplacementPlugin now and it's
+// going to be the last plugin instance.
+```
+
 ## **`mergeWithRules`**
 
 To support advanced merging needs (i.e. merging within loaders), `mergeWithRules` includes additional syntax that allows you to match fields and apply strategies to match. Consider the full example below:
@@ -210,36 +240,6 @@ assert.deepStrictEqual(
 ```
 
 The way it works is that you should annotate fields to match using `match` (or `CustomizeRule.Match` if you are using TypeScript) matching your configuration structure and then use specific strategies to define how particular fields should be transformed.
-
-## **`unique(<field>, <fields>, field => field)`**
-
-`unique` is a strategy used for forcing uniqueness within configuration. It's most useful with plugins when you want to make sure there's only one in place.
-
-The first `<field>` is the config property to look through for duplicates.
-
-`<fields>` represents the values that should be unique when you run the field => field function on each duplicate.
-
-```javascript
-const { mergeWithCustomize, unique } = require("webpack-merge");
-
-const output = mergeWithCustomize({
-  customizeArray: unique(
-    "plugins",
-    ["HotModuleReplacementPlugin"],
-    plugin => plugin.constructor && plugin.constructor.name
-  )
-})(
-  {
-    plugins: [new webpack.HotModuleReplacementPlugin()]
-  },
-  {
-    plugins: [new webpack.HotModuleReplacementPlugin()]
-  }
-);
-
-// Output contains only single HotModuleReplacementPlugin now and it's
-// going to be the last plugin instance.
-```
 
 ## Development
 
