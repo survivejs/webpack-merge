@@ -48,17 +48,15 @@ function mergeWithCustomize(options: ICustomizeOptions) {
 
     return mergeWith(
       [firstConfiguration].concat(configurations),
-      joinArrays(options)
+      joinArrays(options),
     );
   };
 }
 
-type Rules = { [s: string]: CustomizeRule | Rules };
-
-function customizeArray(rules: Rules) {
+function customizeArray(rules: { [s: string]: CustomizeRule }) {
   return (a: any, b: any, key: Key) => {
     const matchedRule =
-      Object.keys(rules).find(rule => wildcard(rule, key)) || "";
+      Object.keys(rules).find((rule) => wildcard(rule, key)) || "";
 
     if (matchedRule) {
       switch (rules[matchedRule]) {
@@ -71,32 +69,27 @@ function customizeArray(rules: Rules) {
           return [...a, ...b];
       }
     }
-
-    return mergeWithRules({ rules, key, a, b });
   };
 }
 
-function mergeWithRules({
-  rules,
-  key,
-  a,
-  b
-}: {
-  rules: Rules;
-  key: Key;
-  a: any;
-  b: any;
-}) {
-  let currentRule: CustomizeRule | Rules = rules;
-  key.split(".").forEach(k => {
-    currentRule = currentRule[k];
+type Rules = { [s: string]: CustomizeRule | Rules };
+
+function mergeWithRules(rules: Rules) {
+  return mergeWithCustomize({
+    customizeArray: (a: any, b: any, key: Key) => {
+      let currentRule: CustomizeRule | Rules = rules;
+
+      key.split(".").forEach((k) => {
+        currentRule = currentRule[k];
+      });
+
+      if (isPlainObject(currentRule)) {
+        return mergeWithRule({ currentRule, a, b });
+      }
+
+      return [];
+    },
   });
-
-  if (isPlainObject(currentRule)) {
-    return mergeWithRule({ currentRule, a, b });
-  }
-
-  return [];
 }
 
 const isArray = Array.isArray;
@@ -104,7 +97,7 @@ const isArray = Array.isArray;
 function mergeWithRule({
   currentRule,
   a,
-  b
+  b,
 }: {
   currentRule: CustomizeRule | Rules;
   a: any;
@@ -115,7 +108,7 @@ function mergeWithRule({
   }
 
   const bAllMatches: any[] = [];
-  const ret = a.map(ao => {
+  const ret = a.map((ao) => {
     if (!isPlainObject(currentRule)) {
       return ao;
     }
@@ -131,9 +124,9 @@ function mergeWithRule({
       }
     });
 
-    const bMatches = b.filter(o => {
+    const bMatches = b.filter((o) => {
       const matches = rulesToMatch.every(
-        rule => ao[rule]?.toString() === o[rule]?.toString()
+        (rule) => ao[rule]?.toString() === o[rule]?.toString(),
       );
 
       if (matches) {
@@ -157,10 +150,9 @@ function mergeWithRule({
           });
           break;
         case CustomizeRule.Append:
-          ret[k] =
-            bMatches.length > 0
-              ? (v as Array<any>).concat(last(bMatches)[k])
-              : v;
+          ret[k] = bMatches.length > 0
+            ? (v as Array<any>).concat(last(bMatches)[k])
+            : v;
           break;
         case CustomizeRule.Prepend:
           ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
@@ -173,11 +165,11 @@ function mergeWithRule({
 
           // Use .flat(); starting from Node 12
           const b = bMatches
-            .map(o => o[k])
+            .map((o) => o[k])
             .reduce(
               (acc, val) =>
                 isArray(acc) && isArray(val) ? [...acc, ...val] : acc,
-              []
+              [],
             );
 
           ret[k] = mergeWithRule({ currentRule, a: v, b });
@@ -188,7 +180,7 @@ function mergeWithRule({
     return ret;
   });
 
-  return ret.concat(b.filter(o => !bAllMatches.includes(o)));
+  return ret.concat(b.filter((o) => !bAllMatches.includes(o)));
 }
 
 function last(arr) {
@@ -209,12 +201,13 @@ function customizeObject(rules: { [s: string]: CustomizeRule }) {
 }
 
 export {
-  // This will show up as .default in CommonJS but for TS it's backwards-compatible
-  merge as default,
-  merge,
-  mergeWithCustomize,
-  unique,
   customizeArray,
   customizeObject,
-  CustomizeRule
+  CustomizeRule,
+  merge,
+  // This will show up as .default in CommonJS but for TS it's backwards-compatible
+  merge as default,
+  mergeWithCustomize,
+  mergeWithRules,
+  unique,
 };

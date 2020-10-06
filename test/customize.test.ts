@@ -1,8 +1,9 @@
 import assert from "assert";
 import {
-  mergeWithCustomize,
   customizeArray,
-  customizeObject
+  customizeObject,
+  mergeWithCustomize,
+  mergeWithRules
 } from "../resolve";
 import customizeTests from "../helpers/customize-tests";
 import { CustomizeRule } from "../src/types";
@@ -71,15 +72,13 @@ function mergeNested() {
     };
 
     assert.deepStrictEqual(
-      mergeWithCustomize({
-        customizeArray: customizeArray({
-          module: {
-            rules: {
-              test: CustomizeRule.Match,
-              loaders: CustomizeRule.Replace
-            }
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            loaders: CustomizeRule.Replace
           }
-        })
+        }
       })(base, development),
       result
     );
@@ -118,15 +117,13 @@ function mergeNested() {
     };
 
     assert.deepStrictEqual(
-      mergeWithCustomize({
-        customizeArray: customizeArray({
-          module: {
-            rules: {
-              test: CustomizeRule.Match,
-              loaders: CustomizeRule.Append
-            }
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            loaders: CustomizeRule.Append
           }
-        })
+        }
       })(base, development),
       result
     );
@@ -165,15 +162,13 @@ function mergeNested() {
     };
 
     assert.deepStrictEqual(
-      mergeWithCustomize({
-        customizeArray: customizeArray({
-          module: {
-            rules: {
-              test: CustomizeRule.Match,
-              loaders: CustomizeRule.Prepend
-            }
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            loaders: CustomizeRule.Prepend
           }
-        })
+        }
       })(base, development),
       result
     );
@@ -227,18 +222,16 @@ function mergeNested() {
     };
 
     assert.deepStrictEqual(
-      mergeWithCustomize({
-        customizeArray: customizeArray({
-          module: {
-            rules: {
-              test: CustomizeRule.Match,
-              use: {
-                loader: CustomizeRule.Match,
-                options: CustomizeRule.Replace
-              }
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace
             }
           }
-        })
+        }
       })(a, b),
       result
     );
@@ -301,18 +294,16 @@ function mergeNested() {
     };
 
     assert.deepStrictEqual(
-      mergeWithCustomize({
-        customizeArray: customizeArray({
-          module: {
-            rules: {
-              test: CustomizeRule.Match,
-              loaders: {
-                loader: CustomizeRule.Match,
-                options: CustomizeRule.Replace
-              }
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            loaders: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace
             }
           }
-        })
+        }
       })(base, development),
       result
     );
@@ -426,18 +417,16 @@ function mergeNested() {
     };
 
     assert.deepStrictEqual(
-      mergeWithCustomize({
-        customizeArray: customizeArray({
-          module: {
-            rules: {
-              test: CustomizeRule.Match,
-              use: {
-                loader: CustomizeRule.Match,
-                options: CustomizeRule.Replace
-              }
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace
             }
           }
-        })
+        }
       })(defaultConfig, localConfig),
       result
     );
