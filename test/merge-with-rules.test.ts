@@ -376,8 +376,7 @@ describe("Merge with rules", function() {
             include: [/node_modules/, /src/],
             use: [
               {
-                loader: "style-loader",
-                options: undefined
+                loader: "style-loader"
               },
               {
                 loader: "css-loader",
