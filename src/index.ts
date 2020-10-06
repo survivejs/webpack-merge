@@ -48,7 +48,7 @@ function mergeWithCustomize(options: ICustomizeOptions) {
 
     return mergeWith(
       [firstConfiguration].concat(configurations),
-      joinArrays(options),
+      joinArrays(options)
     );
   };
 }
@@ -56,7 +56,7 @@ function mergeWithCustomize(options: ICustomizeOptions) {
 function customizeArray(rules: { [s: string]: CustomizeRule }) {
   return (a: any, b: any, key: Key) => {
     const matchedRule =
-      Object.keys(rules).find((rule) => wildcard(rule, key)) || "";
+      Object.keys(rules).find(rule => wildcard(rule, key)) || "";
 
     if (matchedRule) {
       switch (rules[matchedRule]) {
@@ -79,7 +79,7 @@ function mergeWithRules(rules: Rules) {
     customizeArray: (a: any, b: any, key: Key) => {
       let currentRule: CustomizeRule | Rules = rules;
 
-      key.split(".").forEach((k) => {
+      key.split(".").forEach(k => {
         currentRule = currentRule[k];
       });
 
@@ -88,7 +88,7 @@ function mergeWithRules(rules: Rules) {
       }
 
       return [];
-    },
+    }
   });
 }
 
@@ -97,7 +97,7 @@ const isArray = Array.isArray;
 function mergeWithRule({
   currentRule,
   a,
-  b,
+  b
 }: {
   currentRule: CustomizeRule | Rules;
   a: any;
@@ -108,7 +108,7 @@ function mergeWithRule({
   }
 
   const bAllMatches: any[] = [];
-  const ret = a.map((ao) => {
+  const ret = a.map(ao => {
     if (!isPlainObject(currentRule)) {
       return ao;
     }
@@ -124,9 +124,9 @@ function mergeWithRule({
       }
     });
 
-    const bMatches = b.filter((o) => {
+    const bMatches = b.filter(o => {
       const matches = rulesToMatch.every(
-        (rule) => ao[rule]?.toString() === o[rule]?.toString(),
+        rule => ao[rule]?.toString() === o[rule]?.toString()
       );
 
       if (matches) {
@@ -145,14 +145,19 @@ function mergeWithRule({
 
           Object.entries(rule).forEach(([k, v]) => {
             if (v === CustomizeRule.Replace && bMatches.length > 0) {
-              ret[k] = last(bMatches)[k];
+              const val = last(bMatches)[k];
+
+              if (typeof val !== "undefined") {
+                ret[k] = val;
+              }
             }
           });
           break;
         case CustomizeRule.Append:
-          ret[k] = bMatches.length > 0
-            ? (v as Array<any>).concat(last(bMatches)[k])
-            : v;
+          ret[k] =
+            bMatches.length > 0
+              ? (v as Array<any>).concat(last(bMatches)[k])
+              : v;
           break;
         case CustomizeRule.Prepend:
           ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
@@ -165,11 +170,11 @@ function mergeWithRule({
 
           // Use .flat(); starting from Node 12
           const b = bMatches
-            .map((o) => o[k])
+            .map(o => o[k])
             .reduce(
               (acc, val) =>
                 isArray(acc) && isArray(val) ? [...acc, ...val] : acc,
-              [],
+              []
             );
 
           ret[k] = mergeWithRule({ currentRule, a: v, b });
@@ -180,7 +185,7 @@ function mergeWithRule({
     return ret;
   });
 
-  return ret.concat(b.filter((o) => !bAllMatches.includes(o)));
+  return ret.concat(b.filter(o => !bAllMatches.includes(o)));
 }
 
 function last(arr) {
@@ -209,5 +214,5 @@ export {
   merge as default,
   mergeWithCustomize,
   mergeWithRules,
-  unique,
+  unique
 };
