@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.0 / 2020-10-07
+
+- Feature - Support advanced merging cases through `mergeWithRules` #146 #149
+
 ## 5.1.4 / 2020-09-09
 
 - Fix - Expose `CustomizeRule` for TypeScript users #147
@@ -102,17 +106,17 @@ merge.smart(
     loaders: [
       {
         test: /\.js$/,
-        loaders: ["babel"],
-      },
-    ],
+        loaders: ["babel"]
+      }
+    ]
   },
   {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ["react-hot", "babel"],
-      },
-    ],
+        loaders: ["react-hot", "babel"]
+      }
+    ]
   }
 );
 // will become
@@ -121,8 +125,8 @@ merge.smart(
     {
       test: /\.js$/,
       // order of second argument is respected
-      loaders: ["react-hot", "babel"],
-    },
+      loaders: ["react-hot", "babel"]
+    }
   ];
 }
 ```
@@ -183,10 +187,10 @@ const output = merge.smartStrategy(
 
 ```javascript
 const a = {
-  entry: ["foo"],
+  entry: ["foo"]
 };
 const b = {
-  entry: [],
+  entry: []
 };
 
 merge(a, b); // Yields a result, not b like before.
