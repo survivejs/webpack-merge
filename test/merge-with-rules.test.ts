@@ -496,4 +496,27 @@ describe("Merge with rules", function () {
 
     expect(() => _mergeWithoutRule(config, config)).not.toThrow();
   });
+
+  it("should merge with explicit rule (#151)", function () {
+    const module = {
+      rules: {
+        test: CustomizeRule.Match,
+        use: {
+          loader: CustomizeRule.Match,
+          options: CustomizeRule.Replace,
+        },
+      },
+    };
+    const _mergeWithExplicitRule = mergeWithRules({
+      module,
+      resolve: {
+        extensions: CustomizeRule.Append,
+        module: CustomizeRule.Match,
+        alias: CustomizeRule.Match,
+      },
+    });
+    const config = { resolve: { extensions: [".js"] } };
+
+    expect(_mergeWithExplicitRule(config, config)).toEqual(config);
+  });
 });
