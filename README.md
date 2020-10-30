@@ -2,9 +2,9 @@
 
 # webpack-merge - Merge designed for Webpack
 
-_webpack-merge_ provides a `merge` function that concatenates arrays and merges objects creating a new object. If functions are encountered, it will execute them, run the results through the algorithm, and then wrap the returned values within a function again.
+**webpack-merge** provides a `merge` function that concatenates arrays and merges objects creating a new object. If functions are encountered, it will execute them, run the results through the algorithm, and then wrap the returned values within a function again.
 
-This behavior is particularly useful in configuring webpack although it has uses beyond it. Whenever you need to merge configuration objects, _webpack-merge_ can come in handy.
+This behavior is particularly useful in configuring webpack although it has uses beyond it. Whenever you need to merge configuration objects, **webpack-merge** can come in handy.
 
 ## **`merge(...configuration | [...configuration])`**
 
@@ -240,6 +240,19 @@ assert.deepStrictEqual(
 ```
 
 The way it works is that you should annotate fields to match using `match` (or `CustomizeRule.Match` if you are using TypeScript) matching your configuration structure and then use specific strategies to define how particular fields should be transformed.
+
+## Using with TypeScript
+
+**webpack-merge** supports TypeScript out of the box. You should pass `Configuration` type from webpack to it as follows:
+
+```typescript
+import { Configuration } from "webpack";
+import { merge } from "webpack-merge";
+
+const config = merge<Configuration>({...}, {...});
+
+...
+```
 
 ## Development
 
