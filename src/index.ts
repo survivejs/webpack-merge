@@ -1,4 +1,3 @@
-import { Configuration } from "webpack";
 import wildcard from "wildcard";
 import mergeWith from "./merge-with";
 import joinArrays from "./join-arrays";
@@ -6,21 +5,26 @@ import unique from "./unique";
 import { CustomizeRule, ICustomizeOptions, Key } from "./types";
 import { isPlainObject } from "./utils";
 
-function merge(
+function merge<Configuration extends object>(
   firstConfiguration: Configuration | Configuration[],
   ...configurations: Configuration[]
 ): Configuration {
-  return mergeWithCustomize({})(firstConfiguration, ...configurations);
+  return mergeWithCustomize<Configuration>({})(
+    firstConfiguration,
+    ...configurations
+  );
 }
 
-function mergeWithCustomize(options: ICustomizeOptions) {
+function mergeWithCustomize<Configuration extends object>(
+  options: ICustomizeOptions
+) {
   return function mergeWithOptions(
     firstConfiguration: Configuration | Configuration[],
     ...configurations: Configuration[]
   ): Configuration {
     // No configuration at all
     if (!firstConfiguration) {
-      return {};
+      return {} as Configuration;
     }
 
     // @ts-ignore
@@ -32,7 +36,7 @@ function mergeWithCustomize(options: ICustomizeOptions) {
       if (Array.isArray(firstConfiguration)) {
         // Empty array
         if (firstConfiguration.length === 0) {
-          return {};
+          return {} as Configuration;
         }
 
         // @ts-ignore
@@ -40,7 +44,10 @@ function mergeWithCustomize(options: ICustomizeOptions) {
           throw new TypeError("Promises are not supported");
         }
 
-        return mergeWith(firstConfiguration, joinArrays(options));
+        return mergeWith(
+          firstConfiguration,
+          joinArrays(options)
+        ) as Configuration;
       }
 
       return firstConfiguration;
@@ -49,7 +56,7 @@ function mergeWithCustomize(options: ICustomizeOptions) {
     return mergeWith(
       [firstConfiguration].concat(configurations),
       joinArrays(options)
-    );
+    ) as Configuration;
   };
 }
 

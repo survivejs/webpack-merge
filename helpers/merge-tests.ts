@@ -291,7 +291,12 @@ function mergeTests(merge) {
       }
     };
     const enhance = {
-      plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)]
+      plugins: [
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^\.\/locale$/,
+          contextRegExp: /moment$/
+        })
+      ]
     };
 
     const result1 = merge(config1, enhance);
