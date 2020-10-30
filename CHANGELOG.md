@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.3.0 / 2020-10-30
+
+- Fix - Expose `Configuration` type through a generic to TypeScript to support both webpack 4 and 5 #141 #154
+
+In case you use webpack 4, please change your typing as instructed in the readme as the default type is loose but non-breaking.
+
 ## 5.2.0 / 2020-10-07
 
 - Feature - Support advanced merging cases through `mergeWithRules` #146 #149
