@@ -21,4 +21,8 @@ function isUndefined(a) {
   return typeof a === "undefined";
 }
 
-export { isRegex, isFunction, isPlainObject, isUndefined };
+function isString(a) {
+  return typeof a === "string";
+}
+
+export { isRegex, isFunction, isPlainObject, isString, isUndefined };

@@ -497,26 +497,44 @@ describe("Merge with rules", function () {
     expect(() => _mergeWithoutRule(config, config)).not.toThrow();
   });
 
-  it("should merge with explicit rule (#151)", function () {
-    const module = {
-      rules: {
-        test: CustomizeRule.Match,
-        use: {
-          loader: CustomizeRule.Match,
-          options: CustomizeRule.Replace,
-        },
-      },
-    };
+  it("should merge with append only (#151)", function () {
     const _mergeWithExplicitRule = mergeWithRules({
-      module,
       resolve: {
-        extensions: CustomizeRule.Append,
-        module: CustomizeRule.Match,
-        alias: CustomizeRule.Match,
+        extensions: CustomizeRule.AppendOnly,
       },
     });
-    const config = { resolve: { extensions: [".js"] } };
+    const a = { resolve: { extensions: [".js"] } };
+    const b = { resolve: { extensions: [".css"] } };
+    const result = { resolve: { extensions: [".js", ".css"] } };
 
-    expect(_mergeWithExplicitRule(config, config)).toEqual(config);
+    expect(_mergeWithExplicitRule(a, b)).toEqual(result);
   });
+
+  it("should merge with prepend only (#151)", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      resolve: {
+        extensions: CustomizeRule.PrependOnly,
+      },
+    });
+    const a = { resolve: { extensions: [".js"] } };
+    const b = { resolve: { extensions: [".css"] } };
+    const result = { resolve: { extensions: [".css", ".js"] } };
+
+    expect(_mergeWithExplicitRule(a, b)).toEqual(result);
+  });
+
+  it("should merge with replace only (#151)", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      resolve: {
+        extensions: CustomizeRule.ReplaceOnly,
+      },
+    });
+    const a = { resolve: { extensions: [".js"] } };
+    const b = { resolve: { extensions: [".css"] } };
+    const result = { resolve: { extensions: [".css"] } };
+
+    expect(_mergeWithExplicitRule(a, b)).toEqual(result);
+  });
+
+  // TODO: Test mixed cases + nesting
 });

@@ -3,7 +3,7 @@ import mergeWith from "./merge-with";
 import joinArrays from "./join-arrays";
 import unique from "./unique";
 import { CustomizeRule, ICustomizeOptions, Key } from "./types";
-import { isPlainObject, isUndefined } from "./utils";
+import { isPlainObject, isString, isUndefined } from "./utils";
 
 function merge<Configuration extends object>(
   firstConfiguration: Configuration | Configuration[],
@@ -101,6 +101,11 @@ function mergeWithRules(rules: Rules) {
 
         currentRule = currentRule[k];
       });
+
+      if (isString(currentRule)) {
+        // @ts-ignore: How to cast to CustomizeRule?
+        return mergeRule({ currentRule: currentRule, a, b });
+      }
 
       if (isPlainObject(currentRule)) {
         return mergeWithRule({ currentRule, a, b });
@@ -205,6 +210,28 @@ function mergeWithRule({
   });
 
   return ret.concat(b.filter((o) => !bAllMatches.includes(o)));
+}
+
+// TODO: See if above switch can be combined with this one
+function mergeRule({
+  currentRule,
+  a,
+  b,
+}: {
+  currentRule: CustomizeRule;
+  a: any;
+  b: any;
+}) {
+  switch (currentRule) {
+    case CustomizeRule.AppendOnly:
+      return a.concat(b);
+    case CustomizeRule.PrependOnly:
+      return b.concat(a);
+    case CustomizeRule.ReplaceOnly:
+      return b;
+  }
+
+  return a;
 }
 
 function last(arr) {
