@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.4.0 / 2020-10-30
+
+- Fix - Fall back correctly in `mergeWithRules` for cases that aren't matched. #157 #158
+- Fix - Don't throw if using `mergeWithRules` without a rule #151
+- Feat - Throw if `undefined` is passed to `merge` as a structure to merge
+
 ## 5.3.0 / 2020-10-30
 
 - Fix - Expose `Configuration` type through a generic to TypeScript to support both webpack 4 and 5 #141 #154
