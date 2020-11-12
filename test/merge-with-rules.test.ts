@@ -291,6 +291,79 @@ describe("Merge with rules", function() {
     );
   });
 
+  it("should merge #157", function() {
+    const base = {
+      entry: "demo",
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loaders: ["css-loader"]
+          },
+          {
+            test: /\.css$/,
+            loaders: ["style-loader"]
+          }
+        ]
+      },
+      plugins: [
+        { name: 'StylelintPlugin' }
+      ]
+    };
+    const development = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loaders: ["style-loader"]
+          },
+          {
+            test: /\.less$/,
+            loaders: ["css-loader"]
+          }
+        ]
+      },
+      plugins: [
+        { name: "MiniCssExtractPlugin" }
+      ]
+    };
+    const result = {
+      entry: "demo",
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            loaders: ["style-loader"]
+          },
+          {
+            test: /\.css$/,
+            loaders: ["style-loader"]
+          },
+          {
+            test: /\.less$/,
+            loaders: ["css-loader"]
+          }
+        ]
+      },
+      plugins: [
+        { name: "StylelintPlugin" },
+        { name: "MiniCssExtractPlugin" }
+      ]
+    };
+
+    assert.deepStrictEqual(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            loaders: CustomizeRule.Replace
+          }
+        }
+      })(base, development),
+      result
+    );
+  });
+
   it("should merge with a parser loader", function() {
     const defaultConfig = {
       module: {
