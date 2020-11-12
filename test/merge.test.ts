@@ -3,63 +3,63 @@ import merge, { merge as defaultMerge } from "../resolve";
 import mergeTests from "../helpers/merge-tests";
 import loadersKeys from "../helpers/loaders-keys";
 
-describe("Merge", function() {
+describe("Merge", function () {
   normalMergeTests(merge);
   mergeTests(merge);
 
-  it("should export default merge", function() {
+  it("should export default merge", function () {
     assert.strictEqual(merge, defaultMerge);
   });
 });
 
 function normalMergeTests(merge) {
-  loadersKeys.forEach(function(loadersKey) {
+  loadersKeys.forEach(function (loadersKey) {
     normalMergeTest(merge, loadersKey);
   });
 }
 
 function normalMergeTest(merge, loadersKey) {
-  it("should throw with an empty configuration", function() {
+  it("should throw with an empty configuration", function () {
     assert.throws(() => merge(), {
       name: "TypeError",
-      message: "Merging undefined is not supported"
+      message: "Merging undefined is not supported",
     });
   });
 
-  it("should throw with undefined 1/4", function() {
+  it("should throw with undefined 1/4", function () {
     assert.throws(() => merge(undefined), {
       name: "TypeError",
-      message: "Merging undefined is not supported"
+      message: "Merging undefined is not supported",
     });
   });
 
-  it("should throw with undefined 2/4", function() {
+  it("should throw with undefined 2/4", function () {
     assert.throws(() => merge([undefined]), {
       name: "TypeError",
-      message: "Merging undefined is not supported"
+      message: "Merging undefined is not supported",
     });
   });
 
-  it("should throw with undefined 2/4", function() {
+  it("should throw with undefined 2/4", function () {
     const result = { devServer: null };
 
     assert.throws(
       () =>
         merge(
           {
-            devServer: { base: true }
+            devServer: { base: true },
           },
           undefined,
           result
         ),
       {
         name: "TypeError",
-        message: "Merging undefined is not supported"
+        message: "Merging undefined is not supported",
       }
     );
   });
 
-  it("should throw with undefined 3/4", function() {
+  it("should throw with undefined 3/4", function () {
     const result = { devServer: null };
 
     assert.throws(
@@ -67,28 +67,28 @@ function normalMergeTest(merge, loadersKey) {
         merge(
           undefined,
           {
-            devServer: { base: true }
+            devServer: { base: true },
           },
           result
         ),
       {
         name: "TypeError",
-        message: "Merging undefined is not supported"
+        message: "Merging undefined is not supported",
       }
     );
   });
 
-  it("should work with an empty array", function() {
+  it("should work with an empty array", function () {
     assert.deepStrictEqual(merge([]), {});
   });
 
-  it("should override with null (#144)", function() {
+  it("should override with null (#144)", function () {
     const result = { devServer: null };
 
     assert.deepStrictEqual(
       merge(
         {
-          devServer: { base: true }
+          devServer: { base: true },
         },
         result
       ),
@@ -96,11 +96,11 @@ function normalMergeTest(merge, loadersKey) {
     );
   });
 
-  it("should allow merging optimization config to itself (#145)", function() {
+  it("should allow merging optimization config to itself (#145)", function () {
     const config = {
       optimization: {
         runtimeChunk: {
-          name: "runtime"
+          name: "runtime",
         },
 
         splitChunks: {
@@ -112,191 +112,194 @@ function normalMergeTest(merge, loadersKey) {
               name: "clientApplication",
               test: /applications\/client/,
               chunks: "all",
-              enforce: true
-            }
-          }
-        }
-      }
+              enforce: true,
+            },
+          },
+        },
+      },
     };
 
     assert.deepStrictEqual(merge(config, config), config);
   });
 
-  it("should error on promise", function() {
+  it("should error on promise", function () {
     const a = {
-      module: {}
+      module: {},
     };
 
     assert.throws(() => merge(Promise.resolve(a), Promise.resolve(a)), {
       name: "TypeError",
-      message: "Promises are not supported"
+      message: "Promises are not supported",
     });
   });
 
-  it("should error on promises inside an array", function() {
+  it("should error on promises inside an array", function () {
     const a = {
-      module: {}
+      module: {},
     };
 
     assert.throws(() => merge([Promise.resolve(a), Promise.resolve(a)]), {
       name: "TypeError",
-      message: "Promises are not supported"
+      message: "Promises are not supported",
     });
   });
 
-  it("should append recursive structures with " + loadersKey, function() {
+  it("should append recursive structures with " + loadersKey, function () {
     const a = {
-      module: {}
+      module: {},
     };
     a.module[loadersKey] = [
       {
         test: /\.js$/,
-        loader: "a"
+        loader: "a",
       },
       {
         test: /\.jade$/,
-        loader: "a"
-      }
+        loader: "a",
+      },
     ];
     const b = {
-      module: {}
+      module: {},
     };
     b.module[loadersKey] = [
       {
         test: /\.css$/,
-        loader: "b"
+        loader: "b",
       },
       {
         test: /\.sass$/,
-        loader: "b"
-      }
+        loader: "b",
+      },
     ];
     const result = {
-      module: {}
+      module: {},
     };
     result.module[loadersKey] = [
       {
         test: /\.js$/,
-        loader: "a"
+        loader: "a",
       },
       {
         test: /\.jade$/,
-        loader: "a"
+        loader: "a",
       },
       {
         test: /\.css$/,
-        loader: "b"
+        loader: "b",
       },
       {
         test: /\.sass$/,
-        loader: "b"
-      }
+        loader: "b",
+      },
     ];
 
     assert.deepStrictEqual(merge(a, b), result);
   });
 
-  it("should not override loader string values with " + loadersKey, function() {
+  it(
+    "should not override loader string values with " + loadersKey,
+    function () {
+      const a = {};
+      a[loadersKey] = [
+        {
+          test: /\.js$/,
+          loader: "a",
+        },
+      ];
+      const b = {};
+      b[loadersKey] = [
+        {
+          test: /\.js$/,
+          loader: "b",
+        },
+        {
+          test: /\.css$/,
+          loader: "b",
+        },
+      ];
+      const result = {};
+      result[loadersKey] = [
+        {
+          test: /\.js$/,
+          loader: "a",
+        },
+        {
+          test: /\.js$/,
+          loader: "b",
+        },
+        {
+          test: /\.css$/,
+          loader: "b",
+        },
+      ];
+
+      assert.deepStrictEqual(merge(a, b), result);
+    }
+  );
+
+  it("should not append loaders with " + loadersKey, function () {
     const a = {};
     a[loadersKey] = [
       {
         test: /\.js$/,
-        loader: "a"
-      }
+        loaders: ["a"],
+      },
     ];
     const b = {};
     b[loadersKey] = [
       {
         test: /\.js$/,
-        loader: "b"
+        loaders: ["b"],
       },
       {
         test: /\.css$/,
-        loader: "b"
-      }
+        loader: "b",
+      },
     ];
     const result = {};
     result[loadersKey] = [
       {
         test: /\.js$/,
-        loader: "a"
+        loaders: ["a"],
       },
       {
         test: /\.js$/,
-        loader: "b"
+        loaders: ["b"],
       },
       {
         test: /\.css$/,
-        loader: "b"
-      }
+        loader: "b",
+      },
     ];
 
     assert.deepStrictEqual(merge(a, b), result);
   });
 
-  it("should not append loaders with " + loadersKey, function() {
+  it("should duplicate loaders with " + loadersKey, function () {
     const a = {};
     a[loadersKey] = [
       {
         test: /\.js$/,
-        loaders: ["a"]
-      }
+        loaders: ["a"],
+      },
     ];
     const b = {};
     b[loadersKey] = [
       {
         test: /\.js$/,
-        loaders: ["b"]
+        loaders: ["a", "b"],
       },
-      {
-        test: /\.css$/,
-        loader: "b"
-      }
     ];
     const result = {};
     result[loadersKey] = [
       {
         test: /\.js$/,
-        loaders: ["a"]
+        loaders: ["a"],
       },
       {
         test: /\.js$/,
-        loaders: ["b"]
+        loaders: ["a", "b"],
       },
-      {
-        test: /\.css$/,
-        loader: "b"
-      }
-    ];
-
-    assert.deepStrictEqual(merge(a, b), result);
-  });
-
-  it("should duplicate loaders with " + loadersKey, function() {
-    const a = {};
-    a[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ["a"]
-      }
-    ];
-    const b = {};
-    b[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ["a", "b"]
-      }
-    ];
-    const result = {};
-    result[loadersKey] = [
-      {
-        test: /\.js$/,
-        loaders: ["a"]
-      },
-      {
-        test: /\.js$/,
-        loaders: ["a", "b"]
-      }
     ];
 
     assert.deepStrictEqual(merge(a, b), result);
@@ -304,42 +307,42 @@ function normalMergeTest(merge, loadersKey) {
 
   it(
     "should not override query options for the same loader with " + loadersKey,
-    function() {
+    function () {
       const a = {};
       a[loadersKey] = [
         {
           test: /\.js$/,
-          loaders: ["a?1"]
-        }
+          loaders: ["a?1"],
+        },
       ];
       const b = {};
       b[loadersKey] = [
         {
           test: /\.js$/,
-          loaders: ["a?2", "b"]
-        }
+          loaders: ["a?2", "b"],
+        },
       ];
       const c = {};
       c[loadersKey] = [
         {
           test: /\.js$/,
-          loaders: ["a", "b?3"]
-        }
+          loaders: ["a", "b?3"],
+        },
       ];
       const result = {};
       result[loadersKey] = [
         {
           test: /\.js$/,
-          loaders: ["a?1"]
+          loaders: ["a?1"],
         },
         {
           test: /\.js$/,
-          loaders: ["a?2", "b"]
+          loaders: ["a?2", "b"],
         },
         {
           test: /\.js$/,
-          loaders: ["a", "b?3"]
-        }
+          loaders: ["a", "b?3"],
+        },
       ];
 
       assert.deepStrictEqual(merge(a, b, c), result);
@@ -348,13 +351,13 @@ function normalMergeTest(merge, loadersKey) {
 
   it(
     "should not allow overriding with an empty array in " + loadersKey,
-    function() {
+    function () {
       const a = {};
       a[loadersKey] = [
         {
           test: /\.js$/,
-          loaders: ["a?1"]
-        }
+          loaders: ["a?1"],
+        },
       ];
       const b = {};
       b[loadersKey] = [];

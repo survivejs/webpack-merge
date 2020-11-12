@@ -71,7 +71,7 @@ function mergeWithCustomize<Configuration extends object>(
 function customizeArray(rules: { [s: string]: CustomizeRule }) {
   return (a: any, b: any, key: Key) => {
     const matchedRule =
-      Object.keys(rules).find(rule => wildcard(rule, key)) || "";
+      Object.keys(rules).find((rule) => wildcard(rule, key)) || "";
 
     if (matchedRule) {
       switch (rules[matchedRule]) {
@@ -94,7 +94,7 @@ function mergeWithRules(rules: Rules) {
     customizeArray: (a: any, b: any, key: Key) => {
       let currentRule: CustomizeRule | Rules = rules;
 
-      key.split(".").forEach(k => {
+      key.split(".").forEach((k) => {
         if (!currentRule) {
           return;
         }
@@ -107,7 +107,7 @@ function mergeWithRules(rules: Rules) {
       }
 
       return undefined;
-    }
+    },
   });
 }
 
@@ -116,7 +116,7 @@ const isArray = Array.isArray;
 function mergeWithRule({
   currentRule,
   a,
-  b
+  b,
 }: {
   currentRule: CustomizeRule | Rules;
   a: any;
@@ -127,7 +127,7 @@ function mergeWithRule({
   }
 
   const bAllMatches: any[] = [];
-  const ret = a.map(ao => {
+  const ret = a.map((ao) => {
     if (!isPlainObject(currentRule)) {
       return ao;
     }
@@ -143,9 +143,9 @@ function mergeWithRule({
       }
     });
 
-    const bMatches = b.filter(o => {
+    const bMatches = b.filter((o) => {
       const matches = rulesToMatch.every(
-        rule => ao[rule]?.toString() === o[rule]?.toString()
+        (rule) => ao[rule]?.toString() === o[rule]?.toString()
       );
 
       if (matches) {
@@ -189,7 +189,7 @@ function mergeWithRule({
 
           // Use .flat(); starting from Node 12
           const b = bMatches
-            .map(o => o[k])
+            .map((o) => o[k])
             .reduce(
               (acc, val) =>
                 isArray(acc) && isArray(val) ? [...acc, ...val] : acc,
@@ -204,7 +204,7 @@ function mergeWithRule({
     return ret;
   });
 
-  return ret.concat(b.filter(o => !bAllMatches.includes(o)));
+  return ret.concat(b.filter((o) => !bAllMatches.includes(o)));
 }
 
 function last(arr) {
@@ -233,5 +233,5 @@ export {
   merge as default,
   mergeWithCustomize,
   mergeWithRules,
-  unique
+  unique,
 };

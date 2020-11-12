@@ -2,89 +2,89 @@ import assert from "assert";
 import webpack from "webpack";
 
 function mergeTests(merge) {
-  it("should return the same config", function() {
+  it("should return the same config", function () {
     const config = {
       entry: {
-        app: "app"
+        app: "app",
       },
       output: {
         path: "build",
-        filename: "[name].js"
+        filename: "[name].js",
       },
-      plugins: []
+      plugins: [],
     };
 
     assert.deepStrictEqual(merge(config), config);
   });
 
-  it("should append arrays of multiple objects by default", function() {
+  it("should append arrays of multiple objects by default", function () {
     const a = {
-      foo: ["a"]
+      foo: ["a"],
     };
     const b = {
-      foo: ["b"]
+      foo: ["b"],
     };
     const c = {
-      foo: ["c"]
+      foo: ["c"],
     };
     const result = {
-      foo: ["a", "b", "c"]
+      foo: ["a", "b", "c"],
     };
 
     assert.deepStrictEqual(merge(a, b, c), result);
   });
 
-  it("should work with an array of objects", function() {
+  it("should work with an array of objects", function () {
     const a = {
-      foo: ["a"]
+      foo: ["a"],
     };
     const b = {
-      foo: ["b"]
+      foo: ["b"],
     };
     const c = {
-      foo: ["c"]
+      foo: ["c"],
     };
     const result = {
-      foo: ["a", "b", "c"]
+      foo: ["a", "b", "c"],
     };
 
     assert.deepStrictEqual(merge([a, b, c]), result);
   });
 
-  it("should override objects", function() {
+  it("should override objects", function () {
     const a = {
-      foo: "a"
+      foo: "a",
     };
     const result = {
-      foo: "b"
+      foo: "b",
     };
 
     assert.deepStrictEqual(merge(a, result), result);
   });
 
-  it("should append arrays by default", function() {
+  it("should append arrays by default", function () {
     const a = {
-      foo: ["a"]
+      foo: ["a"],
     };
     const b = {
-      foo: ["b"]
+      foo: ["b"],
     };
     const result = {
-      foo: ["a", "b"]
+      foo: ["a", "b"],
     };
 
     assert.deepStrictEqual(merge(a, b), result);
   });
 
-  it("should append arrays without mutating", function() {
+  it("should append arrays without mutating", function () {
     const a = {
-      foo: ["a"]
+      foo: ["a"],
     };
     const b = {
-      foo: ["b"]
+      foo: ["b"],
     };
     const result = {
-      foo: ["a", "b"]
+      foo: ["a", "b"],
     };
 
     // this should not mutate
@@ -93,80 +93,80 @@ function mergeTests(merge) {
     assert.deepStrictEqual(merge(a, b), result);
   });
 
-  it("should override objects of multiple objects", function() {
+  it("should override objects of multiple objects", function () {
     const a = {
-      foo: "a"
+      foo: "a",
     };
     const b = {
-      foo: "b"
+      foo: "b",
     };
     const result = {
-      foo: "c"
+      foo: "c",
     };
 
     assert.deepStrictEqual(merge(a, b, result), result);
   });
 
-  it("should deeply merge objects", function() {
+  it("should deeply merge objects", function () {
     const a = {
-      foo: { bar: "a" }
+      foo: { bar: "a" },
     };
     const b = {
-      foo: { baz: "b" }
+      foo: { baz: "b" },
     };
     const result = {
       foo: {
         bar: "a",
-        baz: "b"
-      }
+        baz: "b",
+      },
     };
 
     assert.deepStrictEqual(merge(a, b), result);
   });
 
-  it("should not error when there are no matching loaders", function() {
+  it("should not error when there are no matching loaders", function () {
     const a = {
       loaders: [
         {
           test: /\.js$/,
-          loader: "a"
-        }
-      ]
+          loader: "a",
+        },
+      ],
     };
     const b = {
       loaders: [
         {
           test: /\.css$/,
-          loader: "b"
-        }
-      ]
+          loader: "b",
+        },
+      ],
     };
     const result = {
       loaders: [
         {
           test: /\.js$/,
-          loader: "a"
+          loader: "a",
         },
         {
           test: /\.css$/,
-          loader: "b"
-        }
-      ]
+          loader: "b",
+        },
+      ],
     };
 
     assert.deepStrictEqual(merge(a, b), result);
   });
 
-  it("should not mutate inputs", function() {
+  it("should not mutate inputs", function () {
     const a = {
       output: {
-        filename: "bundle.js"
-      }
+        filename: "bundle.js",
+      },
     };
     const b = {
       output: {
-        path: "path/b"
-      }
+        path: "path/b",
+      },
     };
 
     const aClone = JSON.parse(JSON.stringify(a));
@@ -175,88 +175,88 @@ function mergeTests(merge) {
     assert.deepStrictEqual(a, aClone);
   });
 
-  it("should not allow overriding with an empty array", function() {
+  it("should not allow overriding with an empty array", function () {
     const a = {
-      entry: ["foo"]
+      entry: ["foo"],
     };
     const b = {
-      entry: []
+      entry: [],
     };
 
     assert.deepStrictEqual(merge(a, b), a);
   });
 
-  it("should not allow overriding with an empty object", function() {
+  it("should not allow overriding with an empty object", function () {
     const a = {
       entry: {
-        a: "foo"
-      }
+        a: "foo",
+      },
     };
     const b = {
-      entry: {}
+      entry: {},
     };
 
     assert.deepStrictEqual(merge(a, b), a);
   });
 
-  it("should merge functions that return arrays", function() {
+  it("should merge functions that return arrays", function () {
     const a = {
       postcss() {
         return ["a"];
-      }
+      },
     };
     const b = {
       postcss() {
         return ["b"];
-      }
+      },
     };
     const expected = ["a", "b"];
 
     assert.deepStrictEqual(merge(a, b).postcss(), expected);
   });
 
-  it("should merge functions that return objects", function() {
+  it("should merge functions that return objects", function () {
     const a = {
       postcss() {
         return {
-          a: "foo"
+          a: "foo",
         };
-      }
+      },
     };
     const b = {
       postcss() {
         return {
-          b: "bar"
+          b: "bar",
         };
-      }
+      },
     };
     const expected = {
       a: "foo",
-      b: "bar"
+      b: "bar",
     };
 
     assert.deepStrictEqual(merge(a, b).postcss(), expected);
   });
 
-  it("should merge functions that take arguments", function() {
+  it("should merge functions that take arguments", function () {
     const a = {
       postcss(arg) {
         return [arg];
-      }
+      },
     };
     const b = {
       postcss(arg) {
         return [arg + 1, arg + 2];
-      }
+      },
     };
     const expected = ["a", "a1", "a2"];
 
     assert.deepStrictEqual(merge(a, b).postcss("a"), expected);
   });
 
-  it("should not mutate inputs with mismatched keys", function() {
+  it("should not mutate inputs with mismatched keys", function () {
     const a = {
-      entry: {}
+      entry: {},
     };
 
     const b = {};
@@ -269,34 +269,34 @@ function mergeTests(merge) {
     assert.deepStrictEqual(a, aClone);
   });
 
-  it("should not mutate plugins #106", function() {
+  it("should not mutate plugins #106", function () {
     const config1 = {
       entry: {
         page1: "src/page1",
-        page2: "src/page2"
+        page2: "src/page2",
       },
       output: {
         path: "dist",
-        publicPath: "/"
-      }
+        publicPath: "/",
+      },
     };
     const config2 = {
       entry: {
         page3: "src/page3",
-        page4: "src/page4"
+        page4: "src/page4",
       },
       output: {
         path: "dist",
-        publicPath: "/"
-      }
+        publicPath: "/",
+      },
     };
     const enhance = {
       plugins: [
         new webpack.IgnorePlugin({
           resourceRegExp: /^\.\/locale$/,
-          contextRegExp: /moment$/
-        })
-      ]
+          contextRegExp: /moment$/,
+        }),
+      ],
     };
 
     const result1 = merge(config1, enhance);

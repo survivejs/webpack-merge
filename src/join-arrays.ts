@@ -8,7 +8,7 @@ const isArray = Array.isArray;
 export default function joinArrays({
   customizeArray,
   customizeObject,
-  key
+  key,
 }: {
   customizeArray?: Customize;
   customizeObject?: Customize;
@@ -41,7 +41,7 @@ export default function joinArrays({
           joinArrays({
             customizeArray,
             customizeObject,
-            key: newKey
+            key: newKey,
           })
         )
       );

@@ -2,7 +2,7 @@ function mergeWith(objects: object[], customizer) {
   const [first, ...rest] = objects;
   let ret = first;
 
-  rest.forEach(a => {
+  rest.forEach((a) => {
     ret = mergeTo(ret, a, customizer);
   });
 
@@ -14,7 +14,7 @@ function mergeTo(a, b, customizer) {
 
   Object.keys(a)
     .concat(Object.keys(b))
-    .forEach(k => {
+    .forEach((k) => {
       const v = customizer(a[k], b[k], k);
 
       ret[k] = typeof v === "undefined" ? a[k] : v;

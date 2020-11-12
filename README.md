@@ -157,14 +157,14 @@ const output = mergeWithCustomize({
   customizeArray: unique(
     "plugins",
     ["HotModuleReplacementPlugin"],
-    plugin => plugin.constructor && plugin.constructor.name
-  )
+    (plugin) => plugin.constructor && plugin.constructor.name
+  ),
 })(
   {
-    plugins: [new webpack.HotModuleReplacementPlugin()]
+    plugins: [new webpack.HotModuleReplacementPlugin()],
   },
   {
-    plugins: [new webpack.HotModuleReplacementPlugin()]
+    plugins: [new webpack.HotModuleReplacementPlugin()],
   }
 );
 
@@ -182,10 +182,10 @@ const a = {
     rules: [
       {
         test: /\.css$/,
-        use: [{ loader: "style-loader" }, { loader: "sass-loader" }]
-      }
-    ]
-  }
+        use: [{ loader: "style-loader" }, { loader: "sass-loader" }],
+      },
+    ],
+  },
 };
 const b = {
   module: {
@@ -196,13 +196,13 @@ const b = {
           {
             loader: "style-loader",
             options: {
-              modules: true
-            }
-          }
-        ]
-      }
-    ]
-  }
+              modules: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
 };
 const result = {
   module: {
@@ -213,14 +213,14 @@ const result = {
           {
             loader: "style-loader",
             options: {
-              modules: true
-            }
+              modules: true,
+            },
           },
-          { loader: "sass-loader" }
-        ]
-      }
-    ]
-  }
+          { loader: "sass-loader" },
+        ],
+      },
+    ],
+  },
 };
 
 assert.deepStrictEqual(
@@ -230,10 +230,10 @@ assert.deepStrictEqual(
         test: "match",
         use: {
           loader: "match",
-          options: "replace"
-        }
-      }
-    }
+          options: "replace",
+        },
+      },
+    },
   })(a, b),
   result
 );
