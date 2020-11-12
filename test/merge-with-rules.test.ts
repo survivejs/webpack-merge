@@ -306,9 +306,7 @@ describe("Merge with rules", function() {
           }
         ]
       },
-      plugins: [
-        { name: 'StylelintPlugin' }
-      ]
+      plugins: [{ name: "StylelintPlugin" }]
     };
     const development = {
       module: {
@@ -323,9 +321,7 @@ describe("Merge with rules", function() {
           }
         ]
       },
-      plugins: [
-        { name: "MiniCssExtractPlugin" }
-      ]
+      plugins: [{ name: "MiniCssExtractPlugin" }]
     };
     const result = {
       entry: "demo",
@@ -345,10 +341,7 @@ describe("Merge with rules", function() {
           }
         ]
       },
-      plugins: [
-        { name: "StylelintPlugin" },
-        { name: "MiniCssExtractPlugin" }
-      ]
+      plugins: [{ name: "StylelintPlugin" }, { name: "MiniCssExtractPlugin" }]
     };
 
     assert.deepStrictEqual(
@@ -484,5 +477,23 @@ describe("Merge with rules", function() {
       })(defaultConfig, localConfig),
       result
     );
+  });
+
+  it("should merge without rule (#151)", function() {
+    const module = {
+      rules: {
+        test: CustomizeRule.Match,
+        use: {
+          loader: CustomizeRule.Match,
+          options: CustomizeRule.Replace
+        }
+      }
+    };
+    const _mergeWithoutRule = mergeWithRules({
+      module
+    });
+    const config = { resolve: { extensions: [".js"] } };
+
+    expect(() => _mergeWithoutRule(config, config)).not.toThrow();
   });
 });

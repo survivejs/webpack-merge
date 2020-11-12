@@ -87,6 +87,10 @@ function mergeWithRules(rules: Rules) {
       let currentRule: CustomizeRule | Rules = rules;
 
       key.split(".").forEach(k => {
+        if (!currentRule) {
+          return;
+        }
+
         currentRule = currentRule[k];
       });
 
