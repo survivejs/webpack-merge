@@ -3,7 +3,7 @@ import mergeWith from "./merge-with";
 import joinArrays from "./join-arrays";
 import unique from "./unique";
 import { CustomizeRule, ICustomizeOptions, Key } from "./types";
-import { isPlainObject } from "./utils";
+import { isPlainObject, isUndefined } from "./utils";
 
 function merge<Configuration extends object>(
   firstConfiguration: Configuration | Configuration[],
@@ -22,9 +22,8 @@ function mergeWithCustomize<Configuration extends object>(
     firstConfiguration: Configuration | Configuration[],
     ...configurations: Configuration[]
   ): Configuration {
-    // No configuration at all
-    if (!firstConfiguration) {
-      return {} as Configuration;
+    if (isUndefined(firstConfiguration) || configurations.some(isUndefined)) {
+      throw new TypeError("Merging undefined is not supported");
     }
 
     // @ts-ignore
@@ -32,11 +31,20 @@ function mergeWithCustomize<Configuration extends object>(
       throw new TypeError("Promises are not supported");
     }
 
+    // No configuration at all
+    if (!firstConfiguration) {
+      return {} as Configuration;
+    }
+
     if (configurations.length === 0) {
       if (Array.isArray(firstConfiguration)) {
         // Empty array
         if (firstConfiguration.length === 0) {
           return {} as Configuration;
+        }
+
+        if (firstConfiguration.some(isUndefined)) {
+          throw new TypeError("Merging undefined is not supported");
         }
 
         // @ts-ignore

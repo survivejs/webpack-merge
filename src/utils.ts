@@ -17,4 +17,8 @@ function isPlainObject(a) {
   return typeof a === "object";
 }
 
-export { isRegex, isFunction, isPlainObject };
+function isUndefined(a) {
+  return typeof a === "undefined";
+}
+
+export { isRegex, isFunction, isPlainObject, isUndefined };

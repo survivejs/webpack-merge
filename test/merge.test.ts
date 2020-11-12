@@ -19,8 +19,63 @@ function normalMergeTests(merge) {
 }
 
 function normalMergeTest(merge, loadersKey) {
-  it("should work with an empty configuration", function() {
-    assert.deepStrictEqual(merge(), {});
+  it("should throw with an empty configuration", function() {
+    assert.throws(() => merge(), {
+      name: "TypeError",
+      message: "Merging undefined is not supported"
+    });
+  });
+
+  it("should throw with undefined 1/4", function() {
+    assert.throws(() => merge(undefined), {
+      name: "TypeError",
+      message: "Merging undefined is not supported"
+    });
+  });
+
+  it("should throw with undefined 2/4", function() {
+    assert.throws(() => merge([undefined]), {
+      name: "TypeError",
+      message: "Merging undefined is not supported"
+    });
+  });
+
+  it("should throw with undefined 2/4", function() {
+    const result = { devServer: null };
+
+    assert.throws(
+      () =>
+        merge(
+          {
+            devServer: { base: true }
+          },
+          undefined,
+          result
+        ),
+      {
+        name: "TypeError",
+        message: "Merging undefined is not supported"
+      }
+    );
+  });
+
+  it("should throw with undefined 3/4", function() {
+    const result = { devServer: null };
+
+    assert.throws(
+      () =>
+        merge(
+          undefined,
+          {
+            devServer: { base: true }
+          },
+          result
+        ),
+      {
+        name: "TypeError",
+        message: "Merging undefined is not supported"
+      }
+    );
   });
 
   it("should work with an empty array", function() {
