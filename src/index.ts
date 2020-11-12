@@ -94,7 +94,7 @@ function mergeWithRules(rules: Rules) {
         return mergeWithRule({ currentRule, a, b });
       }
 
-      return [];
+      return undefined;
     }
   });
 }
