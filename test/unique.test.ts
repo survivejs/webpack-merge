@@ -59,7 +59,7 @@ describe("Unique", function () {
     assert.deepStrictEqual(output, expected);
   });
 
-  it("should not lose any plugins", function () {
+  it("should not lose any trailing plugins", function () {
     const output = mergeWithCustomize({
       customizeArray: unique(
         "plugins",
@@ -76,6 +76,36 @@ describe("Unique", function () {
       {
         plugins: [new webpack.HotModuleReplacementPlugin()],
       }
+    );
+    // The HMR plugin is picked from the last one due to
+    // default ordering!
+    const expected = {
+      plugins: [
+        new webpack.DefinePlugin({}),
+        new webpack.HotModuleReplacementPlugin(),
+      ],
+    };
+
+    assert.deepStrictEqual(output, expected);
+  });
+
+  it("should not lose any leading plugins", function () {
+    const output = mergeWithCustomize({
+      customizeArray: unique(
+          "plugins",
+          ["HotModuleReplacementPlugin"],
+          (plugin) => plugin.constructor && plugin.constructor.name
+      ),
+    })(
+        {
+          plugins: [
+            new webpack.DefinePlugin({}),
+            new webpack.HotModuleReplacementPlugin(),
+          ],
+        },
+        {
+          plugins: [new webpack.HotModuleReplacementPlugin()],
+        }
     );
     // The HMR plugin is picked from the last one due to
     // default ordering!
