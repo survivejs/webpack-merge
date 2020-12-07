@@ -3,26 +3,16 @@ function mergeUnique(
   uniques: string[],
   getter: (a: object) => string
 ) {
+  let uniquesSet = new Set(uniques)
   return (a: [], b: [], k: string) =>
-    k === key && [
-      ...difference(a, b, (item) => uniques.indexOf(getter(item))),
-      ...b,
-    ];
-}
-
-function difference(a: object[], b: object[], cb: (v: object) => number) {
-  const ret = a.filter((v, i) => {
-    const foundA = cb(v);
-    const foundB = cb(b[i] || {});
-
-    if (foundA >= 0 && foundB >= 0) {
-      return foundA !== foundB;
-    }
-
-    return true;
-  });
-
-  return ret;
+    (k === key) && Array.from(
+      [...a, ...b]
+          .map((it: object) => ({ key: getter(it), value: it }))
+          .map(({ key, value }) => ({ key: (uniquesSet.has(key) ? key : value), value: value}))
+          .reduce(
+              (m, { key, value}) => m.set(key, value),
+              new Map<any, any>())
+          .values())
 }
 
 export default mergeUnique;
