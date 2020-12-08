@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.4.1 / 2020-12-08
+
+- Fix - Allow `mergeUnique` to work with arbitrary order. #161
+
 ## 5.4.0 / 2020-10-30
 
 - Fix - Fall back correctly in `mergeWithRules` for cases that aren't matched. #157 #158
