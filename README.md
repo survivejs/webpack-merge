@@ -150,6 +150,8 @@ The first `<field>` is the config property to look through for duplicates.
 
 `<fields>` represents the values that should be unique when you run the field => field function on each duplicate.
 
+When the order of elements of the `<field>` in the first configuration differs from the order in the second configuration, the latter is preserved.  
+ 
 ```javascript
 const { mergeWithCustomize, unique } = require("webpack-merge");
 
