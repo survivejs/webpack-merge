@@ -69,8 +69,8 @@ describe("Unique", function () {
     })(
       {
         plugins: [
-          new webpack.DefinePlugin({}),
           new webpack.HotModuleReplacementPlugin(),
+          new webpack.DefinePlugin({}),
         ],
       },
       {
