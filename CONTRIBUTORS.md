@@ -20,3 +20,4 @@
 - [Daniel Ruf](https://github.com/DanielRuf) - Remove bitHound from the README as it closed down. #102
 - [Adrien Harnay](https://github.com/adrienharnay) - Update README to comply with webpack API. #108
 - [Paweł Lula](https://github.com/desfero) - Support `oneOf` at `merge.smart`. #111
+- [Tomasz Wielga](https://github.com/trombka) - Allow `mergeUnique` to work with arbitrary order. #161
