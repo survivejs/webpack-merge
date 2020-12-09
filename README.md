@@ -150,8 +150,8 @@ The first `<field>` is the config property to look through for duplicates.
 
 `<fields>` represents the values that should be unique when you run the field => field function on each duplicate.
 
-When the order of elements of the `<field>` in the first configuration differs from the order in the second configuration, the latter is preserved.  
- 
+When the order of elements of the `<field>` in the first configuration differs from the order in the second configuration, the latter is preserved.
+
 ```javascript
 const { mergeWithCustomize, unique } = require("webpack-merge");
 
@@ -241,7 +241,7 @@ assert.deepStrictEqual(
 );
 ```
 
-The way it works is that you should annotate fields to match using `match` (or `CustomizeRule.Match` if you are using TypeScript) matching your configuration structure and then use specific strategies to define how particular fields should be transformed.
+The way it works is that you should annotate fields to match using `match` (or `CustomizeRule.Match` if you are using TypeScript) matching your configuration structure and then use specific strategies to define how particular fields should be transformed. If a match doesn't exist above a rule, then it will apply the rule automatically.
 
 ## Using with TypeScript
 

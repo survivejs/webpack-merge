@@ -10,9 +10,6 @@ export interface ICustomizeOptions {
 export enum CustomizeRule {
   Match = "match",
   Append = "append",
-  AppendOnly = "append-only",
   Prepend = "prepend",
-  PrependOnly = "prepend-only",
   Replace = "replace",
-  ReplaceOnly = "replace-only",
 }
