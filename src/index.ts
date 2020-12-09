@@ -3,7 +3,7 @@ import mergeWith from "./merge-with";
 import joinArrays from "./join-arrays";
 import unique from "./unique";
 import { CustomizeRule, ICustomizeOptions, Key } from "./types";
-import { isPlainObject, isString, isUndefined } from "./utils";
+import { isPlainObject, isUndefined } from "./utils";
 
 function merge<Configuration extends object>(
   firstConfiguration: Configuration | Configuration[],
@@ -102,8 +102,7 @@ function mergeWithRules(rules: Rules) {
         currentRule = currentRule[k];
       });
 
-      if (isString(currentRule)) {
-        // @ts-ignore: How to cast to CustomizeRule?
+      if (typeof currentRule === "string") {
         return mergeRule({ currentRule: currentRule, a, b });
       }
 
