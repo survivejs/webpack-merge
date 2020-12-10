@@ -106,6 +106,10 @@ function mergeWithRules(rules: Rules) {
         return mergeWithRule({ currentRule, a, b });
       }
 
+      if (typeof currentRule === "string") {
+        return mergeIndividualRule({ currentRule, a, b });
+      }
+
       return undefined;
     },
   });
@@ -205,6 +209,28 @@ function mergeWithRule({
   });
 
   return ret.concat(b.filter((o) => !bAllMatches.includes(o)));
+}
+
+function mergeIndividualRule({
+  currentRule,
+  a,
+  b,
+}: {
+  currentRule: CustomizeRule;
+  a: Array<any>;
+  b: Array<any>;
+}) {
+  // What if there's no match?
+  switch (currentRule) {
+    case CustomizeRule.Append:
+      return a.concat(b);
+    case CustomizeRule.Prepend:
+      return b.concat(a);
+    case CustomizeRule.Replace:
+      return b;
+  }
+
+  return a;
 }
 
 function last(arr) {

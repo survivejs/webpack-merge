@@ -496,4 +496,112 @@ describe("Merge with rules", function () {
 
     expect(() => _mergeWithoutRule(config, config)).not.toThrow();
   });
+
+  it("should merge with append without match (#151)", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      resolve: {
+        extensions: CustomizeRule.Append,
+      },
+    });
+    const a = { resolve: { extensions: [".js"] } };
+    const b = { resolve: { extensions: [".css"] } };
+    const result = { resolve: { extensions: [".js", ".css"] } };
+
+    expect(_mergeWithExplicitRule(a, b)).toEqual(result);
+  });
+
+  it("should merge with prepend without match (#151)", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      resolve: {
+        extensions: CustomizeRule.Prepend,
+      },
+    });
+    const a = { resolve: { extensions: [".js"] } };
+    const b = { resolve: { extensions: [".css"] } };
+    const result = { resolve: { extensions: [".css", ".js"] } };
+
+    expect(_mergeWithExplicitRule(a, b)).toEqual(result);
+  });
+
+  it("should merge with replace without match (#151)", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      resolve: {
+        extensions: CustomizeRule.Replace,
+      },
+    });
+    const a = { resolve: { extensions: [".js"] } };
+    const b = { resolve: { extensions: [".css"] } };
+    const result = { resolve: { extensions: [".css"] } };
+
+    expect(_mergeWithExplicitRule(a, b)).toEqual(result);
+  });
+
+  it("should merge mixed rules", function () {
+    const a = {
+      resolve: { extensions: [".js"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [{ loader: "style-loader" }, { loader: "sass-loader" }],
+          },
+        ],
+      },
+    };
+    const b = {
+      resolve: { extensions: [".css"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const result = {
+      resolve: { extensions: [".js", ".css"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true,
+                },
+              },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+
+    assert.deepStrictEqual(
+      mergeWithRules({
+        resolve: {
+          extensions: CustomizeRule.Append,
+        },
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace,
+            },
+          },
+        },
+      })(a, b),
+      result
+    );
+  });
 });
