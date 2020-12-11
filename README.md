@@ -275,7 +275,7 @@ Before contributing, please [open an issue](https://github.com/survivejs/webpack
 
 ## Further Information and Support
 
-Check out [SurviveJS - Webpack](http://survivejs.com/) to dig deeper into webpack. The free book uses _webpack-merge_ extensively and shows you how to compose your configuration to keep it maintainable.
+Check out [SurviveJS - Webpack 5](http://survivejs.com/) to dig deeper into webpack. The free book uses **webpack-merge** extensively and shows you how to compose your configuration to keep it maintainable.
 
 I am also available as a consultant in case you require specific assistance. I can contribute particularly in terms of improving maintainability of the setup while speeding it up and pointing out better practices. In addition to improving developer productivity, the work has impact on the end users of the product in terms of reduced application size and loading times.
 
@@ -311,4 +311,4 @@ Support this project with your organization. Your logo will show up here with a 
 
 ## License
 
-_webpack-merge_ is available under MIT. See LICENSE for more details.
+**webpack-merge** is available under MIT. See LICENSE for more details.
