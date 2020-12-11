@@ -673,4 +673,77 @@ describe("Merge with rules", function () {
 
     expect(_mergeWithExplicitRule(a, b)).toEqual(result);
   });
+
+  it("should work with multi-level match (#153)", function () {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /\.(sa|sc|c)ss/,
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  importLoaders: 2,
+                  modules: { auto: true },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /\.(sa|sc|c)ss/,
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  modules: {
+                    localIdentName: "[hash:base64]",
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.(sa|sc|c)ss/,
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  importLoaders: 2,
+                  modules: { auto: true },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const mergeRules = mergeWithRules({
+      module: {
+        rules: {
+          test: CustomizeRule.Match,
+          use: {
+            loader: CustomizeRule.Match,
+            options: {
+              modules: CustomizeRule.Append,
+            },
+          },
+        },
+      },
+    });
+
+    expect(mergeRules(a, b)).toEqual(result);
+  });
 });
