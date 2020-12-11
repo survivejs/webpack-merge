@@ -243,6 +243,14 @@ assert.deepStrictEqual(
 
 The way it works is that you should annotate fields to match using `match` (or `CustomizeRule.Match` if you are using TypeScript) matching your configuration structure and then use specific strategies to define how particular fields should be transformed. If a match doesn't exist above a rule, then it will apply the rule automatically.
 
+**Supported annotations:**
+
+- `match` (`CustomizeRule.Match`) - Optional matcher that scopes merging behavior to a specific part based on similarity (think DOM or jQuery selectors)
+- `append` (`CustomizeRule.Append`) - Appends items
+- `prepend` (`CustomizeRule.Prepend`) - Prepends items
+- `replace` (`CustomizeRule.Replace`) - Replaces items
+- `merge` (`CustomizeRule.Merge`) - Merges objects (shallow merge)
+
 ## Using with TypeScript
 
 **webpack-merge** supports TypeScript out of the box. You should pass `Configuration` type from webpack to it as follows:

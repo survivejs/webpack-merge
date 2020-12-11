@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.6.0 / 2020-12-11
+
+- Feat - Support `merge` (`CustomizeRule.Merge`) for objects at `mergeWithRules`. This is useful for merging loader options for example. #163
+
 ## 5.5.0 / 2020-12-10
 
 - Feat - Allow `mergeWithRules` to merge based on rules without a match. #151 #159

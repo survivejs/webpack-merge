@@ -604,4 +604,73 @@ describe("Merge with rules", function () {
       result
     );
   });
+
+  it.only("should merge objects (#163)", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      module: {
+        rules: {
+          test: CustomizeRule.Match,
+          use: {
+            loader: CustomizeRule.Match,
+            options: CustomizeRule.Merge,
+          },
+        },
+      },
+    });
+    const a = {
+      resolve: { extensions: [".js"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              { loader: "style-loader", options: { modules: true } },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+    const b = {
+      resolve: { extensions: [".css"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true,
+                  another: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const result = {
+      resolve: { extensions: [".js", ".css"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  modules: true,
+                  another: true,
+                },
+              },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(_mergeWithExplicitRule(a, b)).toEqual(result);
+  });
 });

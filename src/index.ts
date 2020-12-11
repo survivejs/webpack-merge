@@ -182,6 +182,10 @@ function mergeWithRule({
               ? (v as Array<any>).concat(last(bMatches)[k])
               : v;
           break;
+        case CustomizeRule.Merge:
+          // @ts-ignore: The assumption here is that both are objects
+          ret[k] = { ...v, ...last(bMatches)[k] };
+          break;
         case CustomizeRule.Prepend:
           ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;
           break;
@@ -220,6 +224,8 @@ function mergeIndividualRule({
   a: Array<any>;
   b: Array<any>;
 }) {
+  console.log("checking rule", currentRule);
+
   // What if there's no match?
   switch (currentRule) {
     case CustomizeRule.Append:
