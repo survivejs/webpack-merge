@@ -605,7 +605,7 @@ describe("Merge with rules", function () {
     );
   });
 
-  it.only("should merge objects (#163)", function () {
+  it("should merge objects (#163)", function () {
     const _mergeWithExplicitRule = mergeWithRules({
       module: {
         rules: {
