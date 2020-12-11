@@ -224,8 +224,6 @@ function mergeIndividualRule({
   a: Array<any>;
   b: Array<any>;
 }) {
-  console.log("checking rule", currentRule);
-
   // What if there's no match?
   switch (currentRule) {
     case CustomizeRule.Append:

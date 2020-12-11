@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.6.1 / 2020-12-11
+
+- Fix - Drop extraneous logging.
+
 ## 5.6.0 / 2020-12-11
 
 - Feat - Support `merge` (`CustomizeRule.Merge`) for objects at `mergeWithRules`. This is useful for merging loader options for example. #163
