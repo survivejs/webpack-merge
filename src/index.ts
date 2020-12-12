@@ -183,8 +183,14 @@ function mergeWithRule({
               : v;
           break;
         case CustomizeRule.Merge:
-          // @ts-ignore: The assumption here is that both are objects
-          ret[k] = { ...v, ...last(bMatches)[k] };
+          const lastValue = last(bMatches)[k];
+
+          if (!isPlainObject(v) || !isPlainObject(lastValue)) {
+            throw new TypeError("Trying to merge non-objects");
+          }
+
+          // @ts-ignore: These should be objects now
+          ret[k] = { ...v, ...lastValue };
           break;
         case CustomizeRule.Prepend:
           ret[k] = bMatches.length > 0 ? last(bMatches)[k].concat(v) : v;

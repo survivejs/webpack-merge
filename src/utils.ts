@@ -10,7 +10,7 @@ function isFunction(functionToCheck) {
 }
 
 function isPlainObject(a) {
-  if (a === null) {
+  if (a === null || Array.isArray(a)) {
     return false;
   }
 

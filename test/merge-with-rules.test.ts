@@ -674,6 +674,55 @@ describe("Merge with rules", function () {
     expect(_mergeWithExplicitRule(a, b)).toEqual(result);
   });
 
+  it("should throw if trying to merge non-objects", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      module: {
+        rules: {
+          test: CustomizeRule.Match,
+          use: {
+            loader: CustomizeRule.Match,
+            options: CustomizeRule.Merge,
+          },
+        },
+      },
+    });
+    const a = {
+      resolve: { extensions: [".js"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              { loader: "style-loader", options: [] },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+    const b = {
+      resolve: { extensions: [".css"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: [],
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    assert.throws(() => _mergeWithExplicitRule(a, b), {
+      name: "TypeError",
+      message: "Trying to merge non-objects",
+    });
+  });
+
   it("should work with multi-level match (#153)", function () {
     const a = {
       module: {
