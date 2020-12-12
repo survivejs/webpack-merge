@@ -723,6 +723,104 @@ describe("Merge with rules", function () {
     });
   });
 
+  it("should throw if trying to append non-arrays", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      module: {
+        rules: {
+          test: CustomizeRule.Match,
+          use: {
+            loader: CustomizeRule.Match,
+            options: CustomizeRule.Append,
+          },
+        },
+      },
+    });
+    const a = {
+      resolve: { extensions: [".js"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              { loader: "style-loader", options: {} },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+    const b = {
+      resolve: { extensions: [".css"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {},
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    assert.throws(() => _mergeWithExplicitRule(a, b), {
+      name: "TypeError",
+      message: "Trying to append non-arrays",
+    });
+  });
+
+  it("should throw if trying to prepend non-arrays", function () {
+    const _mergeWithExplicitRule = mergeWithRules({
+      module: {
+        rules: {
+          test: CustomizeRule.Match,
+          use: {
+            loader: CustomizeRule.Match,
+            options: CustomizeRule.Prepend,
+          },
+        },
+      },
+    });
+    const a = {
+      resolve: { extensions: [".js"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              { loader: "style-loader", options: {} },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+    const b = {
+      resolve: { extensions: [".css"] },
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {},
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    assert.throws(() => _mergeWithExplicitRule(a, b), {
+      name: "TypeError",
+      message: "Trying to prepend non-arrays",
+    });
+  });
+
   it("should work with multi-level match (#153)", function () {
     const a = {
       module: {
