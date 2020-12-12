@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.7.0 / 2020-12-12
+
+- Feat - Throw a `TypeError` if trying to use `mergeWithRules` with invalid configuration types for `append`/`prepend`/`merge` operations.
+
 ## 5.6.1 / 2020-12-11
 
 - Fix - Drop extraneous logging.
