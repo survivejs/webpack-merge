@@ -894,7 +894,7 @@ describe("Merge with rules", function () {
     expect(mergeRules(a, b)).toEqual(result);
   });
 
-  it("should merge with local match", function () {
+  it.only("should merge with local match", function () {
     const base = {
       module: {
         rules: [

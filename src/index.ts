@@ -197,13 +197,19 @@ function mergeWithRule({
           ret[k] = { ...v, ...lastValue };
           break;
         case CustomizeRule.Prepend:
+          if (!bMatches.length) {
+            ret[k] = v;
+
+            break;
+          }
+
           const prependValue = last(bMatches)[k];
 
           if (!isArray(v) || !isArray(prependValue)) {
             throw new TypeError("Trying to prepend non-arrays");
           }
 
-          ret[k] = bMatches.length > 0 ? prependValue.concat(v) : v;
+          ret[k] = prependValue.concat(v);
           break;
         case CustomizeRule.Replace:
           ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
