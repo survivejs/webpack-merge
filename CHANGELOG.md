@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.7.2 / 2020-12-16
+
+- Fix - If there's no match when using `merge` operation with `mergeWithRules`, use default merge behavior as a fallback. #167
+
 ## 5.7.1 / 2020-12-16
 
 - Fix - Fix a merge failure for `mergeWithRules` when non-array matches are merged. #166
