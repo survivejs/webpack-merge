@@ -177,14 +177,19 @@ function mergeWithRule({
           });
           break;
         case CustomizeRule.Append:
+          if (!bMatches.length) {
+            ret[k] = v;
+
+            break;
+          }
+
           const appendValue = last(bMatches)[k];
 
           if (!isArray(v) || !isArray(appendValue)) {
             throw new TypeError("Trying to append non-arrays");
           }
 
-          ret[k] =
-            bMatches.length > 0 ? (v as Array<any>).concat(appendValue) : v;
+          ret[k] = v.concat(appendValue);
           break;
         case CustomizeRule.Merge:
           const lastValue = last(bMatches)[k];
@@ -197,13 +202,19 @@ function mergeWithRule({
           ret[k] = { ...v, ...lastValue };
           break;
         case CustomizeRule.Prepend:
+          if (!bMatches.length) {
+            ret[k] = v;
+
+            break;
+          }
+
           const prependValue = last(bMatches)[k];
 
           if (!isArray(v) || !isArray(prependValue)) {
             throw new TypeError("Trying to prepend non-arrays");
           }
 
-          ret[k] = bMatches.length > 0 ? prependValue.concat(v) : v;
+          ret[k] = prependValue.concat(v);
           break;
         case CustomizeRule.Replace:
           ret[k] = bMatches.length > 0 ? last(bMatches)[k] : v;
