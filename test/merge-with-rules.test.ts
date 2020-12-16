@@ -1043,4 +1043,78 @@ describe("Merge with rules", function () {
       })(base, development)
     ).toEqual(result);
   });
+
+  it("should fall back to default behavior without a match when merging (#167)", function () {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            use: [
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            use: [
+              {
+                loader: "sass-resources-loader",
+                options: {
+                  resources: ["src/styles/includes.scss"],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            use: [
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true,
+                },
+              },
+              {
+                loader: "sass-resources-loader",
+                options: {
+                  resources: ["src/styles/includes.scss"],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Merge,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(result);
+  });
 });
