@@ -894,7 +894,82 @@ describe("Merge with rules", function () {
     expect(mergeRules(a, b)).toEqual(result);
   });
 
-  it.only("should merge with local match", function () {
+  it("should append with local match (#165)", function () {
+    const base = {
+      module: {
+        rules: [
+          {
+            test: /\.s(a|c)ss$/,
+            use: [
+              {
+                loader: "css-loader",
+              },
+              {
+                loader: "sass-loader",
+              },
+            ],
+          },
+          {
+            test: /\.(png|jpe?g|gif|svg)$/i,
+            use: [
+              {
+                loader: "file-loader",
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const development = {
+      module: {
+        rules: [
+          {
+            test: /\.s(a|c)ss$/,
+            use: ["style-loader"],
+          },
+        ],
+      },
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.s(a|c)ss$/,
+            use: [
+              {
+                loader: "css-loader",
+              },
+              {
+                loader: "sass-loader",
+              },
+              "style-loader",
+            ],
+          },
+          {
+            test: /\.(png|jpe?g|gif|svg)$/i,
+            use: [
+              {
+                loader: "file-loader",
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: CustomizeRule.Append,
+          },
+        },
+      })(base, development)
+    ).toEqual(result);
+  });
+
+  it("should prepend with local match (#165)", function () {
     const base = {
       module: {
         rules: [
