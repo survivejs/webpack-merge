@@ -192,6 +192,12 @@ function mergeWithRule({
           ret[k] = v.concat(appendValue);
           break;
         case CustomizeRule.Merge:
+          if (!bMatches.length) {
+            ret[k] = v;
+
+            break;
+          }
+
           const lastValue = last(bMatches)[k];
 
           if (!isPlainObject(v) || !isPlainObject(lastValue)) {
