@@ -159,6 +159,10 @@ function mergeWithRule({
       return matches;
     });
 
+    if(!isPlainObject(ao)){
+      return ao;
+    }
+    
     Object.entries(ao).forEach(([k, v]) => {
       const rule = currentRule;
 
