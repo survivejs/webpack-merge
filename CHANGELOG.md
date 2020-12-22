@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.7.3 / 2020-12-22
+
+- Fix - Don't merge strings with objects in `mergeWithRules`. #172
+
 ## 5.7.2 / 2020-12-16
 
 - Fix - If there's no match when using `merge` operation with `mergeWithRules`, use default merge behavior as a fallback. #167
