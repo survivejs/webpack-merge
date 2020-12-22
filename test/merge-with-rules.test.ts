@@ -1117,4 +1117,76 @@ describe("Merge with rules", function () {
       })(conf1, conf2)
     ).toEqual(result);
   });
+
+  it('should not merge strings with objects', () => {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            "test": "some-test",
+            "use": [
+              "hello-loader"
+            ]
+          }
+        ],
+      },
+    };
+
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            "test": "another-test",
+            "use": [
+              {
+                "loader": "another-loader",
+                "options": {
+                  "someoption": "hey"
+                }
+              }
+            ]
+          }
+        ]
+      },
+    };
+
+    const expected = {
+      module: {
+        rules: [
+          {
+            "test": "some-test",
+            "use": [
+              "hello-loader"
+            ]
+          },
+          {
+            "test": "another-test",
+            "use": [
+              {
+                "loader": "another-loader",
+                "options": {
+                  "someoption": "hey"
+                }
+              }
+            ]
+          }
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Merge,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(expected);
+  })
+
 });
