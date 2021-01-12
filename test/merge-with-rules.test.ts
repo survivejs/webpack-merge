@@ -1118,16 +1118,14 @@ describe("Merge with rules", function () {
     ).toEqual(result);
   });
 
-  it('should not merge strings with objects', () => {
+  it("should not merge strings with objects", () => {
     const conf1 = {
       module: {
         rules: [
           {
-            "test": "some-test",
-            "use": [
-              "hello-loader"
-            ]
-          }
+            test: "some-test",
+            use: ["hello-loader"],
+          },
         ],
       },
     };
@@ -1136,17 +1134,17 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            "test": "another-test",
-            "use": [
+            test: "another-test",
+            use: [
               {
-                "loader": "another-loader",
-                "options": {
-                  "someoption": "hey"
-                }
-              }
-            ]
-          }
-        ]
+                loader: "another-loader",
+                options: {
+                  someoption: "hey",
+                },
+              },
+            ],
+          },
+        ],
       },
     };
 
@@ -1154,22 +1152,20 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            "test": "some-test",
-            "use": [
-              "hello-loader"
-            ]
+            test: "some-test",
+            use: ["hello-loader"],
           },
           {
-            "test": "another-test",
-            "use": [
+            test: "another-test",
+            use: [
               {
-                "loader": "another-loader",
-                "options": {
-                  "someoption": "hey"
-                }
-              }
-            ]
-          }
+                loader: "another-loader",
+                options: {
+                  someoption: "hey",
+                },
+              },
+            ],
+          },
         ],
       },
     };
@@ -1187,6 +1183,160 @@ describe("Merge with rules", function () {
         },
       })(conf1, conf2)
     ).toEqual(expected);
-  })
+  });
 
+  it("should merge with same with different options - 1 #169", () => {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            use: [
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            exclude: ["/node_modules/"],
+            use: [
+              {
+                loader: "sass-resources-loader",
+                options: {
+                  resources: ["src/styles/includes.scss"],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    // exclude is discarded because it's not in the base configuration
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            use: [
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true,
+                },
+              },
+              {
+                loader: "sass-resources-loader",
+                options: {
+                  resources: ["src/styles/includes.scss"],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Merge,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(expected);
+  });
+
+  it("should merge with same with different options - 2 #169", () => {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            // TODO: Should this be needed for append to work?
+            exclude: [],
+            use: [
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            exclude: ["/node_modules/"],
+            use: [
+              {
+                loader: "sass-resources-loader",
+                options: {
+                  resources: ["src/styles/includes.scss"],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: "/\\.scss$|\\.sass$/",
+            exclude: ["/node_modules/"],
+            use: [
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true,
+                },
+              },
+              {
+                loader: "sass-resources-loader",
+                options: {
+                  resources: ["src/styles/includes.scss"],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            exclude: CustomizeRule.Append,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Merge,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(expected);
+  });
 });
