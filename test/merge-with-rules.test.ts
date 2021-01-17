@@ -1267,7 +1267,6 @@ describe("Merge with rules", function () {
         rules: [
           {
             test: "/\\.scss$|\\.sass$/",
-            // TODO: Should this be needed for append to work?
             exclude: [],
             use: [
               {
