@@ -44,8 +44,8 @@ const productionConfig = { ... };
 
 const developmentConfig = { ... };
 
-module.exports = env => {
-  switch(env) {
+module.exports = (env, args) => {
+  switch(args.mode) {
     case 'development':
       return merge(commonConfig, developmentConfig);
     case 'production':
@@ -56,7 +56,7 @@ module.exports = env => {
 }
 ```
 
-You can choose the configuration you want by using `webpack --env development` assuming you are using _webpack-cli_.
+You can choose the configuration you want by using `webpack --mode development` assuming you are using _webpack-cli_.
 
 ## **`mergeWithCustomize({ customizeArray, customizeObject })(...configuration | [...configuration])`**
 
