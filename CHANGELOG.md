@@ -3,6 +3,7 @@
 ## 5.8.0 / 2021-06-07
 
 - Docs - Update `env` example to be webpack 5 compatible. #177, #180
+- Feat - Support strings as rules for TypeScript, not just enums. #179, #185
 
 ## 5.7.3 / 2020-12-22
 
