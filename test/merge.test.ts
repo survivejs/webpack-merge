@@ -366,7 +366,7 @@ function normalMergeTest(merge, loadersKey) {
     }
   );
 
-  it.only("should not pollute __proto__", function () {
+  it("should not pollute __proto__", function () {
     const obj = { tmp: "" };
 
     // @ts-ignore: Pollute __proto__ on purpose
