@@ -365,6 +365,18 @@ function normalMergeTest(merge, loadersKey) {
       assert.deepStrictEqual(merge(a, b), a);
     }
   );
+
+  it.only("should not pollute __proto__", function () {
+    const obj = { tmp: "" };
+
+    // @ts-ignore: Pollute __proto__ on purpose
+    merge(obj, (obj.__proto__.polluted = "Proto has been polluted"));
+
+    const obj_new = [];
+
+    // @ts-ignore: Pollute __proto__ on purpose
+    expect(obj_new.polluted).toEqual(undefined);
+  });
 }
 
 export default normalMergeTests;
