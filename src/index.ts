@@ -2,7 +2,12 @@ import wildcard from "wildcard";
 import mergeWith from "./merge-with";
 import joinArrays from "./join-arrays";
 import unique from "./unique";
-import { CustomizeRule, ICustomizeOptions, Key } from "./types";
+import {
+  CustomizeRule,
+  CustomizeRuleString,
+  ICustomizeOptions,
+  Key,
+} from "./types";
 import { isPlainObject, isUndefined } from "./utils";
 
 function merge<Configuration extends object>(
@@ -68,7 +73,9 @@ function mergeWithCustomize<Configuration extends object>(
   };
 }
 
-function customizeArray(rules: { [s: string]: CustomizeRule }) {
+function customizeArray(rules: {
+  [s: string]: CustomizeRule | CustomizeRuleString;
+}) {
   return (a: any, b: any, key: Key) => {
     const matchedRule =
       Object.keys(rules).find((rule) => wildcard(rule, key)) || "";
@@ -87,12 +94,12 @@ function customizeArray(rules: { [s: string]: CustomizeRule }) {
   };
 }
 
-type Rules = { [s: string]: CustomizeRule | Rules };
+type Rules = { [s: string]: CustomizeRule | CustomizeRuleString | Rules };
 
 function mergeWithRules(rules: Rules) {
   return mergeWithCustomize({
     customizeArray: (a: any, b: any, key: Key) => {
-      let currentRule: CustomizeRule | Rules = rules;
+      let currentRule: CustomizeRule | CustomizeRuleString | Rules = rules;
 
       key.split(".").forEach((k) => {
         if (!currentRule) {
@@ -122,7 +129,7 @@ function mergeWithRule({
   a,
   b,
 }: {
-  currentRule: CustomizeRule | Rules;
+  currentRule: CustomizeRule | CustomizeRuleString | Rules;
   a: any;
   b: any;
 }) {
@@ -159,10 +166,10 @@ function mergeWithRule({
       return matches;
     });
 
-    if(!isPlainObject(ao)){
+    if (!isPlainObject(ao)) {
       return ao;
     }
-    
+
     Object.entries(ao).forEach(([k, v]) => {
       const rule = currentRule;
 
@@ -278,7 +285,9 @@ function last(arr) {
   return arr[arr.length - 1];
 }
 
-function customizeObject(rules: { [s: string]: CustomizeRule }) {
+function customizeObject(rules: {
+  [s: string]: CustomizeRule | CustomizeRuleString;
+}) {
   return (a: any, b: any, key: Key) => {
     switch (rules[key]) {
       case CustomizeRule.Prepend:
