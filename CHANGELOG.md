@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.8.0 / 2021-06-07
+
+- Docs - Update `env` example to be webpack 5 compatible. #177, #180
+
 ## 5.7.3 / 2020-12-22
 
 - Fix - Don't merge strings with objects in `mergeWithRules`. #172
