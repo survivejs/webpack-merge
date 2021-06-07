@@ -14,3 +14,10 @@ export enum CustomizeRule {
   Prepend = "prepend",
   Replace = "replace",
 }
+
+export type CustomizeRuleString =
+  | "match"
+  | "merge"
+  | "append"
+  | "prepend"
+  | "replace";
