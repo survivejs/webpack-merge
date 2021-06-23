@@ -14,4 +14,4 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-If you find a vulnerability, send me email (bebraw <at> gmail <dot> com) with the details.
+If you find a vulnerability, send me email (bebraw \<at\> gmail \<dot\> com) with the details.
