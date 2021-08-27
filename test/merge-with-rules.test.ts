@@ -219,6 +219,87 @@ describe("Merge with rules", function () {
     );
   });
 
+  it("should merge #193", function () {
+    const a = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  postcssOptions: {
+                    plugins: [["111"], ["222"]],
+                  },
+                },
+              },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+    const b = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  postcssOptions: {
+                    plugins: [["333"]],
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+                options: {
+                  postcssOptions: {
+                    plugins: [["111"], ["222"], ["333"]],
+                  },
+                },
+              },
+              { loader: "sass-loader" },
+            ],
+          },
+        ],
+      },
+    };
+
+    assert.deepStrictEqual(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: {
+                postcssOptions: {
+                  plugins: CustomizeRule.Append,
+                },
+              },
+            },
+          },
+        },
+      })(a, b),
+      result
+    );
+  });
+
   it("should merge #149", function () {
     const base = {
       module: {
@@ -1118,16 +1199,14 @@ describe("Merge with rules", function () {
     ).toEqual(result);
   });
 
-  it('should not merge strings with objects', () => {
+  it("should not merge strings with objects", () => {
     const conf1 = {
       module: {
         rules: [
           {
-            "test": "some-test",
-            "use": [
-              "hello-loader"
-            ]
-          }
+            test: "some-test",
+            use: ["hello-loader"],
+          },
         ],
       },
     };
@@ -1136,17 +1215,17 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            "test": "another-test",
-            "use": [
+            test: "another-test",
+            use: [
               {
-                "loader": "another-loader",
-                "options": {
-                  "someoption": "hey"
-                }
-              }
-            ]
-          }
-        ]
+                loader: "another-loader",
+                options: {
+                  someoption: "hey",
+                },
+              },
+            ],
+          },
+        ],
       },
     };
 
@@ -1154,22 +1233,20 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            "test": "some-test",
-            "use": [
-              "hello-loader"
-            ]
+            test: "some-test",
+            use: ["hello-loader"],
           },
           {
-            "test": "another-test",
-            "use": [
+            test: "another-test",
+            use: [
               {
-                "loader": "another-loader",
-                "options": {
-                  "someoption": "hey"
-                }
-              }
-            ]
-          }
+                loader: "another-loader",
+                options: {
+                  someoption: "hey",
+                },
+              },
+            ],
+          },
         ],
       },
     };
@@ -1187,6 +1264,5 @@ describe("Merge with rules", function () {
         },
       })(conf1, conf2)
     ).toEqual(expected);
-  })
-
+  });
 });
