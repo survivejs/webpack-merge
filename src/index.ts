@@ -215,8 +215,8 @@ function mergeWithRule({
             throw new TypeError("Trying to merge non-objects");
           }
 
-          // @ts-ignore: These should be objects now
-          ret[k] = { ...v, ...lastValue };
+          // deep merge
+          ret[k] = merge(v, lastValue);
           break;
         case CustomizeRule.Prepend:
           if (!bMatches.length) {
