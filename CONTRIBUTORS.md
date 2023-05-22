@@ -22,3 +22,4 @@
 - [Paweł Lula](https://github.com/desfero) - Support `oneOf` at `merge.smart`. #111
 - [Tomasz Wielga](https://github.com/trombka) - Allow `mergeUnique` to work with arbitrary order. #161
 - [JeB](https://github.com/just-jeb) - Don't merge strings with objects in `mergeWithRules`. #172
+- [Burhanuddin Udaipurwala](https://github.com/burhanuday) - Deep merge when rule is merge. #206
