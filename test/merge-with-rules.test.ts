@@ -1187,6 +1187,80 @@ describe("Merge with rules", function () {
         },
       })(conf1, conf2)
     ).toEqual(expected);
-  })
+  });
 
+  it("should deep merge options", function () {
+    const base = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  modules: {
+                    localIdentName: "[hash:base64]",
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const development = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  modules: {
+                    namedExport: true,
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const result = {
+      module: {
+        rules: [
+          {
+            test: /\.scss$/,
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  modules: {
+                    localIdentName: "[hash:base64]",
+                    namedExport: true,
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Merge,
+            },
+          },
+        },
+      })(base, development)
+    ).toEqual(result);
+  });
 });
