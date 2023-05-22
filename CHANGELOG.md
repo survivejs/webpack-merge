@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.9.0 / 2023-05-22
+
+- Feat - Support deep merging when rule is a merge. #193, #206
+
 ## 5.8.0 / 2021-06-07
 
 - Docs - Update `env` example to be webpack 5 compatible. #177, #180
