@@ -1,4 +1,4 @@
-[![Financial Contributors on Open Collective](https://opencollective.com/webpack-merge/all/badge.svg?label=financial+contributors)](https://opencollective.com/webpack-merge) [![build status](https://secure.travis-ci.org/survivejs/webpack-merge.svg)](http://travis-ci.org/survivejs/webpack-merge) [![codecov](https://codecov.io/gh/survivejs/webpack-merge/branch/master/graph/badge.svg)](https://codecov.io/gh/survivejs/webpack-merge)
+[![Financial Contributors on Open Collective](https://opencollective.com/webpack-merge/all/badge.svg?label=financial+contributors)](https://opencollective.com/webpack-merge) [![Test](https://github.com/survivejs/webpack-merge/actions/workflows/test.yml/badge.svg?branch=develop&event=push)](https://github.com/survivejs/webpack-merge/actions/workflows/test.yml) [![codecov](https://codecov.io/gh/survivejs/webpack-merge/branch/master/graph/badge.svg)](https://codecov.io/gh/survivejs/webpack-merge)
 
 # webpack-merge - Merge designed for Webpack
 
