@@ -8,7 +8,7 @@ import {
   ICustomizeOptions,
   Key,
 } from "./types";
-import { isPlainObject, isUndefined } from "./utils";
+import { isPlainObject, isSameCondition, isUndefined } from "./utils";
 
 function merge<Configuration extends object>(
   firstConfiguration: Configuration | Configuration[],
@@ -156,7 +156,7 @@ function mergeWithRule({
 
     const bMatches = b.filter((o) => {
       const matches = rulesToMatch.every(
-        (rule) => ao[rule]?.toString() === o[rule]?.toString()
+        (rule) => isSameCondition(ao[rule], o[rule])
       );
 
       if (matches) {

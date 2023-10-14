@@ -1263,4 +1263,380 @@ describe("Merge with rules", function () {
       })(base, development)
     ).toEqual(result);
   });
+
+  it("should distinguish different object-formed test", () => {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            test: {
+              and: [/\.less$/, /lib-a/],
+            },
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { a: 1 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            test: {
+              and: [/\.less$/, /lib-b/]
+            },
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { b: 2 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: {
+              and: [/\.less$/, /lib-a/],
+            },
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { a: 1 },
+                  },
+                },
+              },
+            ],
+          },
+          {
+            test: {
+              and: [/\.less$/, /lib-b/],
+            },
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { b: 2 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(expected);
+  });
+
+  it("should recognize the same object-formed test", () => {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            test: {
+              and: [/\.less$/, /lib-a/],
+            },
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { a: 1 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            test: {
+              and: [/\.less$/, /lib-a/]
+            },
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { b: 2 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: {
+              and: [/\.less$/, /lib-a/],
+            },
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: {
+                      b: 2,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(expected);
+  });
+
+  it("should distinguish different array-formed test", () => {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            test: [
+              /\.less$/,
+              /lib-a/,
+              { not: [/exclude/] },
+            ],
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { a: 1 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            test: [
+              /\.less$/,
+              /lib-b/,
+              { not: [/exclude/] },
+            ],
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { b: 2 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: [
+              /\.less$/,
+              /lib-a/,
+              { not: [/exclude/] },
+            ],
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { a: 1 },
+                  },
+                },
+              },
+            ],
+          },
+          {
+            test: [
+              /\.less$/,
+              /lib-b/,
+              { not: [/exclude/] },
+            ],
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { b: 2 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(expected);
+  });
+
+  it("should recognize the same array-formed test (even with different order)", () => {
+    const conf1 = {
+      module: {
+        rules: [
+          {
+            test: [
+              /\.less$/,
+              /lib-a/,
+              { not: [/exclude/] },
+            ],
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { a: 1 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const conf2 = {
+      module: {
+        rules: [
+          {
+            test: [
+              { not: [/exclude/] },
+              /lib-a/,
+              /\.less$/,
+            ],
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: { b: 2 },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const expected = {
+      module: {
+        rules: [
+          {
+            test: [
+              /\.less$/,
+              /lib-a/,
+              { not: [/exclude/] },
+            ],
+            use: [
+              {
+                loader: 'less-loader',
+                options: {
+                  lessOptions: {
+                    modifyVars: {
+                      b: 2,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    expect(
+      mergeWithRules({
+        module: {
+          rules: {
+            test: CustomizeRule.Match,
+            use: {
+              loader: CustomizeRule.Match,
+              options: CustomizeRule.Replace,
+            },
+          },
+        },
+      })(conf1, conf2)
+    ).toEqual(expected);
+  });
 });
