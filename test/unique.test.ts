@@ -8,7 +8,7 @@ describe("Unique", function () {
       customizeArray: unique(
         "plugins",
         ["HotModuleReplacementPlugin"],
-        (plugin) => plugin.constructor && plugin.constructor.name
+        (plugin) => plugin.constructor && plugin.constructor.name,
       ),
     })(
       {
@@ -16,7 +16,7 @@ describe("Unique", function () {
       },
       {
         plugins: [new webpack.HotModuleReplacementPlugin()],
-      }
+      },
     );
     const expected = {
       plugins: [new webpack.HotModuleReplacementPlugin()],
@@ -30,7 +30,7 @@ describe("Unique", function () {
       customizeArray: unique(
         "plugins",
         ["DefinePlugin"],
-        (plugin) => plugin.constructor && plugin.constructor.name
+        (plugin) => plugin.constructor && plugin.constructor.name,
       ),
     })(
       {
@@ -46,7 +46,7 @@ describe("Unique", function () {
             b: "b",
           }),
         ],
-      }
+      },
     );
     const expected = {
       plugins: [
@@ -64,7 +64,7 @@ describe("Unique", function () {
       customizeArray: unique(
         "plugins",
         ["HotModuleReplacementPlugin"],
-        (plugin) => plugin.constructor && plugin.constructor.name
+        (plugin) => plugin.constructor && plugin.constructor.name,
       ),
     })(
       {
@@ -75,7 +75,7 @@ describe("Unique", function () {
       },
       {
         plugins: [new webpack.HotModuleReplacementPlugin()],
-      }
+      },
     );
     // The HMR plugin is picked from the last one due to
     // default ordering!
@@ -92,20 +92,20 @@ describe("Unique", function () {
   it("should not lose any leading plugins", function () {
     const output = mergeWithCustomize({
       customizeArray: unique(
-          "plugins",
-          ["HotModuleReplacementPlugin"],
-          (plugin) => plugin.constructor && plugin.constructor.name
+        "plugins",
+        ["HotModuleReplacementPlugin"],
+        (plugin) => plugin.constructor && plugin.constructor.name,
       ),
     })(
-        {
-          plugins: [
-            new webpack.DefinePlugin({}),
-            new webpack.HotModuleReplacementPlugin(),
-          ],
-        },
-        {
-          plugins: [new webpack.HotModuleReplacementPlugin()],
-        }
+      {
+        plugins: [
+          new webpack.DefinePlugin({}),
+          new webpack.HotModuleReplacementPlugin(),
+        ],
+      },
+      {
+        plugins: [new webpack.HotModuleReplacementPlugin()],
+      },
     );
     // The HMR plugin is picked from the last one due to
     // default ordering!
@@ -124,7 +124,7 @@ describe("Unique", function () {
       customizeArray: unique(
         "plugins",
         ["DefinePlugin"],
-        (plugin) => plugin.constructor && plugin.constructor.name
+        (plugin) => plugin.constructor && plugin.constructor.name,
       ),
     })(
       {
@@ -135,7 +135,7 @@ describe("Unique", function () {
       },
       {
         plugins: [new webpack.HotModuleReplacementPlugin()],
-      }
+      },
     );
     const expected = {
       plugins: [

@@ -63,7 +63,7 @@ function mergeStrategySpecificTests(merge) {
       merge({
         "module.loaders": "append",
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -111,7 +111,7 @@ function mergeStrategySpecificTests(merge) {
       merge({
         "module.loaders": CustomizeRule.Prepend,
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -159,7 +159,7 @@ function mergeStrategySpecificTests(merge) {
       merge({
         "module.loaders": "prepend",
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -188,7 +188,7 @@ function mergeStrategySpecificTests(merge) {
       merge({
         "entry.*": CustomizeRule.Replace,
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -217,7 +217,7 @@ function mergeStrategySpecificTests(merge) {
       merge({
         "entry.*": "replace",
       })(a, b),
-      result
+      result,
     );
   });
 }

@@ -39,9 +39,12 @@ function isSameCondition(a, b) {
     return a === b;
   }
   if (
-    typeof a === 'string' || typeof b === 'string' ||
-    isRegex(a) || isRegex(b) ||
-    isFunction(a) || isFunction(b)
+    typeof a === "string" ||
+    typeof b === "string" ||
+    isRegex(a) ||
+    isRegex(b) ||
+    isFunction(a) ||
+    isFunction(b)
   ) {
     return a.toString() === b.toString();
   }
@@ -63,7 +66,7 @@ function isSameCondition(a, b) {
     if (v1 < v2) return -1;
     if (v1 > v2) return 1;
     return 0;
-  };
+  }
   entriesA.sort(cmp);
   entriesB.sort(cmp);
 
@@ -71,7 +74,10 @@ function isSameCondition(a, b) {
     return false;
   }
   for (let i = 0; i < entriesA.length; i++) {
-    if (entriesA[i][0] !== entriesB[i][0] || entriesA[i][1]?.toString() !== entriesB[i][1]?.toString()) {
+    if (
+      entriesA[i][0] !== entriesB[i][0] ||
+      entriesA[i][1]?.toString() !== entriesB[i][1]?.toString()
+    ) {
       return false;
     }
   }

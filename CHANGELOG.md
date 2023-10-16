@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.0 / xxxx-xx-xx
+
+- Chore - Update internal dependencies. As a result, the package needs at least Node 18 to run.
+
 ## 5.10.0 / 2023-10-16
 
 - Feat - Support object/array-formed condition for `mergeWithRules`. #212
@@ -174,7 +178,7 @@ merge.smart(
         loaders: ["react-hot", "babel"],
       },
     ],
-  }
+  },
 );
 // will become
 {

@@ -42,7 +42,7 @@ export default function joinArrays({
             customizeArray,
             customizeObject,
             key: newKey,
-          })
+          }),
         )
       );
     }

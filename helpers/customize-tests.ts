@@ -16,7 +16,7 @@ function mergeStrategyTests(merge) {
       merge({
         entry: "append",
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -35,7 +35,7 @@ function mergeStrategyTests(merge) {
       merge({
         entry: "prepend",
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -61,9 +61,9 @@ function mergeStrategyTests(merge) {
       Object.keys(
         merge({
           entry: "append",
-        })(a, b).entry
+        })(a, b).entry,
       ),
-      Object.keys(result.entry)
+      Object.keys(result.entry),
     );
   });
 
@@ -89,9 +89,9 @@ function mergeStrategyTests(merge) {
       Object.keys(
         merge({
           entry: "prepend",
-        })(a, b).entry
+        })(a, b).entry,
       ),
-      Object.keys(result.entry)
+      Object.keys(result.entry),
     );
   });
 
@@ -110,9 +110,9 @@ function mergeStrategyTests(merge) {
       Object.keys(
         merge({
           entry: "replace",
-        })(a, b).entry
+        })(a, b).entry,
       ),
-      Object.keys(result.entry)
+      Object.keys(result.entry),
     );
   });
 
@@ -137,9 +137,9 @@ function mergeStrategyTests(merge) {
       Object.keys(
         merge({
           entry: "replace",
-        })(a, b).entry
+        })(a, b).entry,
       ),
-      Object.keys(result.entry)
+      Object.keys(result.entry),
     );
   });
 
@@ -160,7 +160,7 @@ function mergeStrategyTests(merge) {
       merge({
         postcss: "prepend",
       })(a, b).postcss(),
-      expected
+      expected,
     );
   });
 
@@ -192,9 +192,9 @@ function mergeStrategyTests(merge) {
       Object.keys(
         merge({
           postcss: "prepend",
-        })(a, b).postcss()
+        })(a, b).postcss(),
       ),
-      Object.keys(result.postcss())
+      Object.keys(result.postcss()),
     );
   });
 
@@ -215,7 +215,7 @@ function mergeStrategyTests(merge) {
       merge({
         postcss: "replace",
       })(a, b).postcss(),
-      expected
+      expected,
     );
   });
 
@@ -236,7 +236,7 @@ function mergeStrategyTests(merge) {
       merge({
         postcss: "replace",
       })(a, b).postcss(),
-      expected
+      expected,
     );
   });
 }

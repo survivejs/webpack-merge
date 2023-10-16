@@ -12,21 +12,21 @@ jobs:
 
     strategy:
       matrix:
-        node_version: [10, 12, 14, 16, 18]
+        node_version: [18, 20]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node_version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node_version }}
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node_version }}
 
-    - run: npm ci
+      - run: npm ci
 
-    - run: npm run build
-    - run: npm run test
+      - run: npm run build
+      - run: npm run test
 
-    - if: matrix.node_version == 18
-      uses: codecov/codecov-action@v3
-      with:
-        directory: ./coverage
+      - if: matrix.node_version == 18
+        uses: codecov/codecov-action@v3
+        with:
+          directory: ./coverage

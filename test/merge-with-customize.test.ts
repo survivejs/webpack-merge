@@ -21,7 +21,7 @@ function customizeMergeTests(merge) {
           return a;
         },
       })(first, second),
-      first
+      first,
     );
   });
 
@@ -63,7 +63,7 @@ function customizeMergeTests(merge) {
           return a;
         },
       })(first, second),
-      first
+      first,
     );
   });
 

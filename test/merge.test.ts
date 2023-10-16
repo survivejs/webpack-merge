@@ -50,12 +50,12 @@ function normalMergeTest(merge, loadersKey) {
             devServer: { base: true },
           },
           undefined,
-          result
+          result,
         ),
       {
         name: "TypeError",
         message: "Merging undefined is not supported",
-      }
+      },
     );
   });
 
@@ -69,12 +69,12 @@ function normalMergeTest(merge, loadersKey) {
           {
             devServer: { base: true },
           },
-          result
+          result,
         ),
       {
         name: "TypeError",
         message: "Merging undefined is not supported",
-      }
+      },
     );
   });
 
@@ -90,9 +90,9 @@ function normalMergeTest(merge, loadersKey) {
         {
           devServer: { base: true },
         },
-        result
+        result,
       ),
-      result
+      result,
     );
   });
 
@@ -234,7 +234,7 @@ function normalMergeTest(merge, loadersKey) {
       ];
 
       assert.deepStrictEqual(merge(a, b), result);
-    }
+    },
   );
 
   it("should not append loaders with " + loadersKey, function () {
@@ -346,7 +346,7 @@ function normalMergeTest(merge, loadersKey) {
       ];
 
       assert.deepStrictEqual(merge(a, b, c), result);
-    }
+    },
   );
 
   it(
@@ -363,7 +363,7 @@ function normalMergeTest(merge, loadersKey) {
       b[loadersKey] = [];
 
       assert.deepStrictEqual(merge(a, b), a);
-    }
+    },
   );
 }
 

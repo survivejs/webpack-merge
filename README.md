@@ -159,7 +159,7 @@ const output = mergeWithCustomize({
   customizeArray: unique(
     "plugins",
     ["HotModuleReplacementPlugin"],
-    (plugin) => plugin.constructor && plugin.constructor.name
+    (plugin) => plugin.constructor && plugin.constructor.name,
   ),
 })(
   {
@@ -167,7 +167,7 @@ const output = mergeWithCustomize({
   },
   {
     plugins: [new webpack.HotModuleReplacementPlugin()],
-  }
+  },
 );
 
 // Output contains only single HotModuleReplacementPlugin now and it's
@@ -237,7 +237,7 @@ assert.deepStrictEqual(
       },
     },
   })(a, b),
-  result
+  result,
 );
 ```
 

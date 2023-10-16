@@ -62,7 +62,7 @@ describe("Merge with rules", function () {
           },
         },
       })(base, development),
-      result
+      result,
     );
   });
 
@@ -107,7 +107,7 @@ describe("Merge with rules", function () {
           },
         },
       })(base, development),
-      result
+      result,
     );
   });
 
@@ -152,7 +152,7 @@ describe("Merge with rules", function () {
           },
         },
       })(base, development),
-      result
+      result,
     );
   });
 
@@ -215,7 +215,7 @@ describe("Merge with rules", function () {
           },
         },
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -287,7 +287,7 @@ describe("Merge with rules", function () {
           },
         },
       })(base, development),
-      result
+      result,
     );
   });
 
@@ -353,7 +353,7 @@ describe("Merge with rules", function () {
           },
         },
       })(base, development),
-      result
+      result,
     );
   });
 
@@ -475,7 +475,7 @@ describe("Merge with rules", function () {
           },
         },
       })(defaultConfig, localConfig),
-      result
+      result,
     );
   });
 
@@ -601,7 +601,7 @@ describe("Merge with rules", function () {
           },
         },
       })(a, b),
-      result
+      result,
     );
   });
 
@@ -965,7 +965,7 @@ describe("Merge with rules", function () {
             use: CustomizeRule.Append,
           },
         },
-      })(base, development)
+      })(base, development),
     ).toEqual(result);
   });
 
@@ -1040,7 +1040,7 @@ describe("Merge with rules", function () {
             use: CustomizeRule.Prepend,
           },
         },
-      })(base, development)
+      })(base, development),
     ).toEqual(result);
   });
 
@@ -1114,20 +1114,18 @@ describe("Merge with rules", function () {
             },
           },
         },
-      })(conf1, conf2)
+      })(conf1, conf2),
     ).toEqual(result);
   });
 
-  it('should not merge strings with objects', () => {
+  it("should not merge strings with objects", () => {
     const conf1 = {
       module: {
         rules: [
           {
-            "test": "some-test",
-            "use": [
-              "hello-loader"
-            ]
-          }
+            test: "some-test",
+            use: ["hello-loader"],
+          },
         ],
       },
     };
@@ -1136,17 +1134,17 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            "test": "another-test",
-            "use": [
+            test: "another-test",
+            use: [
               {
-                "loader": "another-loader",
-                "options": {
-                  "someoption": "hey"
-                }
-              }
-            ]
-          }
-        ]
+                loader: "another-loader",
+                options: {
+                  someoption: "hey",
+                },
+              },
+            ],
+          },
+        ],
       },
     };
 
@@ -1154,22 +1152,20 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            "test": "some-test",
-            "use": [
-              "hello-loader"
-            ]
+            test: "some-test",
+            use: ["hello-loader"],
           },
           {
-            "test": "another-test",
-            "use": [
+            test: "another-test",
+            use: [
               {
-                "loader": "another-loader",
-                "options": {
-                  "someoption": "hey"
-                }
-              }
-            ]
-          }
+                loader: "another-loader",
+                options: {
+                  someoption: "hey",
+                },
+              },
+            ],
+          },
         ],
       },
     };
@@ -1185,7 +1181,7 @@ describe("Merge with rules", function () {
             },
           },
         },
-      })(conf1, conf2)
+      })(conf1, conf2),
     ).toEqual(expected);
   });
 
@@ -1260,7 +1256,7 @@ describe("Merge with rules", function () {
             },
           },
         },
-      })(base, development)
+      })(base, development),
     ).toEqual(result);
   });
 
@@ -1274,7 +1270,7 @@ describe("Merge with rules", function () {
             },
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { a: 1 },
@@ -1292,11 +1288,11 @@ describe("Merge with rules", function () {
         rules: [
           {
             test: {
-              and: [/\.less$/, /lib-b/]
+              and: [/\.less$/, /lib-b/],
             },
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { b: 2 },
@@ -1318,7 +1314,7 @@ describe("Merge with rules", function () {
             },
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { a: 1 },
@@ -1333,7 +1329,7 @@ describe("Merge with rules", function () {
             },
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { b: 2 },
@@ -1357,7 +1353,7 @@ describe("Merge with rules", function () {
             },
           },
         },
-      })(conf1, conf2)
+      })(conf1, conf2),
     ).toEqual(expected);
   });
 
@@ -1371,7 +1367,7 @@ describe("Merge with rules", function () {
             },
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { a: 1 },
@@ -1389,11 +1385,11 @@ describe("Merge with rules", function () {
         rules: [
           {
             test: {
-              and: [/\.less$/, /lib-a/]
+              and: [/\.less$/, /lib-a/],
             },
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { b: 2 },
@@ -1415,7 +1411,7 @@ describe("Merge with rules", function () {
             },
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: {
@@ -1441,7 +1437,7 @@ describe("Merge with rules", function () {
             },
           },
         },
-      })(conf1, conf2)
+      })(conf1, conf2),
     ).toEqual(expected);
   });
 
@@ -1450,14 +1446,10 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            test: [
-              /\.less$/,
-              /lib-a/,
-              { not: [/exclude/] },
-            ],
+            test: [/\.less$/, /lib-a/, { not: [/exclude/] }],
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { a: 1 },
@@ -1474,14 +1466,10 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            test: [
-              /\.less$/,
-              /lib-b/,
-              { not: [/exclude/] },
-            ],
+            test: [/\.less$/, /lib-b/, { not: [/exclude/] }],
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { b: 2 },
@@ -1498,14 +1486,10 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            test: [
-              /\.less$/,
-              /lib-a/,
-              { not: [/exclude/] },
-            ],
+            test: [/\.less$/, /lib-a/, { not: [/exclude/] }],
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { a: 1 },
@@ -1515,14 +1499,10 @@ describe("Merge with rules", function () {
             ],
           },
           {
-            test: [
-              /\.less$/,
-              /lib-b/,
-              { not: [/exclude/] },
-            ],
+            test: [/\.less$/, /lib-b/, { not: [/exclude/] }],
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { b: 2 },
@@ -1546,7 +1526,7 @@ describe("Merge with rules", function () {
             },
           },
         },
-      })(conf1, conf2)
+      })(conf1, conf2),
     ).toEqual(expected);
   });
 
@@ -1555,14 +1535,10 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            test: [
-              /\.less$/,
-              /lib-a/,
-              { not: [/exclude/] },
-            ],
+            test: [/\.less$/, /lib-a/, { not: [/exclude/] }],
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { a: 1 },
@@ -1579,14 +1555,10 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            test: [
-              { not: [/exclude/] },
-              /lib-a/,
-              /\.less$/,
-            ],
+            test: [{ not: [/exclude/] }, /lib-a/, /\.less$/],
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: { b: 2 },
@@ -1603,14 +1575,10 @@ describe("Merge with rules", function () {
       module: {
         rules: [
           {
-            test: [
-              /\.less$/,
-              /lib-a/,
-              { not: [/exclude/] },
-            ],
+            test: [/\.less$/, /lib-a/, { not: [/exclude/] }],
             use: [
               {
-                loader: 'less-loader',
+                loader: "less-loader",
                 options: {
                   lessOptions: {
                     modifyVars: {
@@ -1636,7 +1604,7 @@ describe("Merge with rules", function () {
             },
           },
         },
-      })(conf1, conf2)
+      })(conf1, conf2),
     ).toEqual(expected);
   });
 });

@@ -16,12 +16,12 @@ function merge<Configuration extends object>(
 ): Configuration {
   return mergeWithCustomize<Configuration>({})(
     firstConfiguration,
-    ...configurations
+    ...configurations,
   );
 }
 
 function mergeWithCustomize<Configuration extends object>(
-  options: ICustomizeOptions
+  options: ICustomizeOptions,
 ) {
   return function mergeWithOptions(
     firstConfiguration: Configuration | Configuration[],
@@ -59,7 +59,7 @@ function mergeWithCustomize<Configuration extends object>(
 
         return mergeWith(
           firstConfiguration,
-          joinArrays(options)
+          joinArrays(options),
         ) as Configuration;
       }
 
@@ -68,7 +68,7 @@ function mergeWithCustomize<Configuration extends object>(
 
     return mergeWith(
       [firstConfiguration].concat(configurations),
-      joinArrays(options)
+      joinArrays(options),
     ) as Configuration;
   };
 }
@@ -155,8 +155,8 @@ function mergeWithRule({
     });
 
     const bMatches = b.filter((o) => {
-      const matches = rulesToMatch.every(
-        (rule) => isSameCondition(ao[rule], o[rule])
+      const matches = rulesToMatch.every((rule) =>
+        isSameCondition(ao[rule], o[rule]),
       );
 
       if (matches) {
@@ -245,7 +245,7 @@ function mergeWithRule({
             .reduce(
               (acc, val) =>
                 isArray(acc) && isArray(val) ? [...acc, ...val] : acc,
-              []
+              [],
             );
 
           ret[k] = mergeWithRule({ currentRule, a: v, b });
