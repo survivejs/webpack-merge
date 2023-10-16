@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.10.0 / 2023-10-16
+
+- Feat - Support object/array-formed condition for `mergeWithRules`. #212
+
 ## 5.9.0 / 2023-05-22
 
 - Feat - Support deep merging when rule is a merge. #193, #206
