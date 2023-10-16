@@ -17,10 +17,12 @@
   ],
   "dependencies": {
     "clone-deep": "^4.0.1",
+    "flat": "^5.0.2",
     "wildcard": "^2.0.0"
   },
   "devDependencies": {
     "@types/estree": "0.0.48",
+    "@types/flat": "^5.0.3",
     "husky": "^6.0.0",
     "prettier": "^2.3.1",
     "tsdx": "^0.14.1",
