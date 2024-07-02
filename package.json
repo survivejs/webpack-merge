@@ -2,7 +2,7 @@
   "name": "webpack-merge",
   "description": "Variant of merge that's useful for webpack configuration",
   "author": "Juho Vepsalainen <bebraw@gmail.com>",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "scripts": {
     "build": "tsc",
     "format": "prettier . --write --ignore-path .gitignore",
