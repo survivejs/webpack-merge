@@ -1,4 +1,3 @@
-import cloneDeep from "clone-deep";
 import { Customize, Key } from "./types";
 import mergeWith from "./merge-with";
 import { isRegex, isFunction, isPlainObject } from "./utils";
@@ -48,7 +47,7 @@ export default function joinArrays({
     }
 
     if (isPlainObject(b)) {
-      return cloneDeep(b);
+      return structuredClone(b);
     }
 
     if (isArray(b)) {
