@@ -1,6 +1,10 @@
 # Changelog
 
-## 6.0.0 / xxxx-xx-xx
+## 6.0.1 / 2024-07-02
+
+- Fix - Restore usage of `clone-deep` as there was a corner case where `structuredClone` did not work as expected. #214
+
+## 6.0.0 / 2024-07-02
 
 - Chore - Update internal dependencies. As a result, the package needs at least Node 18 to run.
 - Chore - Use `structuredClone` over `clone-deep` dependency since it is included to Node 18 or above. #214
