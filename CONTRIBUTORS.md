@@ -24,3 +24,4 @@
 - [JeB](https://github.com/just-jeb) - Don't merge strings with objects in `mergeWithRules`. #172
 - [Burhanuddin Udaipurwala](https://github.com/burhanuday) - Deep merge when rule is merge. #206
 - [Rex Zeng](https://github.com/RexSkz) - Support object/array-formed condition for `mergeWithRules`. #212
+- [Adam Skoufis](https://github.com/askoufis) - Remove clone-deep dependency in favor of native structuredClone. #214

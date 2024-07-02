@@ -3,6 +3,7 @@
 ## 6.0.0 / xxxx-xx-xx
 
 - Chore - Update internal dependencies. As a result, the package needs at least Node 18 to run.
+- Chore - Use `structuredClone` over `clone-deep` dependency since it is included to Node 18 or above. #214
 
 ## 5.10.0 / 2023-10-16
 
