@@ -2,13 +2,8 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :x:                |
-| < 4.0   | :x:                |
+The latest major version is always the supported one.
 
-## Reporting a Vulnerability
+## Security contact information
 
-If you find a vulnerability, send me email (bebraw \<at\> gmail \<dot\> com) with the details.
+To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
