@@ -1,12 +1,12 @@
 language: node_js
+arch:
+  - amd64
+  - ppc64le
 node_js:
-  - "0.10"
-  - "0.12.9"
-  - "4"
-  - "5"
-  - "6"
+  - "10"
+  - "12"
 script:
   - npm run build
-  - npm run test:lint
   - npm run test
-
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
